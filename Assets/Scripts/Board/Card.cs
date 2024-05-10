@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Card : Interactable
 {
-    [SerializeField] private PieceSO pieceSO;
     [SerializeField] private Material onFocusMaterial;
     private Material normalMaterial;
     private MeshRenderer mr;
@@ -17,9 +16,7 @@ public class Card : Interactable
 
     public override void OnInteract()
     {
-        base.OnInteract();
-
-        BoardPlacing.instance.PlacePiece(pieceSO);
+        base.OnInteract();  
     }
 
     public override void OnFocus()

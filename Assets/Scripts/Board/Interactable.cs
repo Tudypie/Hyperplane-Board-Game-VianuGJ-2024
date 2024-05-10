@@ -3,8 +3,7 @@ using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour
 {
-    [Header("Interactable Parameters")]
-    [SerializeField] private UnityEvent onInteractEvent;
+    //[SerializeField] private UnityEvent onInteractEvent;
     public bool canInteract = true;
 
     private const string interactableLayer = "Interactable";
@@ -16,7 +15,7 @@ public class Interactable : MonoBehaviour
 
     public virtual void OnInteract()
     {
-        onInteractEvent?.Invoke();
+        //onInteractEvent?.Invoke();
     }
 
     public virtual void OnFocus() { }

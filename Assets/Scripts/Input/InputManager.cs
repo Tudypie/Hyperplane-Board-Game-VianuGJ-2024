@@ -1,11 +1,18 @@
 using UnityEngine;
 public class InputManager : MonoBehaviour
 {
-    public static InputMaster INPUT { get; private set; }
+    public InputMaster INPUT { get; private set; }
 
-    void Awake() => INPUT = new();
+    public static InputManager instance;
+
+    void Awake()
+    {
+        instance = this;
+        INPUT = new();
+    }
 
     void OnEnable() => INPUT.Enable();
+
     void OnDisable() => INPUT.Disable();
 }
 

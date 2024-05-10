@@ -14,5 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieceType: 0
   piecePrefab: {fileID: 8516715130562835577, guid: 0425ce42be7665a4c91106b88545295b, type: 3}
-  volume: 24
-  angle: 60
+  defaultAngleIndex: 2
+  pieceStats:
+  - angle: 90
+    volume: 36
+    damage: 12
+  - angle: 75
+    volume: 30
+    damage: 18
+  - angle: 60
+    volume: 24
+    damage: 24
+  - angle: 45
+    volume: 18
+    damage: 30
+  - angle: 30
+    volume: 12
+    damage: 36

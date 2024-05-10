@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieceType: 2
   piecePrefab: {fileID: 9032255451433559348, guid: 603698b7509a6364a814eacfe94abff6, type: 3}
-  volume: 0
-  angle: 0
+  defaultAngleIndex: 0
+  pieceStats: []
