@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 209d98697625690448f757113e1bc966, type: 3}
+  m_Name: Cuboid
+  m_EditorClassIdentifier: 
+  pieceType: 1
+  piecePrefab: {fileID: 9032255451433559348, guid: 603698b7509a6364a814eacfe94abff6, type: 3}
+  volume: 100
+  angle: 90
