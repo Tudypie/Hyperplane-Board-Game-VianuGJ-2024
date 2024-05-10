@@ -5,11 +5,13 @@ public class Piece : Interactable
 
     [Header("Piece Parameters")]
     public PieceSO pieceSO;
-    public bool placedOnBoard = false;
     public GameObject[] piecePart;
-    
     [SerializeField] private Material onFocusMaterial;
     private Material normalMaterial;
+
+    public bool placedOnBoard = false;
+    public bool canBeRotated = false;
+
 
     public override void Awake()
     {

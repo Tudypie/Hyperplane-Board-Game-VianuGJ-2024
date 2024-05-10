@@ -4,8 +4,11 @@ public class BoardPlacing : MonoBehaviour
 {
     public bool isPlacing = false;
 
-    public Transform pieceSelection;
+    [HideInInspector]
+    public Transform pieceSelectionTransform;
+    private Piece pieceSelection;
     private Vector3 initialPiecePosition;
+    private Quaternion initialPieceRotation;
 
     private InputMaster controls;
 
@@ -21,11 +24,19 @@ public class BoardPlacing : MonoBehaviour
     {
         if (isPlacing)
         {
+            if (pieceSelection.canBeRotated && controls.Player.Rotate.WasPressedThisFrame())
+            {
+                pieceSelectionTransform.rotation = Quaternion.Euler(pieceSelectionTransform.rotation.eulerAngles.x,
+                    pieceSelectionTransform.rotation.eulerAngles.y + 45,
+                    pieceSelectionTransform.rotation.eulerAngles.z);
+            }
+
             if (controls.UI.RightClick.WasPressedThisFrame())
             {
                 isPlacing = false;
-                pieceSelection.position = initialPiecePosition;
-                pieceSelection.GetComponent<Piece>().SetCanInteract(true);
+                pieceSelectionTransform.position = initialPiecePosition;
+                pieceSelectionTransform.rotation = initialPieceRotation;
+                pieceSelectionTransform.GetComponent<Piece>().SetCanInteract(true);
             }
         }
     }
@@ -33,16 +44,21 @@ public class BoardPlacing : MonoBehaviour
     public void StartPlacing(Piece piece)
     {
         isPlacing = true;
-        pieceSelection = piece.gameObject.transform;
-        initialPiecePosition = pieceSelection.position;
-        pieceSelection.GetComponent<Piece>().SetCanInteract(false);
+
+        pieceSelection = piece;
+        pieceSelectionTransform = piece.gameObject.transform;
+        initialPiecePosition = pieceSelectionTransform.position;
+        initialPieceRotation = pieceSelectionTransform.rotation;
+        pieceSelection.SetCanInteract(false);
     }
 
     public void Place(BoardTile boardTile)
     {
-        boardTile.occupied = true;
-        pieceSelection.GetComponent<Piece>().placedOnBoard = true;
         isPlacing = false;
-        pieceSelection = null;
+
+        boardTile.occupied = true;
+        pieceSelection.placedOnBoard = true;
+        pieceSelection.SetCanInteract(true);
+        pieceSelectionTransform = null;
     }
 }

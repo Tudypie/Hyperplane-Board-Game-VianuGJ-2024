@@ -10,7 +10,7 @@ public class BoardTile : Interactable
 
         if (BoardPlacing.instance.isPlacing && !occupied)
         {
-            BoardPlacing.instance.pieceSelection.position = transform.position;
+            BoardPlacing.instance.pieceSelectionTransform.position = transform.position;
         }
     }
 
