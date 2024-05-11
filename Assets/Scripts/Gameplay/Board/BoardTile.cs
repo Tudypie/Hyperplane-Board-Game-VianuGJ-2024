@@ -6,7 +6,7 @@ public class BoardTile : Interactable
     public int row;
     public int col;
 
-    public bool occupied = false;
+    public bool isOccupied = false;
 
     [SerializeField] private Piece pieceOnTile;
 
@@ -31,13 +31,42 @@ public class BoardTile : Interactable
 
         if (boardManager.isPlacing)
         {
-            boardManager.pieceSelectionTransform.position = transform.position;
             boardManager.pieceSelection.row = row;
             boardManager.pieceSelection.col = col;
 
+
+            if (isOccupied)
+            {
+                pieceOnTile.SetCanInteract(false);
+                boardManager.pieceSelectionTransform.position = transform.position + new Vector3(0, 0.8f * pieceOnTile.height, 0);
+
+                if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
+                {
+                    prism.height++;
+                    boardManager.ShowPrismRange(prism, prism.height);
+                }
+            }
+            else
+            {
+                boardManager.pieceSelectionTransform.position = transform.position;
+
+                if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
+                {
+                    boardManager.ShowPrismRange(prism, prism.height);
+                }
+            }
+        }
+    }
+
+    public override void OnLoseFocus()
+    {
+        base.OnLoseFocus();
+
+        if(boardManager.isPlacing)
+        {
             if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
             {
-                boardManager.ShowPrismRange(prism);
+                prism.height--;
             }
         }
     }

@@ -86,17 +86,17 @@ public class BoardManager : MonoBehaviour
     {
         isPlacing = false;
 
-        boardTile.occupied = true;
+        boardTile.isOccupied = true;
         pieceSelection.placedOnBoard = true;
         pieceSelection.SetCanInteract(true);
         pieceSelectionTransform = null;
     }
 
-    public void ShowPrismRange(Prism prism)
+    public void ShowPrismRange(Prism prism, int range)
     {
         ClearBoardMaterials();
 
-        for (int i = 1; i <= prism.Height; i++)
+        for (int i = 1; i <= range; i++)
         {
             if(prism.row + i < boardTile.Count)
                 boardTile[prism.row+i][prism.col].ChangeMeshRenderer(true, prism.normalMaterial);

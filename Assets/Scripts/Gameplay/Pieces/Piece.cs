@@ -12,6 +12,8 @@ public class Piece : Interactable
 
     [Header("General Stats")]
     public bool placedOnBoard = false;
+    public float health;
+    public int height;
     public int row;
     public int col;
 
@@ -28,6 +30,23 @@ public class Piece : Interactable
         base.Awake();
 
         normalMaterial = piecePart[0].GetComponent<MeshRenderer>().material;
+
+        health = pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume;
+        height = 1;
+    }
+
+    private void Update()
+    {
+        if (boardManager.isPlacing)
+        {
+            canInteract = false;
+            GetComponent<BoxCollider>().enabled = false;
+        } 
+        else
+        {
+            canInteract = true;
+            GetComponent<BoxCollider>().enabled = true;
+        }
     }
 
     public override void OnInteract()
@@ -45,7 +64,7 @@ public class Piece : Interactable
     {
         base.OnFocus();
 
-        if (!boardManager.isPlacing)
+        if (!placedOnBoard && !boardManager.isPlacing)
         {
             ChangeMaterial(onFocusMaterial);
         }
@@ -55,7 +74,7 @@ public class Piece : Interactable
     {
         base.OnLoseFocus();
 
-        if (!boardManager.isPlacing)
+        if (!placedOnBoard && !boardManager.isPlacing)
         {
             ChangeMaterial(normalMaterial);
         }
@@ -68,5 +87,12 @@ public class Piece : Interactable
             if (!piece.activeSelf) break;
             piece.GetComponent<MeshRenderer>().material = material;
         }
+    }
+
+    public void IncreaseHeight(int addedHeight)
+    {
+        height += addedHeight;
+        health += health * addedHeight;
+        piecePart[height - 1].SetActive(true);
     }
 }
