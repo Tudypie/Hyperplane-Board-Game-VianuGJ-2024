@@ -266,8 +266,9 @@ MonoBehaviour:
   - {fileID: 2761821245902806846}
   - {fileID: 6254464667798311719}
   - {fileID: 493680115192303428}
-  onFocusMaterial: {fileID: 2100000, guid: 73cc7f319e7136e48bf5ef4b3e303242, type: 2}
   normalMaterial: {fileID: 2100000, guid: 3ae90cb0ab098164faa0a25504343922, type: 2}
+  onFocusMaterial: {fileID: 2100000, guid: 73cc7f319e7136e48bf5ef4b3e303242, type: 2}
+  isEnemyPiece: 0
   placedOnBoard: 0
   health: 0
   height: 1
@@ -275,7 +276,9 @@ MonoBehaviour:
   row: 0
   col: 0
   boardManager: {fileID: 0}
+  attackMaterial: {fileID: 2100000, guid: 1696faddc054f80488b3b1f9a0d4f1cc, type: 2}
   laser: {fileID: 9095057476344181278}
+  tilesInRange: []
   angleIndex: 0
   damage: 0
 --- !u!65 &3587342436080294915

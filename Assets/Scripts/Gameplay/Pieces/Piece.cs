@@ -3,13 +3,14 @@ using UnityEngine;
 public class Piece : Interactable
 {
 
-    [Header("Piece Parameters")]
+    [Header("Piece References")]
     public PieceSO pieceSO;
     public GameObject[] piecePart;
-    public Material onFocusMaterial;
     public Material normalMaterial;
+    public Material onFocusMaterial;
 
-    [Header("General Stats")]
+    [Header("Piece Stats")]
+    public bool isEnemyPiece = false;
     public bool placedOnBoard = false;
     public float health;
     public int height;
@@ -24,26 +25,33 @@ public class Piece : Interactable
     {
         base.Awake();
 
-        health = pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume;
-        height = 1;
+        health = pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume * height;
     }
 
     private void Start()
     {
         boardManager = BoardManager.instance;
+        if (isEnemyPiece) return;
         boardManager.OnStartPlacing += DisableCollider;
         boardManager.OnStopPlacing += EnableCollider;
+        boardManager.OnStartAttacking += DisableCollider;
+        boardManager.OnStopAttacking += EnableCollider;
     }
 
     private void OnDisable()
     {
+        if (isEnemyPiece) return;
         boardManager.OnStartPlacing -= DisableCollider;
         boardManager.OnStopPlacing -= EnableCollider;
+        boardManager.OnStartAttacking -= DisableCollider;
+        boardManager.OnStopAttacking -= EnableCollider;
     }
 
     public override void OnInteract()
     {
         base.OnInteract();
+
+        if (isEnemyPiece) return;
 
         if (!placedOnBoard)
         {
@@ -56,6 +64,8 @@ public class Piece : Interactable
     {
         base.OnFocus();
 
+        if (isEnemyPiece) return;
+
         if (!placedOnBoard && !boardManager.isPlacing)
             ChangeMaterial(onFocusMaterial);
     }
@@ -63,6 +73,8 @@ public class Piece : Interactable
     public override void OnLoseFocus()
     {
         base.OnLoseFocus();
+
+        if (isEnemyPiece) return;
 
         if (!placedOnBoard && !boardManager.isPlacing)
             ChangeMaterial(normalMaterial);
@@ -89,17 +101,20 @@ public class Piece : Interactable
         }
     }
 
-    public void IncreaseHeight(int addedHeight = 1)
+    public virtual void ChangeHeight(int value)
     {
-        height += addedHeight;
-        health += health * addedHeight;
-        piecePart[height - 1].SetActive(true);
+        height += value;
+        health += pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume * value;
+        piecePart[value > 0 ? height - 1 : height].SetActive(value > 0);
+        boardManager.CalculateAllPrismTilesInRange();
     }
 
-    public void DecreaseHeight(int decreasedHeight = 1)
+    public virtual void TakeDamage(float damage)
     {
-        height -= decreasedHeight;
-        health -= health * decreasedHeight;
-        piecePart[height].SetActive(false);
+        health -= damage;
+        if(health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
