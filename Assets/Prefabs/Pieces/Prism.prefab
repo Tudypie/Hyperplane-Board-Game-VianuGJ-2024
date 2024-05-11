@@ -267,16 +267,17 @@ MonoBehaviour:
   - {fileID: 6254464667798311719}
   - {fileID: 493680115192303428}
   onFocusMaterial: {fileID: 2100000, guid: 73cc7f319e7136e48bf5ef4b3e303242, type: 2}
-  normalMaterial: {fileID: 0}
+  normalMaterial: {fileID: 2100000, guid: 3ae90cb0ab098164faa0a25504343922, type: 2}
   placedOnBoard: 0
+  health: 0
+  height: 1
+  maxHeight: 7
   row: 0
   col: 0
   boardManager: {fileID: 0}
   laser: {fileID: 9095057476344181278}
   angleIndex: 0
-  health: 0
   damage: 0
-  height: 1
 --- !u!65 &3587342436080294915
 BoxCollider:
   m_ObjectHideFlags: 0

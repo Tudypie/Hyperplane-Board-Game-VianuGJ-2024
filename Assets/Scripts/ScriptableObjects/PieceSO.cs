@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Piece", menuName = "Board Game/Piece")]
 public class PieceSO : ScriptableObject
 {
-    public enum PieceType { Attack, Defense }
+    public enum PieceType { Prism, Cuboid }
 
     [Serializable]
     public struct PieceStats

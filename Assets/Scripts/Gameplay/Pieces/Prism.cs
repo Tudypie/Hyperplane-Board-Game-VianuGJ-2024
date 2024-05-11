@@ -6,14 +6,15 @@ public class Prism : Piece
     public LineRenderer laser;
 
     [Header("Prism Stats")]
-    [SerializeField] private int angleIndex;
-    [SerializeField] private float damage;
+    public int angleIndex;
+    public float damage;
 
     public override void Awake()
     {
         base.Awake();
 
         angleIndex = pieceSO.defaultStatsIndex;
+        health = pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume;
         damage = pieceSO.pieceStats[angleIndex].damage;
     }
 

@@ -1,20 +1,21 @@
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
     public List<BoardTile[]> boardTile = new List<BoardTile[]>();
-    public int boardChildCount;
+    private int boardChildCount;
 
     [Header("Placing Parameters")]
     public bool isPlacing = false;
-
     public Piece pieceSelection;
     public Transform pieceSelectionTransform;
-
     private Vector3 initialPiecePosition;
     private Quaternion initialPieceRotation;
+
+    public event Action OnStartPlacing;
+    public event Action OnStopPlacing;
 
     private InputMaster controls;
 
@@ -29,7 +30,6 @@ public class BoardManager : MonoBehaviour
             BoardTile[] tiles = new BoardTile[5];
             for (int j = 0; j < 5; j++)
             {
-                //Debug.Log(transform.GetChild(boardChildCount).name);
                 tiles[j] = transform.GetChild(boardChildCount).GetComponent<BoardTile>();
                 boardChildCount++;
             }
@@ -54,10 +54,12 @@ public class BoardManager : MonoBehaviour
             if (controls.UI.RightClick.WasPressedThisFrame())
             {
                 isPlacing = false;
+
                 pieceSelectionTransform.position = initialPiecePosition;
                 pieceSelectionTransform.rotation = initialPieceRotation;
-                pieceSelectionTransform.GetComponent<Piece>().SetCanInteract(true);
+
                 ClearBoardMaterials();
+                OnStopPlacing?.Invoke();
             }
 
             /* Rotating piece
@@ -79,17 +81,30 @@ public class BoardManager : MonoBehaviour
         pieceSelectionTransform = piece.gameObject.transform;
         initialPiecePosition = pieceSelectionTransform.position;
         initialPieceRotation = pieceSelectionTransform.rotation;
-        pieceSelection.SetCanInteract(false);
+
+        OnStartPlacing?.Invoke();
     }
 
     public void PlacePiece(BoardTile boardTile)
     {
         isPlacing = false;
-
-        boardTile.isOccupied = true;
         pieceSelection.placedOnBoard = true;
-        pieceSelection.SetCanInteract(true);
+
+        if (boardTile.isOccupied)
+        {
+            boardTile.pieceOnTile.IncreaseHeight();
+            Destroy(pieceSelection);
+        }
+        else
+        {
+            boardTile.pieceOnTile = pieceSelection;
+            boardTile.isOccupied = true;
+        }
+
+        pieceSelection = null;
         pieceSelectionTransform = null;
+
+        OnStopPlacing?.Invoke();
     }
 
     public void ShowPrismRange(Prism prism, int range)
@@ -114,9 +129,7 @@ public class BoardManager : MonoBehaviour
         for (int i = 0; i < boardTile.Count; i++)
         {
             for (int j = 0; j < boardTile[i].Length; j++)
-            {
                 boardTile[i][j].ChangeMeshRenderer(false, null);
-            }
         }
     }
 }

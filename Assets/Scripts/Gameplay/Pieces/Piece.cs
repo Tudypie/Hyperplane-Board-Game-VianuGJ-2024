@@ -6,7 +6,6 @@ public class Piece : Interactable
     [Header("Piece Parameters")]
     public PieceSO pieceSO;
     public GameObject[] piecePart;
-
     public Material onFocusMaterial;
     public Material normalMaterial;
 
@@ -14,39 +13,32 @@ public class Piece : Interactable
     public bool placedOnBoard = false;
     public float health;
     public int height;
+    public int maxHeight;
     public int row;
     public int col;
 
     [HideInInspector]
     public BoardManager boardManager;
 
-    private void Start()
-    {
-        boardManager = BoardManager.instance;
-    }
-
     public override void Awake()
     {
         base.Awake();
-
-        normalMaterial = piecePart[0].GetComponent<MeshRenderer>().material;
 
         health = pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume;
         height = 1;
     }
 
-    private void Update()
+    private void Start()
     {
-        if (boardManager.isPlacing)
-        {
-            canInteract = false;
-            GetComponent<BoxCollider>().enabled = false;
-        } 
-        else
-        {
-            canInteract = true;
-            GetComponent<BoxCollider>().enabled = true;
-        }
+        boardManager = BoardManager.instance;
+        boardManager.OnStartPlacing += DisableCollider;
+        boardManager.OnStopPlacing += EnableCollider;
+    }
+
+    private void OnDisable()
+    {
+        boardManager.OnStartPlacing -= DisableCollider;
+        boardManager.OnStopPlacing -= EnableCollider;
     }
 
     public override void OnInteract()
@@ -65,9 +57,7 @@ public class Piece : Interactable
         base.OnFocus();
 
         if (!placedOnBoard && !boardManager.isPlacing)
-        {
             ChangeMaterial(onFocusMaterial);
-        }
     }
 
     public override void OnLoseFocus()
@@ -75,9 +65,19 @@ public class Piece : Interactable
         base.OnLoseFocus();
 
         if (!placedOnBoard && !boardManager.isPlacing)
-        {
             ChangeMaterial(normalMaterial);
-        }
+    }
+
+    private void EnableCollider()
+    {
+        canInteract = true;
+        GetComponent<BoxCollider>().enabled = true;
+    }
+
+    private void DisableCollider()
+    {
+        canInteract = false;
+        GetComponent<BoxCollider>().enabled = false;
     }
 
     private void ChangeMaterial(Material material)
@@ -89,10 +89,17 @@ public class Piece : Interactable
         }
     }
 
-    public void IncreaseHeight(int addedHeight)
+    public void IncreaseHeight(int addedHeight = 1)
     {
         height += addedHeight;
         health += health * addedHeight;
         piecePart[height - 1].SetActive(true);
+    }
+
+    public void DecreaseHeight(int decreasedHeight = 1)
+    {
+        height -= decreasedHeight;
+        health -= health * decreasedHeight;
+        piecePart[height].SetActive(false);
     }
 }

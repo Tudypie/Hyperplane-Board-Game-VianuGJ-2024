@@ -5,10 +5,8 @@ public class BoardTile : Interactable
 {
     public int row;
     public int col;
-
+    public Piece pieceOnTile;
     public bool isOccupied = false;
-
-    [SerializeField] private Piece pieceOnTile;
 
     private MeshRenderer meshRenderer;
     private BoardManager boardManager;
@@ -34,22 +32,20 @@ public class BoardTile : Interactable
             boardManager.pieceSelection.row = row;
             boardManager.pieceSelection.col = col;
 
-
             if (isOccupied)
             {
-                pieceOnTile.SetCanInteract(false);
-                boardManager.pieceSelectionTransform.position = transform.position + new Vector3(0, 0.8f * pieceOnTile.height, 0);
-
-                if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
+                if(boardManager.pieceSelection.pieceSO.pieceType == pieceOnTile.pieceSO.pieceType && pieceOnTile.height < pieceOnTile.maxHeight)
                 {
-                    prism.height++;
-                    boardManager.ShowPrismRange(prism, prism.height);
+                    boardManager.pieceSelectionTransform.position = transform.position + new Vector3(0, 0.8f * pieceOnTile.height, 0);
+                    if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
+                    {
+                        boardManager.ShowPrismRange(prism, pieceOnTile.height + 1);
+                    }
                 }
             }
             else
             {
                 boardManager.pieceSelectionTransform.position = transform.position;
-
                 if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
                 {
                     boardManager.ShowPrismRange(prism, prism.height);
@@ -61,14 +57,6 @@ public class BoardTile : Interactable
     public override void OnLoseFocus()
     {
         base.OnLoseFocus();
-
-        if(boardManager.isPlacing)
-        {
-            if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
-            {
-                prism.height--;
-            }
-        }
     }
 
     public override void OnInteract()
@@ -78,7 +66,6 @@ public class BoardTile : Interactable
         if (boardManager.isPlacing)
         {
             boardManager.PlacePiece(this);
-            pieceOnTile = boardManager.pieceSelection;
         }
     }
 
