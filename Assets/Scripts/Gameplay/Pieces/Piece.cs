@@ -6,12 +6,22 @@ public class Piece : Interactable
     [Header("Piece Parameters")]
     public PieceSO pieceSO;
     public GameObject[] piecePart;
-    [SerializeField] private Material onFocusMaterial;
-    private Material normalMaterial;
 
+    public Material onFocusMaterial;
+    public Material normalMaterial;
+
+    [Header("General Stats")]
     public bool placedOnBoard = false;
-    public bool canBeRotated = false;
+    public int row;
+    public int col;
 
+    [HideInInspector]
+    public BoardManager boardManager;
+
+    private void Start()
+    {
+        boardManager = BoardManager.instance;
+    }
 
     public override void Awake()
     {
@@ -26,7 +36,7 @@ public class Piece : Interactable
 
         if (!placedOnBoard)
         {
-            BoardPlacing.instance.StartPlacing(this);
+            boardManager.StartPlacingPiece(this);
             ChangeMaterial(normalMaterial);
         }
     }
@@ -35,7 +45,7 @@ public class Piece : Interactable
     {
         base.OnFocus();
 
-        if (!BoardPlacing.instance.isPlacing)
+        if (!boardManager.isPlacing)
         {
             ChangeMaterial(onFocusMaterial);
         }
@@ -45,7 +55,7 @@ public class Piece : Interactable
     {
         base.OnLoseFocus();
 
-        if (!BoardPlacing.instance.isPlacing)
+        if (!boardManager.isPlacing)
         {
             ChangeMaterial(normalMaterial);
         }

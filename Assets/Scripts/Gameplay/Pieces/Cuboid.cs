@@ -3,20 +3,21 @@ using UnityEngine;
 public class Cuboid : Piece
 {
     [Header("Cuboid Stats")]
-    [SerializeField] private float health;
+    [SerializeField] private float volume;
     [SerializeField] private int height = 1;
+    public float Health { get { return volume; } set { volume = value; } }
 
     public override void Awake()
     {
         base.Awake();
 
-        health = pieceSO.pieceStats[pieceSO.defaultAngleIndex].volume;
+        Health = pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume;
     }
 
     public void IncreaseHeight(int addedHeight)
     {
         height += addedHeight;
-        health += health / 2 * addedHeight;
+        Health += Health * addedHeight;
         piecePart[height - 1].SetActive(true);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Piece", menuName = "Board Game/Piece")]
 public class PieceSO : ScriptableObject
 {
-    public enum PieceType { prism, cuboid, sphere }
+    public enum PieceType { Attack, Defense }
 
     [Serializable]
     public struct PieceStats
@@ -16,7 +16,7 @@ public class PieceSO : ScriptableObject
 
     public PieceType pieceType;
     public GameObject piecePrefab;
-    public int defaultAngleIndex;
+    public int defaultStatsIndex;
     public PieceStats[] pieceStats;
 
     //public float Health(float angle) { return defaultVolume * (angle / defaultAngle); }

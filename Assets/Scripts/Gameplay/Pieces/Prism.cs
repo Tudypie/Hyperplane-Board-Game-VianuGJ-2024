@@ -9,15 +9,18 @@ public class Prism : Piece
     [SerializeField] private int angleIndex;
     [SerializeField] private float health;
     [SerializeField] private float damage;
-    [SerializeField] private int height = 1;
+    [SerializeField] private int height;
+
+    public int Height { get { return  height; } }
 
     public override void Awake()
     {
         base.Awake();
 
-        angleIndex = pieceSO.defaultAngleIndex;
-        health = pieceSO.pieceStats[angleIndex].volume;
+        angleIndex = pieceSO.defaultStatsIndex;
         damage = pieceSO.pieceStats[angleIndex].damage;
+        health = pieceSO.pieceStats[angleIndex].volume;
+        height = 1;
     }
 
     public override void OnFocus()
@@ -26,7 +29,7 @@ public class Prism : Piece
 
         if (placedOnBoard)
         {
-            laser.enabled = true;
+            boardManager.ShowPrismRange(this);
         }
     }
 
@@ -36,29 +39,27 @@ public class Prism : Piece
 
         if (placedOnBoard)
         {
-            laser.enabled = false;
+            boardManager.ClearBoardMaterials();
         }
     }
 
     public override void OnInteract()
     {
         base.OnInteract();
-
-        if (!placedOnBoard)
-        {
-            laser.enabled = true;
-        }
     }
 
     public void ChangeAngle(int index)
     {
         angleIndex = index;
+        damage = pieceSO.pieceStats[angleIndex].damage * height;
+        health = pieceSO.pieceStats[angleIndex].volume * height;
     }
 
     public void IncreaseHeight(int addedHeight)
     {
         height += addedHeight;
-        health += health / 2 * addedHeight;
+        damage += damage * addedHeight;
+        health += health * addedHeight;
         piecePart[height - 1].SetActive(true);
     }
 

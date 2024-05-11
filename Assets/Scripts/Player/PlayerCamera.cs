@@ -24,14 +24,14 @@ public class PlayerCamera : MonoBehaviour
 
     private void Awake()
     {
-        controls = transform.parent.GetComponent<InputManager>().INPUT;
         playerBody = transform.parent;
         playerCamera = GetComponent<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void OnEnable()
+    private void Start()
     {
+        controls = transform.parent.GetComponent<InputManager>().INPUT;
         controls.Enable();
     }
 
