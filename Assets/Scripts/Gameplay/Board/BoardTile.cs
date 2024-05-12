@@ -117,15 +117,8 @@ public class BoardTile : Interactable
 
             if(boardManager.isSelectingTile)
             {
-                if(boardManager.methodToCallOnSelected.Contains("Heal"))
-                {
-                    if(pieceOnTile.health < pieceOnTile.maxHealth * pieceOnTile.height)
-                        boardManager.SelectTile(this);
-                }
-                else
-                {
+                if(canBeSelected)
                     boardManager.SelectTile(this);
-                }
             }
         }
     }

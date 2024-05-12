@@ -58,7 +58,7 @@ public class Prism : Piece
 
     public void ChangeAngle(float amount)
     {
-        float healthDecrease = pieceSO.pieceStats[statsIndex].volume * height / health;
+        float healthDecrease = health / maxHealth;
 
         if (statsIndex + amount > 4)
             amount = 1;
@@ -68,6 +68,7 @@ public class Prism : Piece
         statsIndex = Mathf.Clamp(statsIndex + (int)amount, 0, 4);
         damage = pieceSO.pieceStats[statsIndex].damage * height; 
         health = pieceSO.pieceStats[statsIndex].volume * height * healthDecrease;
+        maxHealth = pieceSO.pieceStats[statsIndex].volume * height;
 
         transform.localScale = new Vector3(1 + 0.25f * (statsIndex - 2), transform.localScale.y, transform.localScale.z);
     }

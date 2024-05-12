@@ -78,11 +78,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'MORE VOLUME
+  m_Text: 'mai mult volum
 
-    BUT
+    dar
 
-    LESS DAMAGE'
+    mai putin atac'
 --- !u!1 &4566980028144553500
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,7 +419,9 @@ MonoBehaviour:
   canInteract: 1
   methodToCallOnPiece: ChangeAngle
   methodParameter: 1
-  outlineMesh: {fileID: 424363054769386557}
+  meshRenderer: {fileID: 939958838847228297}
+  onFocusMaterial: {fileID: 2100000, guid: 40e18ca6646365e44a95bd618bd91493, type: 2}
+  normalMaterial: {fileID: 2100000, guid: 5942e9dbc89933544b9234a309ed459a, type: 2}
 --- !u!1001 &1306666571966884025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -438,7 +440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 89087ba94aa11ab40bd51ee73c343ee1, type: 3}
       propertyPath: m_LocalScale.z
-      value: 69.5842
+      value: 27.811245
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 89087ba94aa11ab40bd51ee73c343ee1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -446,7 +448,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 89087ba94aa11ab40bd51ee73c343ee1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.020042
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 89087ba94aa11ab40bd51ee73c343ee1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -493,11 +495,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89087ba94aa11ab40bd51ee73c343ee1, type: 3}
---- !u!23 &424363054769386557 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 89087ba94aa11ab40bd51ee73c343ee1, type: 3}
-  m_PrefabInstance: {fileID: 1306666571966884025}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1560654705112895314 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 89087ba94aa11ab40bd51ee73c343ee1, type: 3}

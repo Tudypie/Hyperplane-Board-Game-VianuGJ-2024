@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8823680742564261662
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4204285190667328650, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_Name
+      value: RemoveAllPrisms
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024759824777884838, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024759824777884838, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024759824777884838, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024759824777884838, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024759824777884838, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024759824777884838, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024759824777884838, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024759824777884838, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024759824777884838, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024759824777884838, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6263455074447136331, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: methodToCall
+      value: RemoveAllPrismsOnBoard
+      objectReference: {fileID: 0}
+    - target: {fileID: 6263455074447136331, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: methodToCallOnPiece
+      value: RemoveAllPrisms
+      objectReference: {fileID: 0}
+    - target: {fileID: 7311630431722505505, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 22ba2649c3350aa49963dd3e2f0fab1a, type: 3}
+    - target: {fileID: 8586933187030791576, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+      propertyPath: m_Text
+      value: "ELIMINA TOATE\nPRISMELE DE \nPE TABLA\n"
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}

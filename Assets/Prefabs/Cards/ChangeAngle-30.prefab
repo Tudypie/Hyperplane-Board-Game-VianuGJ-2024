@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 24700878485830590, guid: 28a6eb0f6ceee2249afdf5ce9b5f2d82, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.72
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 24700878485830590, guid: 28a6eb0f6ceee2249afdf5ce9b5f2d82, type: 3}
       propertyPath: m_LocalPosition.y
@@ -66,11 +66,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6461317547820202752, guid: 28a6eb0f6ceee2249afdf5ce9b5f2d82, type: 3}
       propertyPath: m_Text
-      value: 'MORE DAMAGE
+      value: 'mai putin volum
 
-        BUT
+        dar
 
-        LESS VOLUME'
+        mai mult atac'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461317547820202752, guid: 28a6eb0f6ceee2249afdf5ce9b5f2d82, type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6461317547820202752, guid: 28a6eb0f6ceee2249afdf5ce9b5f2d82, type: 3}
       propertyPath: m_Color.b

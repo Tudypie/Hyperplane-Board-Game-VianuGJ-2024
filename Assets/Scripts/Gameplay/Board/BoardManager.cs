@@ -4,26 +4,30 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    public Piece pieceSelection;
-    public Transform pieceSelectionTransform;
-    private Vector3 initialPiecePosition;
-    private Quaternion initialPieceRotation;
-
     public bool isPlacing = false;
     public bool isAttacking = false;
     public bool isSelectingTile = false;
 
+    [HideInInspector] public Piece pieceSelection;
+    [HideInInspector] public Transform pieceSelectionTransform;
+    private Vector3 initialPiecePosition;
+    private Quaternion initialPieceRotation;
+
     private List<BoardTile[]> boardTiles = new List<BoardTile[]>();
-    private List<Prism> prismsOnBoard = new List<Prism>();
     private int boardChildCount;
-    private int selectedTilesCount;
-    [HideInInspector] public string methodToCallOnSelected;
-    [HideInInspector] public float methodParameterOnSelected;
+    private List<Prism> prismsOnBoard = new List<Prism>();
+    private List<Cuboid> cuboidsOnBoard = new List<Cuboid>();
+
+    private Card cardSelection;
+    private string methodToCallOnSelected;
+    private float methodParameterOnSelected;
+    private int selectedTiles;
 
     public event Action OnStartAction;
     public event Action OnStopAction;
 
     private InputMaster controls;
+    private GameManager gameManager;
 
     public static BoardManager instance;
 
@@ -46,6 +50,7 @@ public class BoardManager : MonoBehaviour
     private void Start()
     {
         controls = InputManager.instance.INPUT;
+        gameManager = GameManager.instance;
     }
 
     private void Update()
@@ -55,69 +60,18 @@ public class BoardManager : MonoBehaviour
 
     private void HandleBoardInput()
     {
-        if (isPlacing)
+        if (isPlacing && controls.UI.RightClick.WasPressedThisFrame())
         {
-            if (controls.UI.RightClick.WasPressedThisFrame())
-            {
-                isPlacing = false;
-                OnStopAction?.Invoke();
-
-                pieceSelectionTransform.position = initialPiecePosition;
-                pieceSelectionTransform.rotation = initialPieceRotation;
-                pieceSelection = null;
-                pieceSelectionTransform = null;
-
-                ClearBoardMaterials();
-            }
+            StopPlacingPiece();
+            pieceSelectionTransform.position = initialPiecePosition;
+            pieceSelectionTransform.rotation = initialPieceRotation;
         }
 
-        if (isAttacking)
-        {
-            if (controls.UI.RightClick.WasPressedThisFrame())
-            {
-                isAttacking = false;
-                OnStopAction?.Invoke();
+        if (isAttacking && controls.UI.RightClick.WasPressedThisFrame())
+            StopAttackingPiece();
 
-                pieceSelectionTransform.position = initialPiecePosition;
-                pieceSelectionTransform.rotation = initialPieceRotation;
-                pieceSelection = null;
-                pieceSelectionTransform = null;
-
-                ClearBoardMaterials();
-            }
-
-            /*if (controls.Player.Rotate.WasPressedThisFrame())
-            {
-                if (pieceSelectionTransform.rotation.eulerAngles.y == 0)
-                {
-                    pieceSelectionTransform.rotation = Quaternion.Euler(pieceSelectionTransform.rotation.eulerAngles.x,
-                    45, pieceSelectionTransform.rotation.eulerAngles.z);
-                    ShowPrismRange(pieceSelection.GetComponent<Prism>(), pieceSelection.height, 0);
-                }
-                else if (pieceSelectionTransform.rotation.eulerAngles.y == 45)
-                {
-                        pieceSelectionTransform.rotation = Quaternion.Euler(pieceSelectionTransform.rotation.eulerAngles.x,
-                    -45, pieceSelectionTransform.rotation.eulerAngles.z);
-                    ShowPrismRange(pieceSelection.GetComponent<Prism>(), pieceSelection.height, 1);
-                }
-                else if (pieceSelectionTransform.rotation.eulerAngles.y == -45)
-                {
-                    pieceSelectionTransform.rotation = Quaternion.Euler(pieceSelectionTransform.rotation.eulerAngles.x,
-                    0, pieceSelectionTransform.rotation.eulerAngles.z);
-                    ShowPrismRange(pieceSelection.GetComponent<Prism>(), pieceSelection.height, 2);
-                }
-            }*/
-        }
-
-        if (isSelectingTile)
-        {
-            if (controls.UI.RightClick.WasPressedThisFrame())
-            {
-                isSelectingTile = false;
-                ClearBoardMaterials();
-                OnStopAction?.Invoke();
-            }
-        }
+        if (isSelectingTile && controls.UI.RightClick.WasPressedThisFrame())
+            StopSelectingTiles();
     }
 
     public void StartPlacingPiece(Piece piece)
@@ -133,9 +87,10 @@ public class BoardManager : MonoBehaviour
 
     public void PlacePiece(BoardTile boardTiles)
     {
-        isPlacing = false;
-        OnStopAction?.Invoke();
         pieceSelection.placedOnBoard = true;
+        gameManager.piecesInHand--;
+        if (gameManager.piecesInHand <= 0)
+            gameManager.DrawPieces();
 
         if (boardTiles.isOccupied)
         {
@@ -153,15 +108,25 @@ public class BoardManager : MonoBehaviour
             CalculatePrismTilesInRange(prism, prism.height);
             prismsOnBoard.Add(prism);
         }
+        else if(boardTiles.pieceOnTile.TryGetComponent(out Cuboid cuboid))
+        {
+            cuboidsOnBoard.Add(cuboid);
+        }
 
+        StopPlacingPiece();
+    }
+
+    public void StopPlacingPiece()
+    {
+        isPlacing = false;
+        OnStopAction?.Invoke();
+        ClearBoardMaterials();
         pieceSelection = null;
         pieceSelectionTransform = null;
-        ClearBoardMaterials();
     }
 
     public void StartAttackingPiece(Prism prismAttacker)
     {
-        Debug.Log("Start Attacking");
         isAttacking = true;
         OnStartAction?.Invoke();
 
@@ -175,20 +140,27 @@ public class BoardManager : MonoBehaviour
 
     public void AttackPiece(Piece pieceToAttack)
     {
-        Debug.Log("Attack Piece");
+        pieceSelection.GetComponent<Prism>().Attack(pieceToAttack);
+        pieceSelection = null;
+        pieceSelectionTransform = null;
+        ClearBoardMaterials();
+        StopAttackingPiece();
+    }
+
+    public void StopAttackingPiece()
+    {
         isAttacking = false;
         OnStopAction?.Invoke();
-
-        pieceSelection.GetComponent<Prism>().Attack(pieceToAttack);
-
         pieceSelection = null;
         pieceSelectionTransform = null;
         ClearBoardMaterials();
     }
 
-    public void StartSelectingTiles(string methodToCall, float methodParameter)
+    public void StartSelectingTiles(Card card, string methodToCall, float methodParameter)
     {
         isSelectingTile = true;
+        selectedTiles = 0;
+        cardSelection = card;
         methodToCallOnSelected = methodToCall;
         methodParameterOnSelected = methodParameter;
         OnStartAction?.Invoke();
@@ -218,18 +190,41 @@ public class BoardManager : MonoBehaviour
 
                     boardTiles[i][j].ChangeMeshRenderer(true, boardTiles[i][j].pieceOnTile.onFocusMaterial);
                     boardTiles[i][j].canBeSelected = true;
-                    selectedTilesCount++;
+                    selectedTiles++;
                 }
             }
         }
+
+        if (selectedTiles == 0) StopSelectingTiles();
+
     }
 
     public void SelectTile(BoardTile tile)
     {
         isSelectingTile = false;
-        OnStopAction?.Invoke();
-        ClearBoardMaterials();
+        isSelectingTile = false;
         tile.pieceOnTile.SendMessage(methodToCallOnSelected, methodParameterOnSelected);
+        gameManager.RemoveCard(cardSelection);
+        StopSelectingTiles();
+    }
+
+    public void StopSelectingTiles()
+    {
+        OnStopAction?.Invoke();
+        cardSelection = null;
+        methodToCallOnSelected = "";
+        methodParameterOnSelected = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                if (boardTiles[i][j].isOccupied && !boardTiles[i][j].isEnemyTile)
+                {
+                    boardTiles[i][j].ChangeMeshRenderer(false, null);
+                    boardTiles[i][j].canBeSelected = false;
+                }
+            }
+        }
     }
 
     public void ShowPrismRange(Prism prism, int height, Material material, int direction = -1)
@@ -378,5 +373,17 @@ public class BoardManager : MonoBehaviour
                 tile.ChangeMeshRenderer(false, null);
         }
 
+    }
+
+    public void RemoveAllCuboidsOnBoard()
+    {
+        foreach(Cuboid cuboid in cuboidsOnBoard)
+            Destroy(cuboid.gameObject);
+    }
+
+    public void RemoveAllPrismsOnBoard()
+    {
+        foreach (Prism prism in prismsOnBoard)
+            Destroy(prism.gameObject);
     }
 }

@@ -676,6 +676,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &617393728855560631 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6310897478893371919, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -720,6 +721,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &1027597219722781131 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5856757297688425075, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -764,6 +766,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &1148458748587242730 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3389655101682538668, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -808,6 +811,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &1810238277094883558 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4171774034126957728, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -852,6 +856,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &2124975509094917572 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4789805213225956990, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -896,6 +901,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &2393668178213862514 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 126761562010308660, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -940,6 +946,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &2572614923463182173 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 236896214916786971, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -984,6 +991,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &2710545189407118492 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8833927201614530342, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1028,6 +1036,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &2824911493069925617 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 562464482530574519, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1072,6 +1081,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &3187200188478820631 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1093,6 +1103,9 @@ MonoBehaviour:
   pieceSelectionTransform: {fileID: 0}
   isPlacing: 0
   isAttacking: 0
+  isSelectingTile: 0
+  methodToCallOnSelected: 
+  methodParameterOnSelected: 0
 --- !u!1 &3229854079794545077 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 876200073092640243, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1137,6 +1150,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &4055487801877404177 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7440614170249218473, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1181,6 +1195,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &4224140928680361028 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7321316194718986238, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1225,6 +1240,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &4313136023025429135 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7268517178796374327, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1269,6 +1285,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &4414577868052867091 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2141997431943595093, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1313,6 +1330,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &4507209018944404295 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7028273186256611583, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1357,6 +1375,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &4702831434689278972 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2181558357886083142, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1401,6 +1420,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &4860084826074569624 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2051353239174285346, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1445,6 +1465,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &5738025718738846029 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1199132312560227061, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1489,6 +1510,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &5804560122619306415 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1119235956780266007, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1533,6 +1555,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &6026703568069968864 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -911562723165704282, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1577,6 +1600,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &6144873143195245425 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -739533790000040137, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1621,6 +1645,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &6312347583366338632 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8602907525668615182, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1665,6 +1690,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &6541475119740180444 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8808372952743607194, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1709,6 +1735,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &6612152625920240264 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -344162835871316274, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1753,6 +1780,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &6933291427955559327 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4669568362778912729, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1797,6 +1825,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &7063009154148337253 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4827442196431219235, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1841,6 +1870,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &7191855279511116952 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4380658578787356450, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1885,6 +1915,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &7356624051414058279 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4112447370682504863, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1929,6 +1960,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &7708135217704674676 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3890388409026574030, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -1973,6 +2005,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &7771531303177440775 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3809945273004465599, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -2017,6 +2050,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &7899258522535789302 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3646348101630644560, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -2061,6 +2095,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &7919519284263431135 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3666611060250835047, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -2105,6 +2140,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &8116852056972677114 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5791213017590588348, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -2149,6 +2185,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &8221166229722599185 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3247887673740352681, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -2193,6 +2230,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &8295370635808395774 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3178046160932995656, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -2237,6 +2275,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &8523397358379601319 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6247456695617036769, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -2281,6 +2320,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &8533373845082109397 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2983918211010799213, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -2325,6 +2365,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &8575520242925586100 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2884553055727260942, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -2369,6 +2410,7 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 1
   isOccupied: 0
+  canBeSelected: 0
 --- !u!1 &8961026666325699435 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2548568755689044179, guid: 4bcb278133853d54d8108a58428de8c8, type: 3}
@@ -2413,3 +2455,4 @@ MonoBehaviour:
   pieceOnTile: {fileID: 0}
   isEnemyTile: 0
   isOccupied: 0
+  canBeSelected: 0
