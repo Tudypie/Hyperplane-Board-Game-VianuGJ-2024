@@ -1,7 +1,4 @@
-using System;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -13,24 +10,34 @@ public class PlayerCamera : MonoBehaviour
     private float rotationX = 0;
     private float rotationY = 0;
 
+    [Header("Move Parameters")]
+    [SerializeField] private float moveSmooth = 0.1f;
+    [SerializeField] private Vector3 forwardMovePoint;
+    private Vector3 initialPosition;
+    private Vector3 movePointPosition;
+    private bool isMoving = false;
+
     [Header("Interact Parameters")]
     [SerializeField] private Vector3 interactionRayPoint;
     [SerializeField] private float interactionDistance = 1.5f;
     [SerializeField] private LayerMask interactionLayer;
     [SerializeField] private Interactable currentInteractable;
 
-    private InputMaster controls;
     private Transform playerBody;
+    private InputMaster controls;
+    private GameManager gameManager;
 
     private void Awake()
     {
         playerBody = transform.parent;
         playerCamera = GetComponent<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
+        initialPosition = transform.position;
     }
 
     private void Start()
     {
+        gameManager = GameManager.instance;
         controls = transform.parent.GetComponent<InputManager>().INPUT;
         controls.Enable();
     }
@@ -43,8 +50,20 @@ public class PlayerCamera : MonoBehaviour
     private void Update()
     {
         HandleMouseLook();
+        HandleBodyMove();
+
         HandleInteractionCheck();
         HandleInteractionInput();
+
+        if(isMoving)
+        {
+            playerBody.position = Vector3.Lerp(playerBody.position, movePointPosition, moveSmooth);
+            if(Vector3.Distance(playerBody.position, movePointPosition) < 0.1f)
+            {
+                playerBody.position = movePointPosition;
+                isMoving = false;
+            }
+        }
     }
 
     private void HandleMouseLook()
@@ -65,6 +84,20 @@ public class PlayerCamera : MonoBehaviour
         playerBody.rotation = Quaternion.Euler(0, rotationY, 0);
     }
 
+    private void HandleBodyMove()
+    {
+        if(controls.Player.Jump.WasPerformedThisFrame())
+        {
+            movePointPosition = forwardMovePoint;
+            isMoving = true;
+        }
+
+        if (controls.Player.Jump.WasPerformedThisFrame() && Vector3.Distance(playerBody.position, movePointPosition) < 0.1f)
+        {
+            movePointPosition = initialPosition;
+            isMoving = true;
+        }
+    }
 
     private void HandleInteractionCheck()
     {
@@ -99,7 +132,7 @@ public class PlayerCamera : MonoBehaviour
 
     private void HandleInteractionInput()
     {
-        if (controls.Player.Interact.WasPressedThisFrame() && currentInteractable != null)
+        if (controls.Player.Interact.WasPressedThisFrame() && currentInteractable != null && gameManager.isPlayerTurn)
         {
             if (Physics.Raycast(playerCamera.ViewportPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance, interactionLayer))
             {

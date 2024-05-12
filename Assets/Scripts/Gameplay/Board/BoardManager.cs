@@ -114,6 +114,7 @@ public class BoardManager : MonoBehaviour
         }
 
         StopPlacingPiece();
+        gameManager.PerformPlayerMove();
     }
 
     public void StopPlacingPiece()
@@ -145,6 +146,7 @@ public class BoardManager : MonoBehaviour
         pieceSelectionTransform = null;
         ClearBoardMaterials();
         StopAttackingPiece();
+        gameManager.PerformPlayerMove();
     }
 
     public void StopAttackingPiece()
@@ -204,7 +206,6 @@ public class BoardManager : MonoBehaviour
         isSelectingTile = false;
         isSelectingTile = false;
         tile.pieceOnTile.SendMessage(methodToCallOnSelected, methodParameterOnSelected);
-        gameManager.RemoveCard(cardSelection);
         StopSelectingTiles();
     }
 

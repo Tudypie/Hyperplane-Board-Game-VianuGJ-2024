@@ -346,6 +346,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 330585545}
   mouseSensitivity: 20
+  moveSmooth: 0.1
+  forwardMovePoint: {x: 0, y: 9.83, z: -8.9}
   interactionRayPoint: {x: 0.5, y: 0.5, z: 0}
   interactionDistance: 40
   interactionLayer:
@@ -520,13 +522,16 @@ MonoBehaviour:
   cardDeck: []
   maxPiecesInHand: 4
   maxCardsInHand: 3
-  playerMoves: 2
-  opponentMoves: 2
+  maxPlayerMoves: 2
+  maxOpponentMoves: 2
   piecesInHand: 0
   cardsInHand: 0
+  remainingPlayerMoves: 0
+  remainingOpponentMoves: 0
   cardsDrawedCount: 0
   timesReshuffled: 0
   knowledge: 0
+  isPlayerTurn: 0
 --- !u!1 &527606276
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,7 +31,7 @@ public class Card : Interactable
     {
         base.OnInteract();
 
-        gameManager.UseCard(this, selectOnBoard, methodToCall, methodParameter);
+        gameManager.StartUsingCard(this, selectOnBoard, methodToCall, methodParameter);
     }
 
     public override void OnFocus()

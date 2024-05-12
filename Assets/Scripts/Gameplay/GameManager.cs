@@ -32,15 +32,18 @@ public class GameManager : MonoBehaviour
     [Header("Game Settings")]
     public int maxPiecesInHand = 4;
     public int maxCardsInHand = 3;
-    public int playerMoves = 2;
-    public int opponentMoves = 2;
+    public int maxPlayerMoves = 2;
+    public int maxOpponentMoves = 2;
 
     [Header("Game Stats")]
     public int piecesInHand = 0;
     public int cardsInHand = 0;
+    public int remainingPlayerMoves = 0;
+    public int remainingOpponentMoves = 0;
     public int cardsDrawedCount = 0;
     public int timesReshuffled = 0;
     public int knowledge = 0;
+    public bool isPlayerTurn;
 
     private BoardManager boardManager;
 
@@ -56,6 +59,9 @@ public class GameManager : MonoBehaviour
 
         ShuffleCardDeck();
         DrawPieces();
+        remainingPlayerMoves = maxPlayerMoves;
+        remainingPlayerMoves = maxOpponentMoves;
+        isPlayerTurn = true;
     }
 
     private void Start()
@@ -75,6 +81,13 @@ public class GameManager : MonoBehaviour
         timesReshuffled++;
     }
 
+    public void PerformPlayerMove()
+    {
+        remainingPlayerMoves--;
+        if (remainingPlayerMoves <= 0)
+            isPlayerTurn = false;
+    }
+
     public void DrawPieces()
     {
         for(int i = 0; i < maxPiecesInHand; i++)
@@ -90,8 +103,7 @@ public class GameManager : MonoBehaviour
     {
         if (cardsInHand >= maxCardsInHand) return;
 
-        GameObject drawedCard = null;
-
+        GameObject drawedCard;
         for(int i = 0; i < cardSpawnpoint.Length; i++)
         {
             if (!cardSpawnpoint[i].isOccupied)
@@ -103,23 +115,23 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
-
         cardsInHand++;
         cardsDrawedCount++;
+        PerformPlayerMove();
     }
 
-    public void UseCard(Card card, bool selectOnBoard, string methodToCall, float methodParameter)
+    public void StartUsingCard(Card card, bool selectOnBoard, string methodToCall, float methodParameter)
     {
         if(selectOnBoard)
             boardManager.StartSelectingTiles(card, methodToCall, methodParameter);
         else
         {
             boardManager.SendMessage(methodToCall, methodParameter);
-            RemoveCard(card);
+            UseCard(card);
         }
     }
 
-    public void RemoveCard(Card card)
+    public void UseCard(Card card)
     {
         for (int i = 0; i < cardSpawnpoint.Length; i++)
         {
@@ -131,5 +143,6 @@ public class GameManager : MonoBehaviour
         }
         cardsInHand--;
         Destroy(card.gameObject);
+        PerformPlayerMove();
     }
 }
