@@ -17,8 +17,8 @@ public class BoardManager : MonoBehaviour
     private List<Prism> prismsOnBoard = new List<Prism>();
     private int boardChildCount;
     private int selectedTilesCount;
-    private string methodToCallOnSelected;
-    private float methodParameterOnSelected;
+    [HideInInspector] public string methodToCallOnSelected;
+    [HideInInspector] public float methodParameterOnSelected;
 
     public event Action OnStartAction;
     public event Action OnStopAction;
@@ -196,8 +196,20 @@ public class BoardManager : MonoBehaviour
         {
             for (int j = 0; j < 5; j++)
             {
-                if (boardTiles[i][j].isOccupied)
+                if (boardTiles[i][j].isOccupied && !boardTiles[i][j].isEnemyTile)
                 {
+                    if(methodToCall.Contains("Heal"))
+                    {
+                        if (boardTiles[i][j].pieceOnTile.health == boardTiles[i][j].pieceOnTile.maxHealth) 
+                            continue;
+                    }
+                    else if(methodToCall == "ChangeAngle")
+                    {
+                        boardTiles[i][j].pieceOnTile.TryGetComponent(out Prism prism);
+                        if (methodParameter > 0 && prism.angleIndex == 4) continue;
+                        else if (methodParameter < 0 && prism.angleIndex == 0) continue;
+                    }
+
                     if (!showOnlyPrisms) {
                         boardTiles[i][j].ChangeMeshRenderer(true, boardTiles[i][j].pieceOnTile.onFocusMaterial);
                         boardTiles[i][j].canBeSelected = true;
@@ -216,6 +228,7 @@ public class BoardManager : MonoBehaviour
     public void SelectTile(BoardTile tile)
     {
         isSelectingTile = false;
+        OnStopAction?.Invoke();
         ClearBoardMaterials();
         tile.pieceOnTile.SendMessage(methodToCallOnSelected, methodParameterOnSelected);
     }
@@ -350,12 +363,21 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void ClearBoardMaterials()
+    public void ClearBoardMaterials(List<BoardTile> boardTilesToClear = null)
     {
-        for (int i = 0; i < boardTiles.Count; i++)
+        if (boardTilesToClear == null)
         {
-            for (int j = 0; j < boardTiles[i].Length; j++)
-                boardTiles[i][j].ChangeMeshRenderer(false, null);
+            for (int i = 0; i < boardTiles.Count; i++)
+            {
+                for (int j = 0; j < boardTiles[i].Length; j++)
+                    boardTiles[i][j].ChangeMeshRenderer(false, null);
+            }
         }
+        else
+        {
+            foreach (BoardTile tile in boardTilesToClear)
+                tile.ChangeMeshRenderer(false, null);
+        }
+
     }
 }

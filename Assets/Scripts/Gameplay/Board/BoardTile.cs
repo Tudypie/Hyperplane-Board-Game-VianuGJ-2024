@@ -49,7 +49,8 @@ public class BoardTile : Interactable
                     boardManager.pieceSelectionTransform.position = transform.position + new Vector3(0, 0.8f * pieceOnTile.height, 0);
                     if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
                     {
-                        boardManager.ShowPrismRange(prism, pieceOnTile.height + 1, prism.normalMaterial);
+                        boardManager.ShowPrismRange(prism, pieceOnTile.height + 1, prism.onFocusMaterial);
+                        boardManager.pieceSelectionTransform.localScale = prism.transform.localScale;
                     }
                 }
                 else
@@ -57,7 +58,7 @@ public class BoardTile : Interactable
                     boardManager.pieceSelectionTransform.position = transform.position;
                     if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
                     {
-                        boardManager.ShowPrismRange(prism, prism.height, prism.normalMaterial);
+                        boardManager.ShowPrismRange(prism, prism.height, prism.onFocusMaterial);
                     }
                 }
             }
@@ -75,6 +76,11 @@ public class BoardTile : Interactable
                 if (boardManager.pieceSelection.GetComponent<Prism>().tilesInRange.Contains(this))
                     ChangeMeshRenderer(true, boardManager.pieceSelection.GetComponent<Prism>().attackMaterial);
             }
+        }
+        else
+        {
+            if (boardManager.isPlacing)
+                boardManager.pieceSelectionTransform.localScale = new Vector3(1, 1, 1);
         }
     }
 
@@ -107,7 +113,15 @@ public class BoardTile : Interactable
 
             if(boardManager.isSelectingTile)
             {
-                boardManager.SelectTile(this);
+                if(boardManager.methodToCallOnSelected.Contains("Heal"))
+                {
+                    if(pieceOnTile.health < pieceOnTile.maxHealth * pieceOnTile.height)
+                        boardManager.SelectTile(this);
+                }
+                else
+                {
+                    boardManager.SelectTile(this);
+                }
             }
         }
     }

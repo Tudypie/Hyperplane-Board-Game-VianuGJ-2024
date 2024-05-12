@@ -27,7 +27,7 @@ public class Prism : Piece
 
         if (placedOnBoard && !boardManager.isPlacing && !boardManager.isAttacking)
         {
-            boardManager.ShowPrismRange(this, height, normalMaterial);
+            boardManager.ShowPrismRange(this, height, onFocusMaterial);
         }
     }
 
@@ -37,7 +37,7 @@ public class Prism : Piece
 
         if (placedOnBoard && !boardManager.isPlacing && !boardManager.isAttacking)
         {
-            boardManager.ClearBoardMaterials();
+            boardManager.ClearBoardMaterials(boardTilesToClear: tilesInRange);
         }
     }
 
@@ -55,6 +55,7 @@ public class Prism : Piece
     {
         base.ChangeHeight(value);
         health += pieceSO.pieceStats[angleIndex].volume * value;
+        maxHealth = pieceSO.pieceStats[angleIndex].volume * height;
         damage += pieceSO.pieceStats[angleIndex].damage * value;
     }
 
@@ -70,11 +71,18 @@ public class Prism : Piece
 
     public void ChangeAngle(float amount)
     {
-        float healthDecrease = pieceSO.pieceStats[angleIndex].volume / health;
+        float healthDecrease = pieceSO.pieceStats[angleIndex].volume * height / health;
+
+        if (angleIndex + amount > 4)
+            amount = 1;
+        else if (angleIndex + amount < 0)
+            amount = -1;
 
         angleIndex = Mathf.Clamp(angleIndex + (int)amount, 0, 4);
         damage = pieceSO.pieceStats[angleIndex].damage * height; 
         health = pieceSO.pieceStats[angleIndex].volume * height * healthDecrease;
+
+        transform.localScale = new Vector3(1 + 0.25f * (angleIndex - 2), transform.localScale.y, transform.localScale.z);
     }
 
     public void Attack(Piece piece)

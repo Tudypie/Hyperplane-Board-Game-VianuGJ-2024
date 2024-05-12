@@ -5,20 +5,9 @@ public class Card : Interactable
     [SerializeField] private string methodToCallOnPiece;
     [SerializeField] private float methodParameter;
     [SerializeField] private bool useOnPrism = false;
-
-    [SerializeField] private Material onFocusMaterial;
-    private Material normalMaterial;
-    private MeshRenderer mr;
+    [SerializeField] private MeshRenderer outlineMesh;
 
     private BoardManager boardManager;
-
-    public override void Awake()
-    {
-        base.Awake();
-
-        mr = GetComponent<MeshRenderer>();
-        normalMaterial = mr.material;
-    }
 
     private void Start()
     {
@@ -36,13 +25,13 @@ public class Card : Interactable
     {
         base.OnFocus();
 
-        mr.material = onFocusMaterial;
+        outlineMesh.material.color *= 2;
     }
 
     public override void OnLoseFocus()
     {
         base.OnLoseFocus();
 
-        mr.material = normalMaterial;
+        outlineMesh.material.color /= 2;
     }
 }

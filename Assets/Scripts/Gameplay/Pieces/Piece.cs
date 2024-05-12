@@ -13,6 +13,7 @@ public class Piece : Interactable
     public bool isEnemyPiece = false;
     public bool placedOnBoard = false;
     public float health;
+    public float maxHealth;
     public int height;
     public int maxHeight;
     public int row;
@@ -26,6 +27,7 @@ public class Piece : Interactable
         base.Awake();
 
         health = pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume * height;
+        maxHealth = health;
     }
 
     private void Start()

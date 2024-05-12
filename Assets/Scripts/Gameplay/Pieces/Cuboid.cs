@@ -6,6 +6,7 @@ public class Cuboid : Piece
     {
         base.ChangeHeight(value);
         health += pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume * value;
+        maxHealth = pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume * height;
     }
 
     public override void Heal(float amount)
