@@ -22,8 +22,9 @@ public class Piece : Interactable
     public bool isEnemyPiece = false;
     public bool placedOnBoard = false;
 
-    [HideInInspector]
-    public BoardManager boardManager;
+
+    [HideInInspector] public BoardManager boardManager;
+    [HideInInspector] public OpponentAI opponentAI;
 
     public override void Awake()
     {
@@ -37,6 +38,8 @@ public class Piece : Interactable
     private void Start()
     {
         boardManager = BoardManager.instance;
+        opponentAI = OpponentAI.instance;
+
         if (isEnemyPiece) return;
         boardManager.OnStartAction += DisableCollider;
         boardManager.OnStopAction += EnableCollider;
@@ -126,24 +129,32 @@ public class Piece : Interactable
         health = Mathf.Max(health - amount, 0);
         healthBar[height - 1].fillAmount = health / maxHealth;
         if (health <= 0)
+        {
+            if(TryGetComponent(out Prism prism))
+            {
+                if (GameManager.instance.isPlayerTurn)
+                    opponentAI.prismsOnBoard.Remove(prism);
+
+                boardManager.prismsOnBoard.Remove(prism);
+            }
+            else if (TryGetComponent(out Cuboid cuboid))
+                boardManager.cuboidsOnBoard.Remove(cuboid);
+
+            if (isEnemyPiece)
+            {
+                opponentAI.occupiedTiles.Remove(boardManager.boardTiles[row][col]);
+                opponentAI.unoccupiedTiles.Add(boardManager.boardTiles[row][col]);
+            }
+
+            boardManager.boardTiles[row][col].pieceOnTile = null;
+            boardManager.boardTiles[row][col].isOccupied = false;
             Destroy(gameObject);
+        }
     }
 
-    public void Heal(float amount = 0) 
+    public void Heal(float percent) 
     {
-        health = Mathf.Min(health + amount, pieceSO.pieceStats[statsIndex].volume * height);
-        healthBar[height - 1].fillAmount = health / maxHealth;
-    }
-
-    public void HealOneFourth() 
-    {
-        health = Mathf.Min(health + maxHealth / 4, maxHealth);
-        healthBar[height - 1].fillAmount = health / maxHealth;
-    }
-
-    public void HealTwoFourths()
-    {
-        health = Mathf.Min(health + maxHealth / 2, maxHealth);
+        health = Mathf.Min(health + maxHealth * percent, maxHealth);
         healthBar[height - 1].fillAmount = health / maxHealth;
     }
 }

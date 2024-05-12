@@ -40,6 +40,7 @@ public class BoardTile : Interactable
         {
             if (boardManager.isPlacing)
             {
+                boardManager.ClearBoardMaterials();
                 boardManager.pieceSelection.row = row;
                 boardManager.pieceSelection.col = col;
 
@@ -53,7 +54,7 @@ public class BoardTile : Interactable
                     boardManager.pieceSelectionTransform.position = transform.position + new Vector3(0, 0.8f * pieceOnTile.height, 0);
                     if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
                     {
-                        boardManager.ShowPrismRange(prism, pieceOnTile.height + 1, prism.onFocusMaterial);
+                        boardManager.CalculatePrismTilesInRange(prism, pieceOnTile.height + 1, true, prism.onFocusMaterial);
                         boardManager.pieceSelectionTransform.localScale = pieceOnTile.transform.localScale;
                     }
                 }
@@ -62,9 +63,10 @@ public class BoardTile : Interactable
                     boardManager.pieceSelectionTransform.position = transform.position;
                     if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
                     {
-                        boardManager.ShowPrismRange(prism, prism.height, prism.onFocusMaterial);
+                        boardManager.CalculatePrismTilesInRange(prism, prism.height, true, prism.onFocusMaterial);
                     }
                 }
+                ChangeMeshRenderer(true, boardManager.pieceSelection.onFocusMaterial);
             }
         }
     }
@@ -114,8 +116,7 @@ public class BoardTile : Interactable
                     boardManager.PlacePiece(this);
                 }
             }
-
-            if(boardManager.isSelectingTile)
+            else if(boardManager.isSelectingTile)
             {
                 if(canBeSelected)
                     boardManager.SelectTile(this);

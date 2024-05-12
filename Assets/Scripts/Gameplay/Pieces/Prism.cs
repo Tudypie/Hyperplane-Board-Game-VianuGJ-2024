@@ -26,7 +26,7 @@ public class Prism : Piece
 
         if (placedOnBoard && !boardManager.isPlacing && !boardManager.isAttacking)
         {
-            boardManager.ShowPrismRange(this, height, onFocusMaterial);
+            boardManager.CalculatePrismTilesInRange(this, height, true, onFocusMaterial);
         }
     }
 
@@ -44,7 +44,7 @@ public class Prism : Piece
     {
         base.OnInteract();
 
-        if (placedOnBoard && !boardManager.isPlacing)
+        if (!isEnemyPiece && placedOnBoard && !boardManager.isPlacing)
         {
             boardManager.StartAttackingPiece(this);
         }

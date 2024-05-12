@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -21,8 +22,10 @@ public class GameManager : MonoBehaviour
     }
 
     [Header("References")]
-    public GameObject[] gamePiecePrefab;
-    public Transform[] pieceSpawnpoint;
+    public GameObject[] playerPiecePrefab;
+    public GameObject[] opponentPiecePrefab;
+    public Transform[] playerPieceSpawnpoint;
+    public Transform[] opponentPieceSpawnpoint;
     public CardSpawnpoint[] cardSpawnpoint;
 
     [Header("Card Deck")]
@@ -36,7 +39,8 @@ public class GameManager : MonoBehaviour
     public int maxOpponentMoves = 2;
 
     [Header("Game Stats")]
-    public int piecesInHand = 0;
+    public int playerPiecesInHand = 0;
+    public int opponentPiecesInHand = 0;
     public int cardsInHand = 0;
     public int remainingPlayerMoves = 0;
     public int remainingOpponentMoves = 0;
@@ -57,11 +61,12 @@ public class GameManager : MonoBehaviour
             for(int i = 0; i < card.count; i++)
                 cardDeck.Add(card.prefab.GetComponent<Card>());
 
+        remainingPlayerMoves = maxPlayerMoves;
+        remainingOpponentMoves = maxOpponentMoves;
         ShuffleCardDeck();
         DrawPieces();
-        remainingPlayerMoves = maxPlayerMoves;
-        remainingPlayerMoves = maxOpponentMoves;
         isPlayerTurn = true;
+        DrawPieces();
     }
 
     private void Start()
@@ -85,17 +90,46 @@ public class GameManager : MonoBehaviour
     {
         remainingPlayerMoves--;
         if (remainingPlayerMoves <= 0)
+        {
+            remainingOpponentMoves = maxOpponentMoves;
+            if (opponentPiecesInHand == 0)
+                DrawPieces();
+
             isPlayerTurn = false;
+        }
+    }
+
+    public void PerformOpponentMove()
+    {
+        remainingOpponentMoves--;
+        if (remainingOpponentMoves <= 0)
+        {
+            remainingPlayerMoves = maxPlayerMoves;
+            isPlayerTurn = true;
+        }
     }
 
     public void DrawPieces()
     {
-        for(int i = 0; i < maxPiecesInHand; i++)
+        if (isPlayerTurn)
         {
-            int rnd = UnityEngine.Random.Range(0, gamePiecePrefab.Length);
-            Instantiate(gamePiecePrefab[rnd], pieceSpawnpoint[i].position, Quaternion.identity);
+            for (int i = 0; i < maxPiecesInHand; i++)
+            {
+                int rnd = UnityEngine.Random.Range(0, playerPiecePrefab.Length);
+                Instantiate(playerPiecePrefab[rnd], playerPieceSpawnpoint[i].position, Quaternion.identity);      
+            }
+            playerPiecesInHand = maxPiecesInHand;
         }
-        piecesInHand = maxPiecesInHand;
+        else
+        {
+            for (int i = 0; i < maxPiecesInHand; i++)
+            {
+                int rnd = UnityEngine.Random.Range(0, opponentPiecePrefab.Length);
+                Piece opponentPiece = Instantiate(opponentPiecePrefab[rnd], opponentPieceSpawnpoint[i].position, Quaternion.identity).GetComponent<Piece>();
+                OpponentAI.instance.piecesInHand.Add(opponentPiece);
+            }
+            opponentPiecesInHand = maxPiecesInHand;
+        }
 
     }
 

@@ -503,8 +503,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canInteract: 1
-  methodToCallOnPiece: HealOneFourth
-  methodParameter: 0
+  methodToCall: Heal
+  methodParameter: 0.25
+  selectOnBoard: 1
   meshRenderer: {fileID: 5323532029685946827}
   onFocusMaterial: {fileID: 2100000, guid: 40e18ca6646365e44a95bd618bd91493, type: 2}
   normalMaterial: {fileID: 2100000, guid: 5942e9dbc89933544b9234a309ed459a, type: 2}

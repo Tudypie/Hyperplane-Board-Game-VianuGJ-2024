@@ -73,8 +73,8 @@ PrefabInstance:
       value: HealTwoFourths
       objectReference: {fileID: 0}
     - target: {fileID: 9195904673850072519, guid: 36a643343eb3877468bf6a3b8bcb8bbe, type: 3}
-      propertyPath: methodToCallOnPiece
-      value: HealTwoFourths
+      propertyPath: methodParameter
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

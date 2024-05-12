@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8517417849057648453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1233530883452207494}
+  - component: {fileID: 7380699025853969431}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1233530883452207494
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8517417849057648453}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7380699025853969431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8517417849057648453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a30326015f2724a88108fad8297f1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPiecePrefab:
+  - {fileID: 9032255451433559348, guid: 603698b7509a6364a814eacfe94abff6, type: 3}
+  - {fileID: 8516715130562835577, guid: 0425ce42be7665a4c91106b88545295b, type: 3}
+  opponentPiecePrefab:
+  - {fileID: 4838876408271578477, guid: 10f9cafffd591364fb05a02ba52b8e21, type: 3}
+  - {fileID: 6359260564583052030, guid: d4466c6b4d03f8447b880f7441bbb673, type: 3}
+  pieceSpawnpoint:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  cardSpawnpoint:
+  - spawnpoint: {fileID: 0}
+    card: {fileID: 0}
+    isOccupied: 0
+  - spawnpoint: {fileID: 0}
+    card: {fileID: 0}
+    isOccupied: 0
+  - spawnpoint: {fileID: 0}
+    card: {fileID: 0}
+    isOccupied: 0
+  cardList:
+  - prefab: {fileID: 8399559780992857756, guid: 28a6eb0f6ceee2249afdf5ce9b5f2d82, type: 3}
+    count: 8
+    canBeReshuffled: 0
+  - prefab: {fileID: 7193615698019746471, guid: 79fd7e5fd8917c24bb342d7abfd56a23, type: 3}
+    count: 8
+    canBeReshuffled: 0
+  - prefab: {fileID: 3805534024524224461, guid: 5daae0f3217c9934186d039bb86a0d89, type: 3}
+    count: 4
+    canBeReshuffled: 0
+  - prefab: {fileID: 3805534024524224461, guid: 70952498979090548bae8abefc8589c0, type: 3}
+    count: 4
+    canBeReshuffled: 0
+  - prefab: {fileID: 4945621005757475379, guid: 36a643343eb3877468bf6a3b8bcb8bbe, type: 3}
+    count: 8
+    canBeReshuffled: 0
+  - prefab: {fileID: 5965604888331493644, guid: 982b9b0432f39724b8844a014bfc183c, type: 3}
+    count: 4
+    canBeReshuffled: 0
+  - prefab: {fileID: 4204285190667328650, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
+    count: 2
+    canBeReshuffled: 0
+  - prefab: {fileID: 4624244612923798420, guid: 1899c479c34f6824f88cd806e8ff6299, type: 3}
+    count: 2
+    canBeReshuffled: 0
+  cardDeck: []
+  maxPiecesInHand: 4
+  maxCardsInHand: 3
+  maxPlayerMoves: 2
+  maxOpponentMoves: 2
+  playerPiecesInHand: 0
+  opponentPiecesInHand: 0
+  cardsInHand: 0
+  remainingPlayerMoves: 0
+  remainingOpponentMoves: 0
+  cardsDrawedCount: 0
+  timesReshuffled: 0
+  knowledge: 0
+  isPlayerTurn: 0
