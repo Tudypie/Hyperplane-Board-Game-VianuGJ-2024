@@ -156,6 +156,7 @@ public class BoardManager : MonoBehaviour
 
         pieceSelection = null;
         pieceSelectionTransform = null;
+        ClearBoardMaterials();
     }
 
     public void StartAttackingPiece(Prism prismAttacker)
@@ -185,7 +186,7 @@ public class BoardManager : MonoBehaviour
         ClearBoardMaterials();
     }
 
-    public void StartSelectingTiles(bool showOnlyPrisms, string methodToCall, float methodParameter)
+    public void StartSelectingTiles(string methodToCall, float methodParameter)
     {
         isSelectingTile = true;
         methodToCallOnSelected = methodToCall;
@@ -203,23 +204,19 @@ public class BoardManager : MonoBehaviour
                         if (boardTiles[i][j].pieceOnTile.health == boardTiles[i][j].pieceOnTile.maxHealth) 
                             continue;
                     }
-                    else if(methodToCall == "ChangeAngle")
+                    
+                    if(methodToCall == "ChangeAngle" && boardTiles[i][j].pieceOnTile.TryGetComponent(out Prism prism))
                     {
-                        boardTiles[i][j].pieceOnTile.TryGetComponent(out Prism prism);
-                        if (methodParameter > 0 && prism.angleIndex == 4) continue;
-                        else if (methodParameter < 0 && prism.angleIndex == 0) continue;
+                        if (methodParameter > 0 && prism.statsIndex == 4) continue;
+                        else if (methodParameter < 0 && prism.statsIndex == 0) continue;
+                    }
+                    else {
+                        continue;
                     }
 
-                    if (!showOnlyPrisms) {
-                        boardTiles[i][j].ChangeMeshRenderer(true, boardTiles[i][j].pieceOnTile.onFocusMaterial);
-                        boardTiles[i][j].canBeSelected = true;
-                        selectedTilesCount++;
-                    }
-                    else if(showOnlyPrisms && boardTiles[i][j].pieceOnTile.TryGetComponent(out Prism prism)) {
-                        boardTiles[i][j].ChangeMeshRenderer(true, boardTiles[i][j].pieceOnTile.onFocusMaterial);
-                        boardTiles[i][j].canBeSelected = false;
-                        selectedTilesCount--;
-                    }
+                    boardTiles[i][j].ChangeMeshRenderer(true, boardTiles[i][j].pieceOnTile.onFocusMaterial);
+                    boardTiles[i][j].canBeSelected = true;
+                    selectedTilesCount++;
                 }
             }
         }

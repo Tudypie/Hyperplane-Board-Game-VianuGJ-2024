@@ -8,17 +8,16 @@ public class Prism : Piece
     public LineRenderer laser;
 
     [Header("Prism Stats")]
-    public List<BoardTile> tilesInRange;
-    public int angleIndex;
     public float damage;
+    public List<BoardTile> tilesInRange;
 
     public override void Awake()
     {
         base.Awake();
 
-        angleIndex = pieceSO.defaultStatsIndex;
-        health = pieceSO.pieceStats[angleIndex].volume * height;
-        damage = pieceSO.pieceStats[angleIndex].damage * height;
+        statsIndex = pieceSO.defaultStatsIndex;
+        health = pieceSO.pieceStats[statsIndex].volume * height;
+        damage = pieceSO.pieceStats[statsIndex].damage * height;
     }
 
     public override void OnFocus()
@@ -54,35 +53,33 @@ public class Prism : Piece
     public override void ChangeHeight(int value)
     {
         base.ChangeHeight(value);
-        health += pieceSO.pieceStats[angleIndex].volume * value;
-        maxHealth = pieceSO.pieceStats[angleIndex].volume * height;
-        damage += pieceSO.pieceStats[angleIndex].damage * value;
+        damage += pieceSO.pieceStats[statsIndex].damage * value;
     }
 
     public override void Heal(float amount = 0)
     {
-        health = Mathf.Min(health + amount, pieceSO.pieceStats[angleIndex].volume * height);
+        health = Mathf.Min(health + amount, pieceSO.pieceStats[statsIndex].volume * height);
     }
 
     public override void HealOneFourth()
     {
-        health = Mathf.Min(health + (pieceSO.pieceStats[angleIndex].volume * height) / 4, pieceSO.pieceStats[angleIndex].volume * height);
+        health = Mathf.Min(health + (pieceSO.pieceStats[statsIndex].volume * height) / 4, pieceSO.pieceStats[statsIndex].volume * height);
     }
 
     public void ChangeAngle(float amount)
     {
-        float healthDecrease = pieceSO.pieceStats[angleIndex].volume * height / health;
+        float healthDecrease = pieceSO.pieceStats[statsIndex].volume * height / health;
 
-        if (angleIndex + amount > 4)
+        if (statsIndex + amount > 4)
             amount = 1;
-        else if (angleIndex + amount < 0)
+        else if (statsIndex + amount < 0)
             amount = -1;
 
-        angleIndex = Mathf.Clamp(angleIndex + (int)amount, 0, 4);
-        damage = pieceSO.pieceStats[angleIndex].damage * height; 
-        health = pieceSO.pieceStats[angleIndex].volume * height * healthDecrease;
+        statsIndex = Mathf.Clamp(statsIndex + (int)amount, 0, 4);
+        damage = pieceSO.pieceStats[statsIndex].damage * height; 
+        health = pieceSO.pieceStats[statsIndex].volume * height * healthDecrease;
 
-        transform.localScale = new Vector3(1 + 0.25f * (angleIndex - 2), transform.localScale.y, transform.localScale.z);
+        transform.localScale = new Vector3(1 + 0.25f * (statsIndex - 2), transform.localScale.y, transform.localScale.z);
     }
 
     public void Attack(Piece piece)

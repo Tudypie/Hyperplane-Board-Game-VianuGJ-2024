@@ -43,8 +43,12 @@ public class BoardTile : Interactable
                 boardManager.pieceSelection.row = row;
                 boardManager.pieceSelection.col = col;
 
-                if (isOccupied && boardManager.pieceSelection.pieceSO.pieceType == pieceOnTile.pieceSO.pieceType 
-                    && pieceOnTile.height < pieceOnTile.maxHeight)
+                if (isOccupied && (boardManager.pieceSelection.pieceSO.pieceType != pieceOnTile.pieceSO.pieceType ||
+                    pieceOnTile.height >= pieceOnTile.maxHeight))
+                {
+                    return;
+                }
+                else if (isOccupied)
                 {
                     boardManager.pieceSelectionTransform.position = transform.position + new Vector3(0, 0.8f * pieceOnTile.height, 0);
                     if (boardManager.pieceSelection.TryGetComponent(out Prism prism))

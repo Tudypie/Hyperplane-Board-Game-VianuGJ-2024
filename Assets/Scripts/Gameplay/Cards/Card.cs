@@ -4,7 +4,6 @@ public class Card : Interactable
 {
     [SerializeField] private string methodToCallOnPiece;
     [SerializeField] private float methodParameter;
-    [SerializeField] private bool useOnPrism = false;
     [SerializeField] private MeshRenderer outlineMesh;
 
     private BoardManager boardManager;
@@ -18,7 +17,7 @@ public class Card : Interactable
     {
         base.OnInteract();
 
-        boardManager.StartSelectingTiles(useOnPrism, methodToCallOnPiece, methodParameter);
+        boardManager.StartSelectingTiles(methodToCallOnPiece, methodParameter);
     }
 
     public override void OnFocus()

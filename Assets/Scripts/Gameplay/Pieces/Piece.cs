@@ -10,14 +10,15 @@ public class Piece : Interactable
     public Material onFocusMaterial;
 
     [Header("Piece Stats")]
-    public bool isEnemyPiece = false;
-    public bool placedOnBoard = false;
+    public int row;
+    public int col;
+    public int statsIndex;
     public float health;
     public float maxHealth;
     public int height;
     public int maxHeight;
-    public int row;
-    public int col;
+    public bool isEnemyPiece = false;
+    public bool placedOnBoard = false;
 
     [HideInInspector]
     public BoardManager boardManager;
@@ -26,7 +27,8 @@ public class Piece : Interactable
     {
         base.Awake();
 
-        health = pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume * height;
+        statsIndex = pieceSO.defaultStatsIndex;
+        health = pieceSO.pieceStats[statsIndex].volume * height;
         maxHealth = health;
     }
 
@@ -62,6 +64,9 @@ public class Piece : Interactable
     {
         base.OnFocus();
 
+        if (placedOnBoard)
+            piecePart[height - 1].transform.GetChild(0).gameObject.SetActive(true);
+
         if (isEnemyPiece) return;
 
         if (!placedOnBoard && !boardManager.isPlacing)
@@ -76,6 +81,9 @@ public class Piece : Interactable
 
         if (!placedOnBoard && !boardManager.isPlacing)
             ChangeMaterial(normalMaterial);
+
+        if (placedOnBoard)
+            piecePart[height - 1].transform.GetChild(0).gameObject.SetActive(false);
     }
 
     private void EnableCollider()
@@ -101,21 +109,33 @@ public class Piece : Interactable
 
     public virtual void ChangeHeight(int value)
     {
+        piecePart[height - 1].SetActive(false);
         height += value;
-        piecePart[value > 0 ? height - 1 : height].SetActive(value > 0);
+        piecePart[height-1].SetActive(true);
+
+        health += pieceSO.pieceStats[statsIndex].volume * value;
+        maxHealth = pieceSO.pieceStats[statsIndex].volume * height;
+
         boardManager.CalculateAllPrismTilesInRange();
     }
 
     public void TakeDamage(float amount)
     {
         health = Mathf.Max(health - amount, 0);
+
         if(health <= 0)
         {
             Destroy(gameObject);
         }
     }
 
-    public virtual void Heal(float amount = 0) { }
+    public virtual void Heal(float amount = 0) 
+    {
+        health = Mathf.Min(health + amount, pieceSO.pieceStats[statsIndex].volume * height);
+    }
 
-    public virtual void HealOneFourth() { }
+    public virtual void HealOneFourth() 
+    {
+        health = Mathf.Min(health + pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume / 4, pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume * height);
+    }
 }
