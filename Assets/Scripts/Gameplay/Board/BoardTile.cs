@@ -1,4 +1,3 @@
-using TreeEditor;
 using UnityEngine;
 
 public class BoardTile : Interactable
@@ -8,6 +7,7 @@ public class BoardTile : Interactable
     public Piece pieceOnTile;
     public bool isEnemyTile = false;
     public bool isOccupied = false;
+    public bool canBeSelected = false;
 
     private MeshRenderer meshRenderer;
     private BoardManager boardManager;
@@ -105,6 +105,10 @@ public class BoardTile : Interactable
                 }
             }
 
+            if(boardManager.isSelectingTile)
+            {
+                boardManager.SelectTile(this);
+            }
         }
     }
 

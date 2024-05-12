@@ -54,14 +54,25 @@ public class Prism : Piece
     public override void ChangeHeight(int value)
     {
         base.ChangeHeight(value);
+        health += pieceSO.pieceStats[angleIndex].volume * value;
         damage += pieceSO.pieceStats[angleIndex].damage * value;
     }
 
-    public void ChangeAngle(int index)
+    public override void Heal(float amount = 0)
+    {
+        health = Mathf.Min(health + amount, pieceSO.pieceStats[angleIndex].volume * height);
+    }
+
+    public override void HealOneFourth()
+    {
+        health = Mathf.Min(health + (pieceSO.pieceStats[angleIndex].volume * height) / 4, pieceSO.pieceStats[angleIndex].volume * height);
+    }
+
+    public void ChangeAngle(float amount)
     {
         float healthDecrease = pieceSO.pieceStats[angleIndex].volume / health;
 
-        angleIndex = index;
+        angleIndex = Mathf.Clamp(angleIndex + (int)amount, 0, 4);
         damage = pieceSO.pieceStats[angleIndex].damage * height; 
         health = pieceSO.pieceStats[angleIndex].volume * height * healthDecrease;
     }

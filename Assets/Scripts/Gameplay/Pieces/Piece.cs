@@ -32,19 +32,15 @@ public class Piece : Interactable
     {
         boardManager = BoardManager.instance;
         if (isEnemyPiece) return;
-        boardManager.OnStartPlacing += DisableCollider;
-        boardManager.OnStopPlacing += EnableCollider;
-        boardManager.OnStartAttacking += DisableCollider;
-        boardManager.OnStopAttacking += EnableCollider;
+        boardManager.OnStartAction += DisableCollider;
+        boardManager.OnStopAction += EnableCollider;
     }
 
     private void OnDisable()
     {
         if (isEnemyPiece) return;
-        boardManager.OnStartPlacing -= DisableCollider;
-        boardManager.OnStopPlacing -= EnableCollider;
-        boardManager.OnStartAttacking -= DisableCollider;
-        boardManager.OnStopAttacking -= EnableCollider;
+        boardManager.OnStartAction -= DisableCollider;
+        boardManager.OnStopAction -= EnableCollider;
     }
 
     public override void OnInteract()
@@ -104,17 +100,20 @@ public class Piece : Interactable
     public virtual void ChangeHeight(int value)
     {
         height += value;
-        health += pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume * value;
         piecePart[value > 0 ? height - 1 : height].SetActive(value > 0);
         boardManager.CalculateAllPrismTilesInRange();
     }
 
-    public virtual void TakeDamage(float damage)
+    public void TakeDamage(float amount)
     {
-        health -= damage;
+        health = Mathf.Max(health - amount, 0);
         if(health <= 0)
         {
             Destroy(gameObject);
         }
     }
+
+    public virtual void Heal(float amount = 0) { }
+
+    public virtual void HealOneFourth() { }
 }

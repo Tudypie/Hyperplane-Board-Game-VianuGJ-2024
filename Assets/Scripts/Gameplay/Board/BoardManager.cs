@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    public List<BoardTile[]> boardTiles = new List<BoardTile[]>();
-    public List<Prism> prismsOnBoard = new List<Prism>();
-    private int boardChildCount;
-
-    [Header("Board Parameters")]
     public Piece pieceSelection;
     public Transform pieceSelectionTransform;
     private Vector3 initialPiecePosition;
@@ -16,11 +11,17 @@ public class BoardManager : MonoBehaviour
 
     public bool isPlacing = false;
     public bool isAttacking = false;
+    public bool isSelectingTile = false;
 
-    public event Action OnStartPlacing;
-    public event Action OnStopPlacing;
-    public event Action OnStartAttacking;
-    public event Action OnStopAttacking;
+    private List<BoardTile[]> boardTiles = new List<BoardTile[]>();
+    private List<Prism> prismsOnBoard = new List<Prism>();
+    private int boardChildCount;
+    private int selectedTilesCount;
+    private string methodToCallOnSelected;
+    private float methodParameterOnSelected;
+
+    public event Action OnStartAction;
+    public event Action OnStopAction;
 
     private InputMaster controls;
 
@@ -59,7 +60,7 @@ public class BoardManager : MonoBehaviour
             if (controls.UI.RightClick.WasPressedThisFrame())
             {
                 isPlacing = false;
-                OnStopPlacing?.Invoke();
+                OnStopAction?.Invoke();
 
                 pieceSelectionTransform.position = initialPiecePosition;
                 pieceSelectionTransform.rotation = initialPieceRotation;
@@ -75,7 +76,7 @@ public class BoardManager : MonoBehaviour
             if (controls.UI.RightClick.WasPressedThisFrame())
             {
                 isAttacking = false;
-                OnStopAttacking?.Invoke();
+                OnStopAction?.Invoke();
 
                 pieceSelectionTransform.position = initialPiecePosition;
                 pieceSelectionTransform.rotation = initialPieceRotation;
@@ -107,12 +108,22 @@ public class BoardManager : MonoBehaviour
                 }
             }*/
         }
+
+        if (isSelectingTile)
+        {
+            if (controls.UI.RightClick.WasPressedThisFrame())
+            {
+                isSelectingTile = false;
+                ClearBoardMaterials();
+                OnStopAction?.Invoke();
+            }
+        }
     }
 
     public void StartPlacingPiece(Piece piece)
     {
         isPlacing = true;
-        OnStartPlacing?.Invoke();
+        OnStartAction?.Invoke();
 
         pieceSelection = piece;
         pieceSelectionTransform = piece.gameObject.transform;
@@ -123,7 +134,7 @@ public class BoardManager : MonoBehaviour
     public void PlacePiece(BoardTile boardTiles)
     {
         isPlacing = false;
-        OnStopPlacing?.Invoke();
+        OnStopAction?.Invoke();
         pieceSelection.placedOnBoard = true;
 
         if (boardTiles.isOccupied)
@@ -151,7 +162,7 @@ public class BoardManager : MonoBehaviour
     {
         Debug.Log("Start Attacking");
         isAttacking = true;
-        OnStartAttacking?.Invoke();
+        OnStartAction?.Invoke();
 
         pieceSelection = prismAttacker;
         pieceSelectionTransform = prismAttacker.gameObject.transform;
@@ -165,13 +176,48 @@ public class BoardManager : MonoBehaviour
     {
         Debug.Log("Attack Piece");
         isAttacking = false;
-        OnStopAttacking?.Invoke();
+        OnStopAction?.Invoke();
 
         pieceSelection.GetComponent<Prism>().Attack(pieceToAttack);
 
         pieceSelection = null;
         pieceSelectionTransform = null;
         ClearBoardMaterials();
+    }
+
+    public void StartSelectingTiles(bool showOnlyPrisms, string methodToCall, float methodParameter)
+    {
+        isSelectingTile = true;
+        methodToCallOnSelected = methodToCall;
+        methodParameterOnSelected = methodParameter;
+        OnStartAction?.Invoke();
+
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                if (boardTiles[i][j].isOccupied)
+                {
+                    if (!showOnlyPrisms) {
+                        boardTiles[i][j].ChangeMeshRenderer(true, boardTiles[i][j].pieceOnTile.onFocusMaterial);
+                        boardTiles[i][j].canBeSelected = true;
+                        selectedTilesCount++;
+                    }
+                    else if(showOnlyPrisms && boardTiles[i][j].pieceOnTile.TryGetComponent(out Prism prism)) {
+                        boardTiles[i][j].ChangeMeshRenderer(true, boardTiles[i][j].pieceOnTile.onFocusMaterial);
+                        boardTiles[i][j].canBeSelected = false;
+                        selectedTilesCount--;
+                    }
+                }
+            }
+        }
+    }
+
+    public void SelectTile(BoardTile tile)
+    {
+        isSelectingTile = false;
+        ClearBoardMaterials();
+        tile.pieceOnTile.SendMessage(methodToCallOnSelected, methodParameterOnSelected);
     }
 
     public void ShowPrismRange(Prism prism, int height, Material material, int direction = -1)
