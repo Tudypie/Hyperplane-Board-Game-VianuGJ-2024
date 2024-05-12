@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -419,7 +419,6 @@ MonoBehaviour:
   canInteract: 1
   methodToCallOnPiece: ChangeAngle
   methodParameter: 1
-  useOnPrism: 0
   outlineMesh: {fileID: 424363054769386557}
 --- !u!1001 &1306666571966884025
 PrefabInstance:

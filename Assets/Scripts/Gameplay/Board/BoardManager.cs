@@ -204,14 +204,16 @@ public class BoardManager : MonoBehaviour
                         if (boardTiles[i][j].pieceOnTile.health == boardTiles[i][j].pieceOnTile.maxHealth) 
                             continue;
                     }
-                    
-                    if(methodToCall == "ChangeAngle" && boardTiles[i][j].pieceOnTile.TryGetComponent(out Prism prism))
+
+                    if (methodToCall == "ChangeAngle")
                     {
-                        if (methodParameter > 0 && prism.statsIndex == 4) continue;
-                        else if (methodParameter < 0 && prism.statsIndex == 0) continue;
-                    }
-                    else {
-                        continue;
+                        if(boardTiles[i][j].pieceOnTile.TryGetComponent(out Prism prism))
+                        {
+                            if (methodParameter > 0 && prism.statsIndex == 4) continue;
+                            else if (methodParameter < 0 && prism.statsIndex == 0) continue;
+                        }
+                        else if(boardTiles[i][j].pieceOnTile.TryGetComponent(out Cuboid cuboid))
+                            continue;
                     }
 
                     boardTiles[i][j].ChangeMeshRenderer(true, boardTiles[i][j].pieceOnTile.onFocusMaterial);

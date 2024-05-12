@@ -3558,6 +3558,14 @@ MonoBehaviour:
   - {fileID: 7431948628747135328}
   - {fileID: 6585565606799815518}
   - {fileID: 4673224708603583019}
+  healthBar:
+  - {fileID: 2270746159240420010}
+  - {fileID: 4014662837136418492}
+  - {fileID: 7302205357947680211}
+  - {fileID: 5165895155102116403}
+  - {fileID: 343759294166461679}
+  - {fileID: 2716044702437574975}
+  - {fileID: 6242235156426242271}
   normalMaterial: {fileID: 2100000, guid: 3ae90cb0ab098164faa0a25504343922, type: 2}
   onFocusMaterial: {fileID: 2100000, guid: 73cc7f319e7136e48bf5ef4b3e303242, type: 2}
   row: 0

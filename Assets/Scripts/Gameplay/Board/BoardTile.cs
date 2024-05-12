@@ -54,7 +54,7 @@ public class BoardTile : Interactable
                     if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
                     {
                         boardManager.ShowPrismRange(prism, pieceOnTile.height + 1, prism.onFocusMaterial);
-                        boardManager.pieceSelectionTransform.localScale = prism.transform.localScale;
+                        boardManager.pieceSelectionTransform.localScale = pieceOnTile.transform.localScale;
                     }
                 }
                 else

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Piece : Interactable
 {
@@ -6,6 +7,7 @@ public class Piece : Interactable
     [Header("Piece References")]
     public PieceSO pieceSO;
     public GameObject[] piecePart;
+    public Image[] healthBar;
     public Material normalMaterial;
     public Material onFocusMaterial;
 
@@ -122,20 +124,26 @@ public class Piece : Interactable
     public void TakeDamage(float amount)
     {
         health = Mathf.Max(health - amount, 0);
-
-        if(health <= 0)
-        {
+        healthBar[height - 1].fillAmount = health / maxHealth;
+        if (health <= 0)
             Destroy(gameObject);
-        }
     }
 
-    public virtual void Heal(float amount = 0) 
+    public void Heal(float amount = 0) 
     {
         health = Mathf.Min(health + amount, pieceSO.pieceStats[statsIndex].volume * height);
+        healthBar[height - 1].fillAmount = health / maxHealth;
     }
 
-    public virtual void HealOneFourth() 
+    public void HealOneFourth() 
     {
-        health = Mathf.Min(health + pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume / 4, pieceSO.pieceStats[pieceSO.defaultStatsIndex].volume * height);
+        health = Mathf.Min(health + maxHealth / 4, maxHealth);
+        healthBar[height - 1].fillAmount = health / maxHealth;
+    }
+
+    public void HealTwoFourths()
+    {
+        health = Mathf.Min(health + maxHealth / 2, maxHealth);
+        healthBar[height - 1].fillAmount = health / maxHealth;
     }
 }
