@@ -32,8 +32,9 @@ public class BoardTile : Interactable
         {
             if (boardManager.isAttacking)
             {
-                if (boardManager.pieceSelection.GetComponent<Prism>().tilesInRange.Contains(this))
-                    ChangeMeshRenderer(true, boardManager.pieceSelection.onFocusMaterial);
+                boardManager.pieceSelection.TryGetComponent(out Prism prism);
+                if (prism.tilesInRange[prism.rotationDirectionIndex].Contains(this))
+                    ChangeMeshRenderer(true, boardManager.pieceSelection.normalMaterial);
             }
         }
         else
@@ -54,8 +55,9 @@ public class BoardTile : Interactable
                     boardManager.pieceSelectionTransform.position = transform.position + new Vector3(0, 0.8f * pieceOnTile.height, 0);
                     if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
                     {
-                        boardManager.CalculatePrismTilesInRange(prism, pieceOnTile.height + 1, true, prism.onFocusMaterial);
+                        boardManager.ShowPrismTilesInRotationDirection(prism, pieceOnTile.height + 1, pieceOnTile.GetComponent<Prism>().rotationDirectionIndex, prism.onFocusMaterial);
                         boardManager.pieceSelectionTransform.localScale = pieceOnTile.transform.localScale;
+                        prism.transform.rotation = pieceOnTile.transform.rotation;
                     }
                 }
                 else
@@ -63,10 +65,10 @@ public class BoardTile : Interactable
                     boardManager.pieceSelectionTransform.position = transform.position;
                     if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
                     {
-                        boardManager.CalculatePrismTilesInRange(prism, prism.height, true, prism.onFocusMaterial);
+                        boardManager.ShowPrismTilesInRotationDirection(prism, prism.height, prism.rotationDirectionIndex, prism.onFocusMaterial);
                     }
                 }
-                ChangeMeshRenderer(true, boardManager.pieceSelection.onFocusMaterial);
+                //ChangeMeshRenderer(true, boardManager.pieceSelection.onFocusMaterial);
             }
         }
     }
@@ -79,8 +81,9 @@ public class BoardTile : Interactable
         {
             if (boardManager.isAttacking)
             {
-                if (boardManager.pieceSelection.GetComponent<Prism>().tilesInRange.Contains(this))
-                    ChangeMeshRenderer(true, boardManager.pieceSelection.GetComponent<Prism>().attackMaterial);
+                boardManager.pieceSelection.TryGetComponent(out Prism prism);
+                if (prism.tilesInRange[prism.rotationDirectionIndex].Contains(this))
+                    ChangeMeshRenderer(true, prism.attackMaterial);
             }
         }
         else
@@ -98,7 +101,8 @@ public class BoardTile : Interactable
         {
             if (boardManager.isAttacking)
             {
-                if(isOccupied && boardManager.pieceSelection.GetComponent<Prism>().tilesInRange.Contains(this))
+                boardManager.pieceSelection.TryGetComponent(out Prism prism);
+                if (isOccupied && prism.tilesInRange[prism.rotationDirectionIndex].Contains(this))
                     boardManager.AttackPiece(pieceOnTile);
             }
         }

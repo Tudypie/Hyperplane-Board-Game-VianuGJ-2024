@@ -9,7 +9,11 @@ public class Prism : Piece
 
     [Header("Prism Stats")]
     public float damage;
-    public List<BoardTile> tilesInRange;
+    public List<List<BoardTile>> tilesInRange = new List<List<BoardTile>>();
+    public List<BoardTile> tilesForwardInRange = new List<BoardTile>();
+    public List<BoardTile> tilesRightInRange = new List<BoardTile>();
+    public List<BoardTile> tilesLeftInRange = new List<BoardTile>();
+    public int rotationDirectionIndex = 0;
 
     public override void Awake()
     {
@@ -26,7 +30,7 @@ public class Prism : Piece
 
         if (placedOnBoard && !boardManager.isPlacing && !boardManager.isAttacking)
         {
-            boardManager.CalculatePrismTilesInRange(this, height, true, onFocusMaterial);
+            boardManager.ShowPrismTilesInRotationDirection(this, height, rotationDirectionIndex, isEnemyPiece ? normalMaterial : onFocusMaterial);
         }
     }
 
@@ -36,7 +40,7 @@ public class Prism : Piece
 
         if (placedOnBoard && !boardManager.isPlacing && !boardManager.isAttacking)
         {
-            boardManager.ClearBoardMaterials(boardTilesToClear: tilesInRange);
+            boardManager.ClearBoardMaterials();
         }
     }
 
@@ -76,5 +80,25 @@ public class Prism : Piece
     public void Attack(Piece piece)
     {
         piece.TakeDamage(damage);
+    }
+
+    public void RotateInAttackDirection()
+    {
+        if (rotationDirectionIndex == 0)
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,
+            0, transform.rotation.eulerAngles.z);
+        }
+        else if (rotationDirectionIndex == 1)
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,
+            isEnemyPiece ? -45 : 45, transform.rotation.eulerAngles.z);
+        }
+        else if (rotationDirectionIndex == 2)
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,
+            isEnemyPiece ? 45 : -45, transform.rotation.eulerAngles.z);
+        }
+        boardManager.ShowPrismTilesInRotationDirection(this, height, rotationDirectionIndex, isEnemyPiece ? normalMaterial : onFocusMaterial);
     }
 }

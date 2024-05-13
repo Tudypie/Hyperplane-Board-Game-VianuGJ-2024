@@ -40,14 +40,12 @@ public class Piece : Interactable
         boardManager = BoardManager.instance;
         opponentAI = OpponentAI.instance;
 
-        if (isEnemyPiece) return;
         boardManager.OnStartAction += DisableCollider;
         boardManager.OnStopAction += EnableCollider;
     }
 
     private void OnDisable()
     {
-        if (isEnemyPiece) return;
         boardManager.OnStartAction -= DisableCollider;
         boardManager.OnStopAction -= EnableCollider;
     }
@@ -82,13 +80,13 @@ public class Piece : Interactable
     {
         base.OnLoseFocus();
 
+        //if (placedOnBoard)
+            //piecePart[height - 1].transform.GetChild(0).gameObject.SetActive(false);
+
         if (isEnemyPiece) return;
 
         if (!placedOnBoard && !boardManager.isPlacing)
             ChangeMaterial(normalMaterial);
-
-        if (placedOnBoard)
-            piecePart[height - 1].transform.GetChild(0).gameObject.SetActive(false);
     }
 
     private void EnableCollider()
@@ -117,6 +115,7 @@ public class Piece : Interactable
         piecePart[height - 1].SetActive(false);
         height += value;
         piecePart[height-1].SetActive(true);
+        healthBar[height - 1].fillAmount = health / maxHealth;
 
         health += pieceSO.pieceStats[statsIndex].volume * value;
         maxHealth = pieceSO.pieceStats[statsIndex].volume * height;
@@ -133,7 +132,7 @@ public class Piece : Interactable
             if(TryGetComponent(out Prism prism))
             {
                 if (GameManager.instance.isPlayerTurn)
-                    opponentAI.prismsOnBoard.Remove(prism);
+                    opponentAI.RemovePiece(this);
 
                 boardManager.prismsOnBoard.Remove(prism);
             }
@@ -141,11 +140,9 @@ public class Piece : Interactable
                 boardManager.cuboidsOnBoard.Remove(cuboid);
 
             if (isEnemyPiece)
-            {
-                opponentAI.occupiedTiles.Remove(boardManager.boardTiles[row][col]);
-                opponentAI.unoccupiedTiles.Add(boardManager.boardTiles[row][col]);
-            }
+                opponentAI.RemovePiece(this);
 
+            GameManager.instance.OnDestroyPiece(this);
             boardManager.boardTiles[row][col].pieceOnTile = null;
             boardManager.boardTiles[row][col].isOccupied = false;
             Destroy(gameObject);

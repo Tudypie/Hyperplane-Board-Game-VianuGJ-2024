@@ -157,7 +157,9 @@ MonoBehaviour:
   canInteract: 1
   methodToCall: RemoveAllCuboidsOnBoard
   methodParameter: 0
-  selectOnBoard: 0
+  callOnPiece: 0
+  callOnBoard: 1
+  callOnGameManager: 0
   meshRenderer: {fileID: 8356126060649371637}
   onFocusMaterial: {fileID: 2100000, guid: 40e18ca6646365e44a95bd618bd91493, type: 2}
   normalMaterial: {fileID: 2100000, guid: 5942e9dbc89933544b9234a309ed459a, type: 2}

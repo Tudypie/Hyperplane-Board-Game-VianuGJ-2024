@@ -419,7 +419,9 @@ MonoBehaviour:
   canInteract: 1
   methodToCall: ChangeAngle
   methodParameter: 1
-  selectOnBoard: 1
+  callOnPiece: 1
+  callOnBoard: 0
+  callOnGameManager: 0
   meshRenderer: {fileID: 939958838847228297}
   onFocusMaterial: {fileID: 2100000, guid: 40e18ca6646365e44a95bd618bd91493, type: 2}
   normalMaterial: {fileID: 2100000, guid: 5942e9dbc89933544b9234a309ed459a, type: 2}

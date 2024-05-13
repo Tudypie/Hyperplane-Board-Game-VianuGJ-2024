@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -21,8 +22,9 @@ public class OpponentAI : MonoBehaviour
     public bool CanAttack()
     {
         foreach (Prism prism in prismsOnBoard)
-            foreach (BoardTile tileInRange in prism.tilesInRange)
-                if (!tileInRange.isEnemyTile && tileInRange.isOccupied) return true;
+            for(int i = 0; i < prism.tilesInRange.Count; i++)
+                foreach (BoardTile tileInRange in prism.tilesInRange[i])
+                    if (!tileInRange.isEnemyTile && tileInRange.isOccupied) return true;
         return false;
     }
 
@@ -62,15 +64,21 @@ public class OpponentAI : MonoBehaviour
             bool attackOccurred = false;
             for (int i = 0; i < prismsOnBoard.Count; i++)
             {
-                foreach (BoardTile tileInRange in prismsOnBoard[i].tilesInRange)
+                for(int j = 0; j < prismsOnBoard[i].tilesInRange.Count; j++)
                 {
-                    if (tileInRange.isOccupied)
+                    foreach (BoardTile tileInRange in prismsOnBoard[i].tilesInRange[j])
                     {
-                        Attack(prismsOnBoard[i], tileInRange);
-                        Debug.Log("Opponent " + prismsOnBoard[i].name + " attacks tile " + tileInRange.name);
-                        attackOccurred = true;
-                        break; 
+                        if (tileInRange.isOccupied && !tileInRange.isEnemyTile)
+                        {
+                            prismsOnBoard[i].rotationDirectionIndex = j;
+                            Attack(prismsOnBoard[i], tileInRange);
+                            Debug.Log("Opponent " + prismsOnBoard[i].name + " attacks tile " + tileInRange.name);
+                            attackOccurred = true;
+                            break;
+                        }
                     }
+                    if (attackOccurred)
+                        break;
                 }
                 if (attackOccurred)
                     break;
@@ -99,6 +107,8 @@ public class OpponentAI : MonoBehaviour
             {
                 if (tile.pieceOnTile.pieceSO.pieceType == pieceSelection.pieceSO.pieceType)
                 {
+                    if (tile.pieceOnTile.height >= tile.pieceOnTile.maxHeight-2) continue;
+
                     Debug.Log("Opponent places piece on occupied tile: " + tile.name);
                     PlacePiece(tile);
                     placedPiece = true;
@@ -108,8 +118,8 @@ public class OpponentAI : MonoBehaviour
             if (placedPiece) return;
 
             int rndTile = Random.Range(0, unoccupiedTiles.Count);
-            PlacePiece(unoccupiedTiles[rndTile]);
             Debug.Log("Opponent places piece on unnocupied tile: " + unoccupiedTiles[rndTile].name);
+            PlacePiece(unoccupiedTiles[rndTile]);
         }
     }
 
@@ -136,6 +146,22 @@ public class OpponentAI : MonoBehaviour
         boardManager.pieceSelection = prism;
         boardManager.pieceSelectionTransform = prism.transform;
         piecesInHand.Remove(pieceSelection);
+        StartCoroutine(AttackSequence(prism ,boardTile));
+    }
+
+    private IEnumerator AttackSequence(Prism prism, BoardTile boardTile)
+    {
+        prism.RotateInAttackDirection();
+        yield return new WaitForSeconds(1.5f);
         boardManager.AttackPiece(boardTile.pieceOnTile);
+    }
+
+    public void RemovePiece(Piece piece)
+    {
+        BoardTile tile = boardManager.boardTiles[piece.row][piece.col];
+        occupiedTiles.Remove(tile);
+        unoccupiedTiles.Add(tile);
+        if (piece.TryGetComponent(out Prism prism))
+            prismsOnBoard.Remove(prism);
     }
 }

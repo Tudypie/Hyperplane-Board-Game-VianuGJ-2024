@@ -37,6 +37,9 @@ public class GameManager : MonoBehaviour
     public int maxCardsInHand = 3;
     public int maxPlayerMoves = 2;
     public int maxOpponentMoves = 2;
+    public int extraMoveRequiredKnowledge = 5;
+    public int maxKnowledge = 5;
+    public int requiredVolumeToWin = 1000;
 
     [Header("Game Stats")]
     public int playerPiecesInHand = 0;
@@ -47,6 +50,8 @@ public class GameManager : MonoBehaviour
     public int cardsDrawedCount = 0;
     public int timesReshuffled = 0;
     public int knowledge = 0;
+    public float playerAccumulatedVolume = 0;
+    public float opponentAccumulatedVolume = 0;
     public bool isPlayerTurn;
 
     private BoardManager boardManager;
@@ -56,9 +61,14 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
 
-        foreach(CardInDeck card in cardList)
-            for(int i = 0; i < card.count; i++)
+    private void Start()
+    {
+        boardManager = BoardManager.instance;
+
+        foreach (CardInDeck card in cardList)
+            for (int i = 0; i < card.count; i++)
                 cardDeck.Add(card.prefab.GetComponent<Card>());
 
         remainingPlayerMoves = maxPlayerMoves;
@@ -67,11 +77,8 @@ public class GameManager : MonoBehaviour
         DrawPieces();
         isPlayerTurn = true;
         DrawPieces();
-    }
-
-    private void Start()
-    {
-        boardManager = BoardManager.instance;
+        UIManager.instance.SetTurnText(isPlayerTurn);
+        UIManager.instance.SetMovesLeftText(remainingPlayerMoves);
     }
 
     private void ShuffleCardDeck()
@@ -89,23 +96,60 @@ public class GameManager : MonoBehaviour
     public void PerformPlayerMove()
     {
         remainingPlayerMoves--;
+        UIManager.instance.SetMovesLeftText(remainingPlayerMoves);
         if (remainingPlayerMoves <= 0)
         {
             remainingOpponentMoves = maxOpponentMoves;
-            if (opponentPiecesInHand == 0)
-                DrawPieces();
-
             isPlayerTurn = false;
+            UIManager.instance.SetMovesLeftText(remainingOpponentMoves);
+            UIManager.instance.SetTurnText(isPlayerTurn);
         }
     }
 
     public void PerformOpponentMove()
     {
         remainingOpponentMoves--;
+        UIManager.instance.SetMovesLeftText(remainingOpponentMoves);
         if (remainingOpponentMoves <= 0)
         {
             remainingPlayerMoves = maxPlayerMoves;
             isPlayerTurn = true;
+            UIManager.instance.SetMovesLeftText(remainingPlayerMoves);
+            UIManager.instance.SetTurnText(isPlayerTurn);
+        }
+    }
+
+    public void OnDestroyPiece(Piece piece)
+    {
+        if(piece.isEnemyPiece)
+        {
+            playerAccumulatedVolume += piece.maxHealth;
+            UIManager.instance.UpdatePlayerVolumeFill(playerAccumulatedVolume, requiredVolumeToWin);
+        }
+        else
+        {
+            opponentAccumulatedVolume += piece.maxHealth;
+            UIManager.instance.UpdateOpponentVolumeFill(opponentAccumulatedVolume, requiredVolumeToWin);
+        }
+    }
+
+    public void OnPlacePiece()
+    {
+        if (isPlayerTurn)
+        {
+            playerPiecesInHand--;
+            if (playerPiecesInHand <= 0)
+                DrawPieces();
+
+            PerformPlayerMove();
+        }
+        else
+        {
+            opponentPiecesInHand--;
+            if (opponentPiecesInHand <= 0)
+                DrawPieces();
+
+            PerformOpponentMove();
         }
     }
 
@@ -154,13 +198,28 @@ public class GameManager : MonoBehaviour
         PerformPlayerMove();
     }
 
-    public void StartUsingCard(Card card, bool selectOnBoard, string methodToCall, float methodParameter)
+    public void IncreaseKnowledge()
     {
-        if(selectOnBoard)
+        if (knowledge >= maxKnowledge) return;
+        knowledge++;
+        if (knowledge % extraMoveRequiredKnowledge == 0)
+            maxPlayerMoves++;
+    }
+
+    public void StartUsingCard(Card card, string methodToCall, float methodParameter)
+    {
+        if (card.callOnPiece)
+        {
             boardManager.StartSelectingTiles(card, methodToCall, methodParameter);
-        else
+        }
+        else if(card.callOnBoard)
         {
             boardManager.SendMessage(methodToCall, methodParameter);
+            UseCard(card);
+        }
+        else if(card.callOnGameManager)
+        {
+            SendMessage(methodToCall, methodParameter);
             UseCard(card);
         }
     }

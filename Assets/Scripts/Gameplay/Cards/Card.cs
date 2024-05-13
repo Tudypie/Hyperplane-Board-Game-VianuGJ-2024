@@ -4,7 +4,9 @@ public class Card : Interactable
 {
     [SerializeField] private string methodToCall;
     [SerializeField] private float methodParameter;
-    [SerializeField] private bool selectOnBoard = true;
+    public bool callOnPiece;
+    public bool callOnBoard;
+    public bool callOnGameManager;
     [SerializeField, Space] private MeshRenderer meshRenderer;
     [SerializeField] private Material onFocusMaterial;
     [SerializeField] private Material normalMaterial;
@@ -31,7 +33,7 @@ public class Card : Interactable
     {
         base.OnInteract();
 
-        gameManager.StartUsingCard(this, selectOnBoard, methodToCall, methodParameter);
+        gameManager.StartUsingCard(this, methodToCall, methodParameter);
     }
 
     public override void OnFocus()
