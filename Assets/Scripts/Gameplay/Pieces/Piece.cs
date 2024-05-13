@@ -24,6 +24,7 @@ public class Piece : Interactable
 
 
     [HideInInspector] public BoardManager boardManager;
+    [HideInInspector] public GameManager gameManager;
     [HideInInspector] public OpponentAI opponentAI;
 
     public override void Awake()
@@ -38,6 +39,7 @@ public class Piece : Interactable
     private void Start()
     {
         boardManager = BoardManager.instance;
+        gameManager = GameManager.instance;
         opponentAI = OpponentAI.instance;
 
         boardManager.OnStartAction += DisableCollider;
@@ -131,7 +133,7 @@ public class Piece : Interactable
         {
             if(TryGetComponent(out Prism prism))
             {
-                if (GameManager.instance.isPlayerTurn)
+                if (gameManager.isPlayerTurn)
                     opponentAI.RemovePiece(this);
 
                 boardManager.prismsOnBoard.Remove(prism);
@@ -142,9 +144,10 @@ public class Piece : Interactable
             if (isEnemyPiece)
                 opponentAI.RemovePiece(this);
 
-            GameManager.instance.OnDestroyPiece(this);
             boardManager.boardTiles[row][col].pieceOnTile = null;
             boardManager.boardTiles[row][col].isOccupied = false;
+            boardManager.CalculateAllPrismTilesInRange();
+            gameManager.OnDestroyPiece(this);
             Destroy(gameObject);
         }
     }

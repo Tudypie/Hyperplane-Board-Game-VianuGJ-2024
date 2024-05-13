@@ -93,29 +93,33 @@ public class GameManager : MonoBehaviour
         timesReshuffled++;
     }
 
-    public void PerformPlayerMove()
+    public void PerformMove()
     {
-        remainingPlayerMoves--;
-        UIManager.instance.SetMovesLeftText(remainingPlayerMoves);
-        if (remainingPlayerMoves <= 0)
+        if(isPlayerTurn)
         {
-            remainingOpponentMoves = maxOpponentMoves;
-            isPlayerTurn = false;
-            UIManager.instance.SetMovesLeftText(remainingOpponentMoves);
-            UIManager.instance.SetTurnText(isPlayerTurn);
-        }
-    }
-
-    public void PerformOpponentMove()
-    {
-        remainingOpponentMoves--;
-        UIManager.instance.SetMovesLeftText(remainingOpponentMoves);
-        if (remainingOpponentMoves <= 0)
-        {
-            remainingPlayerMoves = maxPlayerMoves;
-            isPlayerTurn = true;
+            remainingPlayerMoves--;
             UIManager.instance.SetMovesLeftText(remainingPlayerMoves);
-            UIManager.instance.SetTurnText(isPlayerTurn);
+            if (remainingPlayerMoves <= 0)
+            {
+                remainingOpponentMoves = maxOpponentMoves;
+                isPlayerTurn = false;
+                UIManager.instance.SetMovesLeftText(remainingOpponentMoves);
+                UIManager.instance.SetTurnText(isPlayerTurn);
+                boardManager.EndTurn();
+            }
+        }
+        else
+        {
+            remainingOpponentMoves--;
+            UIManager.instance.SetMovesLeftText(remainingOpponentMoves);
+            if (remainingOpponentMoves <= 0)
+            {
+                remainingPlayerMoves = maxPlayerMoves;
+                isPlayerTurn = true;
+                UIManager.instance.SetMovesLeftText(remainingPlayerMoves);
+                UIManager.instance.SetTurnText(isPlayerTurn);
+                boardManager.EndTurn();
+            }
         }
     }
 
@@ -141,7 +145,7 @@ public class GameManager : MonoBehaviour
             if (playerPiecesInHand <= 0)
                 DrawPieces();
 
-            PerformPlayerMove();
+            PerformMove();
         }
         else
         {
@@ -149,7 +153,7 @@ public class GameManager : MonoBehaviour
             if (opponentPiecesInHand <= 0)
                 DrawPieces();
 
-            PerformOpponentMove();
+            PerformMove();
         }
     }
 
@@ -190,12 +194,11 @@ public class GameManager : MonoBehaviour
                 drawedCard.transform.parent = cardSpawnpoint[i].spawnpoint;
                 cardSpawnpoint[i].card = drawedCard.GetComponent<Card>();
                 cardSpawnpoint[i].isOccupied = true;
-                break;
+                cardsInHand++;
+                cardsDrawedCount++;
             }
         }
-        cardsInHand++;
-        cardsDrawedCount++;
-        PerformPlayerMove();
+        PerformMove();
     }
 
     public void IncreaseKnowledge()
@@ -236,6 +239,6 @@ public class GameManager : MonoBehaviour
         }
         cardsInHand--;
         Destroy(card.gameObject);
-        PerformPlayerMove();
+        PerformMove();
     }
 }

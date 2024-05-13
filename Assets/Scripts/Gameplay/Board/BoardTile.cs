@@ -34,7 +34,7 @@ public class BoardTile : Interactable
             {
                 boardManager.pieceSelection.TryGetComponent(out Prism prism);
                 if (prism.tilesInRange[prism.rotationDirectionIndex].Contains(this))
-                    ChangeMeshRenderer(true, boardManager.pieceSelection.normalMaterial);
+                    ChangeMeshRenderer(true, prism.normalMaterial);
             }
         }
         else

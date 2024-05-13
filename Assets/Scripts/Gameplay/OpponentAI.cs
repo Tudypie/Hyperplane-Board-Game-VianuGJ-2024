@@ -10,8 +10,13 @@ public class OpponentAI : MonoBehaviour
     public List<BoardTile> occupiedTiles;
     public List<BoardTile> unoccupiedTiles;
     public List<Prism> prismsOnBoard;
+    [Space]
+    public Prism prismAttacker;
+    public BoardTile tileToAttack;
+    public int attackDirection = 0;
+    public bool canAttackInCurrentDirection = false;
 
-    private float moveDelay = 4f;
+    private float moveDelay = 2.5f;
     private float currentMoveDelay;
 
     private BoardManager boardManager;
@@ -22,9 +27,19 @@ public class OpponentAI : MonoBehaviour
     public bool CanAttack()
     {
         foreach (Prism prism in prismsOnBoard)
-            for(int i = 0; i < prism.tilesInRange.Count; i++)
+            for (int i = 0; i < prism.tilesInRange.Count; i++)
                 foreach (BoardTile tileInRange in prism.tilesInRange[i])
-                    if (!tileInRange.isEnemyTile && tileInRange.isOccupied) return true;
+                    if (!tileInRange.isEnemyTile && tileInRange.isOccupied) {
+                        if(prism.rotationDirectionIndex == i) {
+                            canAttackInCurrentDirection = true;
+                        } else {
+                            canAttackInCurrentDirection = false;
+                        }
+                        prismAttacker = prism;
+                        tileToAttack = tileInRange;
+                        attackDirection = i;
+                        return true;
+                    }
         return false;
     }
 
@@ -61,27 +76,19 @@ public class OpponentAI : MonoBehaviour
     {
         if (CanAttack())
         {
-            bool attackOccurred = false;
-            for (int i = 0; i < prismsOnBoard.Count; i++)
+            if(!canAttackInCurrentDirection)
             {
-                for(int j = 0; j < prismsOnBoard[i].tilesInRange.Count; j++)
-                {
-                    foreach (BoardTile tileInRange in prismsOnBoard[i].tilesInRange[j])
-                    {
-                        if (tileInRange.isOccupied && !tileInRange.isEnemyTile)
-                        {
-                            prismsOnBoard[i].rotationDirectionIndex = j;
-                            Attack(prismsOnBoard[i], tileInRange);
-                            Debug.Log("Opponent " + prismsOnBoard[i].name + " attacks tile " + tileInRange.name);
-                            attackOccurred = true;
-                            break;
-                        }
-                    }
-                    if (attackOccurred)
-                        break;
-                }
-                if (attackOccurred)
-                    break;
+                if(prismAttacker.rotationDirectionIndex < attackDirection)
+                    prismAttacker.RotateRight();
+                else
+                    prismAttacker.RotateLeft();
+                return;
+            }
+            else
+            {
+                Debug.Log("Opponent " + prismAttacker.name + " attacks tile " + tileToAttack);
+                Attack(prismAttacker, tileToAttack);
+                return;
             }
         }
         else
@@ -146,13 +153,6 @@ public class OpponentAI : MonoBehaviour
         boardManager.pieceSelection = prism;
         boardManager.pieceSelectionTransform = prism.transform;
         piecesInHand.Remove(pieceSelection);
-        StartCoroutine(AttackSequence(prism ,boardTile));
-    }
-
-    private IEnumerator AttackSequence(Prism prism, BoardTile boardTile)
-    {
-        prism.RotateInAttackDirection();
-        yield return new WaitForSeconds(1.5f);
         boardManager.AttackPiece(boardTile.pieceOnTile);
     }
 

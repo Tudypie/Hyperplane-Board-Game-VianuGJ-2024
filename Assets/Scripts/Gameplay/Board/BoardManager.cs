@@ -28,6 +28,7 @@ public class BoardManager : MonoBehaviour
 
     private InputMaster controls;
     private GameManager gameManager;
+    private UIManager uiManager;
 
     public static BoardManager instance;
 
@@ -64,6 +65,7 @@ public class BoardManager : MonoBehaviour
     {
         controls = InputManager.instance.INPUT;
         gameManager = GameManager.instance;
+        uiManager = UIManager.instance;
     }
 
     private void Update()
@@ -89,29 +91,12 @@ public class BoardManager : MonoBehaviour
         if (isSelectingTile && controls.UI.RightClick.WasPressedThisFrame())
             StopSelectingTiles();
 
-        if ((isPlacing || isAttacking) && controls.Player.Rotate.WasPressedThisFrame() && pieceSelection.TryGetComponent(out Prism prism))
+        if ((isPlacing || isAttacking) && pieceSelection.TryGetComponent(out Prism prism))
         {
-            if (prism.rotationDirectionIndex == 0)
-            {
-                pieceSelectionTransform.rotation = Quaternion.Euler(pieceSelectionTransform.rotation.eulerAngles.x,
-                45, pieceSelectionTransform.rotation.eulerAngles.z);
-                prism.rotationDirectionIndex = 1;
-                ShowPrismTilesInRotationDirection(prism, prism.height, prism.rotationDirectionIndex, isPlacing ? prism.onFocusMaterial : prism.attackMaterial);
-            }
-            else if (prism.rotationDirectionIndex == 1)
-            {
-                pieceSelectionTransform.rotation = Quaternion.Euler(pieceSelectionTransform.rotation.eulerAngles.x,
-                -45, pieceSelectionTransform.rotation.eulerAngles.z);
-                prism.rotationDirectionIndex = 2;
-                ShowPrismTilesInRotationDirection(prism, prism.height, prism.rotationDirectionIndex, isPlacing ? prism.onFocusMaterial : prism.attackMaterial);
-            }
-            else if (prism.rotationDirectionIndex == 2)
-            {
-                pieceSelectionTransform.rotation = Quaternion.Euler(pieceSelectionTransform.rotation.eulerAngles.x,
-                0, pieceSelectionTransform.rotation.eulerAngles.z);
-                prism.rotationDirectionIndex = 0;
-                ShowPrismTilesInRotationDirection(prism, prism.height, prism.rotationDirectionIndex, isPlacing ? prism.onFocusMaterial : prism.attackMaterial);
-            }
+            if (controls.Player.RotateRight.WasPressedThisFrame())
+                prism.RotateRight();
+            else if (controls.Player.RotateLeft.WasPressedThisFrame())
+                prism.RotateLeft();
         }
     }
 
@@ -119,6 +104,7 @@ public class BoardManager : MonoBehaviour
     {
         isPlacing = true;
         OnStartAction?.Invoke();
+        uiManager.SetPlaceText(piece.TryGetComponent(out Prism p));
 
         pieceSelection = piece;
         pieceSelectionTransform = piece.gameObject.transform;
@@ -165,12 +151,14 @@ public class BoardManager : MonoBehaviour
         ClearBoardMaterials();
         pieceSelection = null;
         pieceSelectionTransform = null;
+        uiManager.ClearActionText();
     }
 
     public void StartAttackingPiece(Prism prismAttacker)
     {
         isAttacking = true;
         OnStartAction?.Invoke();
+        uiManager.SetAttackText();
 
         pieceSelection = prismAttacker;
         pieceSelectionTransform = prismAttacker.gameObject.transform;
@@ -184,15 +172,9 @@ public class BoardManager : MonoBehaviour
         prism.RotateInAttackDirection();
         prism.Attack(pieceToAttack);
 
-        pieceSelection = null;
-        pieceSelectionTransform = null;
         ClearBoardMaterials();
         StopAttackingPiece();
-
-        if (gameManager.isPlayerTurn)
-            gameManager.PerformPlayerMove();
-        else
-            gameManager.PerformOpponentMove();
+        gameManager.PerformMove();
     }
 
     public void StopAttackingPiece()
@@ -202,6 +184,7 @@ public class BoardManager : MonoBehaviour
         pieceSelection = null;
         pieceSelectionTransform = null;
         ClearBoardMaterials();
+        uiManager.ClearActionText();
     }
 
     public void StartSelectingTiles(Card card, string methodToCall, float methodParameter)
@@ -212,6 +195,7 @@ public class BoardManager : MonoBehaviour
         methodToCallOnSelected = methodToCall;
         methodParameterOnSelected = methodParameter;
         OnStartAction?.Invoke();
+        uiManager.SetCardText();
 
         for (int i = 0; i < 8; i++)
         {
@@ -258,6 +242,7 @@ public class BoardManager : MonoBehaviour
     {
         isSelectingTile = false;
         OnStopAction?.Invoke();
+        uiManager.ClearActionText();
         cardSelection = null;
         methodToCallOnSelected = "";
         methodParameterOnSelected = 0;
@@ -274,6 +259,11 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    public void EndTurn()
+    {
+        if (isAttacking) StopAttackingPiece();
+    }
+
     public void ShowPrismTilesInRotationDirection(Prism prism, int height, int rotation, Material material = null)
     {
         ClearBoardMaterials();
@@ -284,16 +274,16 @@ public class BoardManager : MonoBehaviour
             if (rotation != 0) break;
 
             int value = enemyTile ? -i : i;
-            if (prism.row + value < boardTiles.Count && prism.row + value >= 0)
+            if (prism.row + value < boardTiles.Count && prism.row + value >= 0 && prism.col - i >= 0)
             {
-                if (boardTiles[prism.row + value][prism.col].isOccupied
-                    && boardTiles[prism.row + value][prism.col].pieceOnTile.height >= height)
+                if (boardTiles[prism.row + value][prism.col - i].isOccupied
+                    && boardTiles[prism.row + value][prism.col - i].pieceOnTile.height >= height)
                 {
-                    boardTiles[prism.row + value][prism.col].ChangeMeshRenderer(true, material);
+                    boardTiles[prism.row + value][prism.col - i].ChangeMeshRenderer(true, material);
                 }
                 else
                 {
-                    boardTiles[prism.row + value][prism.col].ChangeMeshRenderer(true, material);
+                    boardTiles[prism.row + value][prism.col - i].ChangeMeshRenderer(true, material);
                 }
             }
         }
@@ -303,6 +293,25 @@ public class BoardManager : MonoBehaviour
             if (rotation != 1) break;
 
             int value = enemyTile ? -i : i;
+            if (prism.row + value < boardTiles.Count && prism.row + value >= 0)
+            {
+                if (boardTiles[prism.row + value][prism.col].isOccupied
+                    && boardTiles[prism.row + value][prism.col].pieceOnTile.height >= height)
+                {
+                    boardTiles[prism.row + value][prism.col].ChangeMeshRenderer(true, material);
+                }
+                else
+                {
+                    boardTiles[prism.row + value][prism.col].ChangeMeshRenderer(true, material);
+                }
+            }
+        }
+
+        for (int i = 1; i <= height; i++)
+        {
+            if (rotation != 2) break;
+
+            int value = enemyTile ? -i : i;
             if (prism.row + value < boardTiles.Count && prism.row + value >= 0 && prism.col + i < boardTiles[0].Length)
             {
                 if (boardTiles[prism.row + value][prism.col + i].isOccupied
@@ -316,35 +325,32 @@ public class BoardManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void CalculatePrismTilesInRange(Prism prism, int height)
+    {
+        bool enemyTile = boardTiles[prism.row][prism.col].isEnemyTile;
+        prism.tilesLeftInRange.Clear();
+        prism.tilesForwardInRange.Clear();
+        prism.tilesRightInRange.Clear();
 
         for (int i = 1; i <= height; i++)
         {
-            if (rotation != 2) break;
-
             int value = enemyTile ? -i : i;
             if (prism.row + value < boardTiles.Count && prism.row + value >= 0 && prism.col - i >= 0)
             {
                 if (boardTiles[prism.row + value][prism.col - i].isOccupied
                     && boardTiles[prism.row + value][prism.col - i].pieceOnTile.height >= height)
                 {
-                    boardTiles[prism.row + value][prism.col - i].ChangeMeshRenderer(true, material);
+                    prism.tilesLeftInRange.Add(boardTiles[prism.row + value][prism.col - i]);
+                    break;
                 }
                 else
                 {
-                    boardTiles[prism.row + value][prism.col - i].ChangeMeshRenderer(true, material);
+                    prism.tilesLeftInRange.Add(boardTiles[prism.row + value][prism.col - i]);
                 }
             }
         }
-    }
-
-    public void CalculatePrismTilesInRange(Prism prism, int height)
-    {
-        prism.tilesInRange.Clear();
-        prism.tilesForwardInRange.Clear();
-        prism.tilesRightInRange.Clear();
-        prism.tilesLeftInRange.Clear();
-
-        bool enemyTile = boardTiles[prism.row][prism.col].isEnemyTile;
 
         for (int i = 1; i <= height; i++)
         {
@@ -383,27 +389,7 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        for (int i = 1; i <= height; i++)
-        {
-            int value = enemyTile ? -i : i;
-            if (prism.row + value < boardTiles.Count && prism.row + value >= 0 && prism.col - i >= 0)
-            {
-                if (boardTiles[prism.row + value][prism.col - i].isOccupied
-                    && boardTiles[prism.row + value][prism.col - i].pieceOnTile.height >= height)
-                {
-                    prism.tilesLeftInRange.Add(boardTiles[prism.row + value][prism.col - i]);
-                    break;
-                }
-                else
-                {
-                    prism.tilesLeftInRange.Add(boardTiles[prism.row + value][prism.col - i]);
-                }
-            }
-        }
-
-        prism.tilesInRange.Add(prism.tilesForwardInRange);
-        prism.tilesInRange.Add(prism.tilesRightInRange);
-        prism.tilesInRange.Add(prism.tilesLeftInRange);
+        prism.AddTilesInRange();
     }
 
     public void CalculateAllPrismTilesInRange()

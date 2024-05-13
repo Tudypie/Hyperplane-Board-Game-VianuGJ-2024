@@ -23,7 +23,7 @@ public class CardDeck : Interactable
         base.OnInteract();
 
         if (gameManager.cardsInHand < gameManager.maxCardsInHand)
-            GameManager.instance.DrawCard();
+            gameManager.DrawCard();
     }
 
     public override void OnFocus()
