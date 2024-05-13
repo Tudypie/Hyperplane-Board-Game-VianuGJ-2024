@@ -5,6 +5,7 @@ using UnityEngine;
 public class BoardManager : MonoBehaviour
 {
     public bool isPlacing = false;
+    public bool onOccupiedTile = false;
     public bool isAttacking = false;
     public bool isSelectingTile = false;
 
@@ -91,7 +92,7 @@ public class BoardManager : MonoBehaviour
         if (isSelectingTile && controls.UI.RightClick.WasPressedThisFrame())
             StopSelectingTiles();
 
-        if ((isPlacing || isAttacking) && pieceSelection.TryGetComponent(out Prism prism))
+        if ((isPlacing || isAttacking) && pieceSelection.TryGetComponent(out Prism prism) && !onOccupiedTile)
         {
             if (controls.Player.RotateRight.WasPressedThisFrame())
                 prism.RotateRight();
@@ -147,6 +148,7 @@ public class BoardManager : MonoBehaviour
     public void StopPlacingPiece()
     {
         isPlacing = false;
+        onOccupiedTile = false;
         OnStopAction?.Invoke();
         ClearBoardMaterials();
         pieceSelection = null;

@@ -58,14 +58,17 @@ public class BoardTile : Interactable
                         boardManager.ShowPrismTilesInRotationDirection(prism, pieceOnTile.height + 1, pieceOnTile.GetComponent<Prism>().rotationDirectionIndex, prism.onFocusMaterial);
                         boardManager.pieceSelectionTransform.localScale = pieceOnTile.transform.localScale;
                         prism.transform.rotation = pieceOnTile.transform.rotation;
+                        boardManager.onOccupiedTile = true;
                     }
                 }
                 else
                 {
                     boardManager.pieceSelectionTransform.position = transform.position;
+                    boardManager.onOccupiedTile = false;
                     if (boardManager.pieceSelection.TryGetComponent(out Prism prism))
                     {
                         boardManager.ShowPrismTilesInRotationDirection(prism, prism.height, prism.rotationDirectionIndex, prism.onFocusMaterial);
+                        prism.RotateInAttackDirection();
                     }
                 }
                 //ChangeMeshRenderer(true, boardManager.pieceSelection.onFocusMaterial);
