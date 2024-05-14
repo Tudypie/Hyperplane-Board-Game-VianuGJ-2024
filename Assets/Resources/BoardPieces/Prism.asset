@@ -23,8 +23,8 @@ MonoBehaviour:
     volume: 18
     damage: 30
   - angle: 60
-    volume: 24
-    damage: 24
+    volume: 25
+    damage: 25
   - angle: 75
     volume: 30
     damage: 18
