@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     public Transform[] playerPieceSpawnpoint;
     public Transform[] opponentPieceSpawnpoint;
     public CardSpawnpoint[] cardSpawnpoint;
+    public Transform playerCylinderFill;
+    public Transform opponentCylinderFill;
 
     [Header("Card Deck")]
     public List<CardInDeck> cardList = new List<CardInDeck>();
@@ -136,12 +138,14 @@ public class GameManager : MonoBehaviour
         if(piece.isEnemyPiece)
         {
             playerAccumulatedVolume += piece.maxHealth;
-            UIManager.instance.UpdatePlayerVolumeFill(playerAccumulatedVolume, requiredVolumeToWin);
+            playerCylinderFill.transform.localScale = new Vector3(1, 1, playerAccumulatedVolume / requiredVolumeToWin);
+            //UIManager.instance.UpdatePlayerVolumeFill(playerAccumulatedVolume, requiredVolumeToWin);
         }
         else
         {
             opponentAccumulatedVolume += piece.maxHealth;
-            UIManager.instance.UpdateOpponentVolumeFill(opponentAccumulatedVolume, requiredVolumeToWin);
+            opponentCylinderFill.transform.localScale = new Vector3(1, 1, opponentAccumulatedVolume / requiredVolumeToWin);
+            //UIManager.instance.UpdateOpponentVolumeFill(opponentAccumulatedVolume, requiredVolumeToWin);
         }
     }
 

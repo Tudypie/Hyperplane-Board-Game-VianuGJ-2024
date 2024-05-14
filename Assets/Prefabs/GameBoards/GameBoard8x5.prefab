@@ -1219,7 +1219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7a5515f65e0ad44d820900465f80884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 6
+  rows: 8
   cols: 5
   isPlacing: 0
   onOccupiedTile: 0
