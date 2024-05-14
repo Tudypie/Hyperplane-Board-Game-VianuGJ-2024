@@ -31,7 +31,6 @@ public class PlayerCamera : MonoBehaviour
     {
         playerBody = transform.parent;
         playerCamera = GetComponent<Camera>();
-        Cursor.lockState = CursorLockMode.Locked;
         initialPosition = transform.position;
     }
 
@@ -40,6 +39,8 @@ public class PlayerCamera : MonoBehaviour
         gameManager = GameManager.instance;
         controls = transform.parent.GetComponent<InputManager>().INPUT;
         controls.Enable();
+        Cursor.lockState = CursorLockMode.Locked;
+        transform.eulerAngles = new Vector3(0f, 0f, 0f);
     }
 
     private void OnDisable()
@@ -74,12 +75,12 @@ public class PlayerCamera : MonoBehaviour
         float mouseY = mouseLook.y * mouseSensitivity * Time.deltaTime;
 
         rotationX -= mouseY;
-        rotationX = Mathf.Clamp(rotationX, -80f, 80f);
+        rotationX = Mathf.Clamp(rotationX, -90f, 90f);
 
         transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
 
         rotationY += mouseX;
-        rotationY = Mathf.Clamp(rotationY, -80f, 80f);
+        rotationY = Mathf.Clamp(rotationY, -90f, 90f);
 
         playerBody.rotation = Quaternion.Euler(0, rotationY, 0);
     }

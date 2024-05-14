@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class GameManager : MonoBehaviour
         public Card card;
         public bool isOccupied;
     }
+
+    [SerializeField] private UnityEvent onStartGame;
 
     [Header("References")]
     public GameObject[] playerPiecePrefab;
@@ -70,15 +73,6 @@ public class GameManager : MonoBehaviour
         foreach (CardInDeck card in cardList)
             for (int i = 0; i < card.count; i++)
                 cardDeck.Add(card.prefab.GetComponent<Card>());
-
-        remainingPlayerMoves = maxPlayerMoves;
-        remainingOpponentMoves = maxOpponentMoves;
-        ShuffleCardDeck();
-        DrawPieces();
-        isPlayerTurn = true;
-        DrawPieces();
-        UIManager.instance.SetTurnText(isPlayerTurn);
-        UIManager.instance.SetMovesLeftText(remainingPlayerMoves);
     }
 
     private void ShuffleCardDeck()
@@ -91,6 +85,20 @@ public class GameManager : MonoBehaviour
             cardDeck[rnd] = currentCard;
         }
         timesReshuffled++;
+    }
+
+    public void OnStartGame()
+    {
+        remainingPlayerMoves = maxPlayerMoves;
+        remainingOpponentMoves = maxOpponentMoves;
+        ShuffleCardDeck();
+        DrawPieces();
+        isPlayerTurn = true;
+        DrawPieces();
+        UIManager.instance.SetTurnText(isPlayerTurn);
+        UIManager.instance.SetMovesLeftText(remainingPlayerMoves);
+        UIManager.instance.ActivateGamePanel(true);
+        onStartGame?.Invoke();
     }
 
     public void PerformMove()

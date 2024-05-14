@@ -4690,7 +4690,7 @@ MonoBehaviour:
   health: 0
   maxHealth: 0
   height: 1
-  maxHeight: 7
+  maxHeight: 5
   isEnemyPiece: 0
   placedOnBoard: 0
   boardManager: {fileID: 0}

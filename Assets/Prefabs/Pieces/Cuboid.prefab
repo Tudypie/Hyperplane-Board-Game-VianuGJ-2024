@@ -3568,10 +3568,12 @@ MonoBehaviour:
   health: 0
   maxHealth: 0
   height: 1
-  maxHeight: 7
+  maxHeight: 5
   isEnemyPiece: 0
   placedOnBoard: 0
   boardManager: {fileID: 0}
+  gameManager: {fileID: 0}
+  opponentAI: {fileID: 0}
 --- !u!65 &7632681132464752562
 BoxCollider:
   m_ObjectHideFlags: 0

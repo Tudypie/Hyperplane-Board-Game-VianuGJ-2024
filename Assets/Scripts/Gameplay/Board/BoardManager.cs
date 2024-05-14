@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
+    public int rows = 6;
+    public int cols = 5;
     public bool isPlacing = false;
     public bool onOccupiedTile = false;
     public bool isAttacking = false;
@@ -36,9 +38,9 @@ public class BoardManager : MonoBehaviour
     public List<BoardTile> GetEnemyTiles()
     {
         List<BoardTile> enemyTiles = new List<BoardTile>();
-        for (int i = 4; i < 8; i++)
+        for (int i = rows/2; i < rows; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < cols; j++)
             {
                 enemyTiles.Add(boardTiles[i][j]);
             }
@@ -50,12 +52,14 @@ public class BoardManager : MonoBehaviour
     {
         instance = this;
 
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < rows; i++)
         {
-            BoardTile[] tiles = new BoardTile[5];
-            for (int j = 0; j < 5; j++)
+            BoardTile[] tiles = new BoardTile[cols];
+            for (int j = 0; j < cols; j++)
             {
                 tiles[j] = transform.GetChild(boardChildCount).GetComponent<BoardTile>();
+                tiles[j].row = i;
+                tiles[j].col = j;
                 boardChildCount++;
             }
             boardTiles.Add(tiles);
@@ -199,9 +203,9 @@ public class BoardManager : MonoBehaviour
         OnStartAction?.Invoke();
         uiManager.SetCardText();
 
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < cols; j++)
             {
                 if (boardTiles[i][j].isOccupied && !boardTiles[i][j].isEnemyTile)
                 {
@@ -248,9 +252,9 @@ public class BoardManager : MonoBehaviour
         cardSelection = null;
         methodToCallOnSelected = "";
         methodParameterOnSelected = 0;
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < cols; j++)
             {
                 if (boardTiles[i][j].isOccupied && !boardTiles[i][j].isEnemyTile)
                 {

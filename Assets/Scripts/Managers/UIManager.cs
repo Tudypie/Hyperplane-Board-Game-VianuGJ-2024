@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
         public string description;
     }
 
+    public GameObject gamePanel;
     public ActionText[] actionsText;
     public Dictionary<string, string> actionsMap = new Dictionary<string, string>();
     public Text currentActionText;
@@ -29,6 +30,8 @@ public class UIManager : MonoBehaviour
         foreach(var action in actionsText)
             actionsMap.Add(action.name, action.description);
     }
+
+    public void ActivateGamePanel(bool value) => gamePanel.SetActive(value);
 
     public void SetTurnText(bool isPlayerTurn) => turnText.text = isPlayerTurn ? "randul tau" : "randul inamicului";
 
