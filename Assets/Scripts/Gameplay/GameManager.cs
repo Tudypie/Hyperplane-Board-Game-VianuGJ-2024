@@ -251,6 +251,6 @@ public class GameManager : MonoBehaviour
         }
         cardsInHand--;
         Destroy(card.gameObject);
-        PerformMove();
+        //PerformMove();
     }
 }

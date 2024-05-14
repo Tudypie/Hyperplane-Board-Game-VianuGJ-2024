@@ -117,10 +117,10 @@ public class Piece : Interactable
         piecePart[height - 1].SetActive(false);
         height += value;
         piecePart[height-1].SetActive(true);
-        healthBar[height - 1].fillAmount = health / maxHealth;
 
         health += pieceSO.pieceStats[statsIndex].volume * value;
         maxHealth = pieceSO.pieceStats[statsIndex].volume * height;
+        healthBar[height - 1].fillAmount = health / maxHealth;
 
         boardManager.CalculateAllPrismTilesInRange();
     }

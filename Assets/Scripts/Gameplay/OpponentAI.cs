@@ -114,7 +114,7 @@ public class OpponentAI : MonoBehaviour
             {
                 if (tile.pieceOnTile.pieceSO.pieceType == pieceSelection.pieceSO.pieceType)
                 {
-                    if (tile.pieceOnTile.height >= tile.pieceOnTile.maxHeight-2) continue;
+                    if (tile.pieceOnTile.height >= tile.pieceOnTile.maxHeight) continue;
 
                     Debug.Log("Opponent places piece on occupied tile: " + tile.name);
                     PlacePiece(tile);

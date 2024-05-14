@@ -6,6 +6,7 @@ public class PlayerCamera : MonoBehaviour
 
     [Header("Look Parameters")]
     [SerializeField] private float mouseSensitivity = 20f;
+    [SerializeField] private Vector3 initialRotation;
     private Vector2 mouseLook;
     private float rotationX = 0;
     private float rotationY = 0;
@@ -40,7 +41,7 @@ public class PlayerCamera : MonoBehaviour
         controls = transform.parent.GetComponent<InputManager>().INPUT;
         controls.Enable();
         Cursor.lockState = CursorLockMode.Locked;
-        transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        transform.eulerAngles = initialRotation;
     }
 
     private void OnDisable()
