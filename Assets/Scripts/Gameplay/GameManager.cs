@@ -22,8 +22,6 @@ public class GameManager : MonoBehaviour
         public bool isOccupied;
     }
 
-    [SerializeField] private UnityEvent onStartGame;
-
     [Header("References")]
     public GameObject[] playerPiecePrefab;
     public GameObject[] opponentPiecePrefab;
@@ -60,6 +58,7 @@ public class GameManager : MonoBehaviour
     public bool isPlayerTurn;
 
     private BoardManager boardManager;
+    private UIManager uiManager;
 
     public static GameManager instance;
 
@@ -71,10 +70,13 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         boardManager = BoardManager.instance;
+        uiManager = UIManager.instance;
 
         foreach (CardInDeck card in cardList)
             for (int i = 0; i < card.count; i++)
                 cardDeck.Add(card.prefab.GetComponent<Card>());
+
+        OnStartGame();
     }
 
     private void ShuffleCardDeck()
@@ -97,10 +99,9 @@ public class GameManager : MonoBehaviour
         DrawPieces();
         isPlayerTurn = true;
         DrawPieces();
-        UIManager.instance.SetTurnText(isPlayerTurn);
-        UIManager.instance.SetMovesLeftText(remainingPlayerMoves);
-        UIManager.instance.ActivateGamePanel(true);
-        onStartGame?.Invoke();
+        uiManager.SetTurnText(isPlayerTurn);
+        uiManager.SetMovesLeftText(remainingPlayerMoves);
+        uiManager.ActivateGamePanel(true);
     }
 
     public void PerformMove()
@@ -108,26 +109,26 @@ public class GameManager : MonoBehaviour
         if(isPlayerTurn)
         {
             remainingPlayerMoves--;
-            UIManager.instance.SetMovesLeftText(remainingPlayerMoves);
+            uiManager.SetMovesLeftText(remainingPlayerMoves);
             if (remainingPlayerMoves <= 0)
             {
                 remainingOpponentMoves = maxOpponentMoves;
                 isPlayerTurn = false;
-                UIManager.instance.SetMovesLeftText(remainingOpponentMoves);
-                UIManager.instance.SetTurnText(isPlayerTurn);
+                uiManager.SetMovesLeftText(remainingOpponentMoves);
+                uiManager.SetTurnText(isPlayerTurn);
                 boardManager.EndTurn();
             }
         }
         else
         {
             remainingOpponentMoves--;
-            UIManager.instance.SetMovesLeftText(remainingOpponentMoves);
+            uiManager.SetMovesLeftText(remainingOpponentMoves);
             if (remainingOpponentMoves <= 0)
             {
                 remainingPlayerMoves = maxPlayerMoves;
                 isPlayerTurn = true;
-                UIManager.instance.SetMovesLeftText(remainingPlayerMoves);
-                UIManager.instance.SetTurnText(isPlayerTurn);
+                uiManager.SetMovesLeftText(remainingPlayerMoves);
+                uiManager.SetTurnText(isPlayerTurn);
                 boardManager.EndTurn();
             }
         }
@@ -139,13 +140,13 @@ public class GameManager : MonoBehaviour
         {
             playerAccumulatedVolume += piece.maxHealth;
             playerCylinderFill.transform.localScale = new Vector3(1, 1, playerAccumulatedVolume / requiredVolumeToWin);
-            //UIManager.instance.UpdatePlayerVolumeFill(playerAccumulatedVolume, requiredVolumeToWin);
+            //uiManager.UpdatePlayerVolumeFill(playerAccumulatedVolume, requiredVolumeToWin);
         }
         else
         {
             opponentAccumulatedVolume += piece.maxHealth;
             opponentCylinderFill.transform.localScale = new Vector3(1, 1, opponentAccumulatedVolume / requiredVolumeToWin);
-            //UIManager.instance.UpdateOpponentVolumeFill(opponentAccumulatedVolume, requiredVolumeToWin);
+            //uiManager.UpdateOpponentVolumeFill(opponentAccumulatedVolume, requiredVolumeToWin);
         }
     }
 
@@ -237,6 +238,7 @@ public class GameManager : MonoBehaviour
             SendMessage(methodToCall, methodParameter);
             UseCard(card);
         }
+        TopDownCamera.instance.DropCard();
     }
 
     public void UseCard(Card card)
@@ -250,7 +252,7 @@ public class GameManager : MonoBehaviour
             }
         }
         cardsInHand--;
-        Destroy(card.gameObject);
+        card.gameObject.SetActive(false);
         //PerformMove();
     }
 }

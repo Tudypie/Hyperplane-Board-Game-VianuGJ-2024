@@ -13,11 +13,13 @@ public class Card : Interactable
 
     private BoardManager boardManager;
     private GameManager gameManager;
+    private TopDownCamera topDownCamera;
 
     private void Start()
     {
         boardManager = BoardManager.instance;
         gameManager = GameManager.instance;
+        topDownCamera = TopDownCamera.instance;
 
         boardManager.OnStartAction += DisableCollider;
         boardManager.OnStopAction += EnableCollider;
@@ -33,7 +35,10 @@ public class Card : Interactable
     {
         base.OnInteract();
 
-        gameManager.StartUsingCard(this, methodToCall, methodParameter);
+        if (topDownCamera.isCardInHand && topDownCamera.cardInHand == this)
+            gameManager.StartUsingCard(this, methodToCall, methodParameter);
+        else
+            topDownCamera.PickupCard(this, transform);
     }
 
     public override void OnFocus()

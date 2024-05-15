@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     public GameObject gamePanel;
     public ActionText[] actionsText;
     public Dictionary<string, string> actionsMap = new Dictionary<string, string>();
+    public Image cursor;
     public Text currentActionText;
     public Text turnText;
     public Text movesLeftText;
@@ -33,11 +34,13 @@ public class UIManager : MonoBehaviour
 
     public void ActivateGamePanel(bool value) => gamePanel.SetActive(value);
 
-    public void SetTurnText(bool isPlayerTurn) => turnText.text = isPlayerTurn ? "randul tau" : "randul inamicului";
+    public void ActivateCursor(bool value) => cursor.gameObject.SetActive(value);
+
+    public void SetTurnText(bool isPlayerTurn) => turnText.text = isPlayerTurn ? "RANDUL TAU" : "RANDUL INAMICULUI";
 
     public void SetMovesLeftText(int amount)
     {
-        movesLeftText.text = amount + (amount > 1 ? " mutari ramase" : " mutare ramasa");
+        movesLeftText.text = amount + (amount > 1 ? " MUTARI RAMASE" : " MUTARE RAMASA");
     }
 
     public void SetPlaceText(bool isPrismSelected)

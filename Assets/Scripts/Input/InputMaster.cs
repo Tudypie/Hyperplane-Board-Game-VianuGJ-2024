@@ -110,9 +110,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RotateRight"",
+                    ""name"": ""RotateUp"",
                     ""type"": ""Button"",
-                    ""id"": ""b22b8ac4-da95-4e8c-9393-4eeee09ba30f"",
+                    ""id"": ""d9ae46ab-d165-42d8-b497-c1373ab97c1d"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -122,6 +122,24 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""name"": ""RotateLeft"",
                     ""type"": ""Button"",
                     ""id"": ""e8f11aa5-7899-4c05-9fa0-22f4003bfb7a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""6568a244-b496-43ac-8612-ab1ad1aaeb9e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""b22b8ac4-da95-4e8c-9393-4eeee09ba30f"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -533,6 +551,28 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RotateLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""08293d99-e531-45f3-91eb-87ce207ebd28"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""48968edf-c8e4-4e0e-8c34-08dc556a3a4d"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1129,8 +1169,10 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
-        m_Player_RotateRight = m_Player.FindAction("RotateRight", throwIfNotFound: true);
+        m_Player_RotateUp = m_Player.FindAction("RotateUp", throwIfNotFound: true);
         m_Player_RotateLeft = m_Player.FindAction("RotateLeft", throwIfNotFound: true);
+        m_Player_RotateDown = m_Player.FindAction("RotateDown", throwIfNotFound: true);
+        m_Player_RotateRight = m_Player.FindAction("RotateRight", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1219,8 +1261,10 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Previous;
     private readonly InputAction m_Player_Next;
     private readonly InputAction m_Player_Sprint;
-    private readonly InputAction m_Player_RotateRight;
+    private readonly InputAction m_Player_RotateUp;
     private readonly InputAction m_Player_RotateLeft;
+    private readonly InputAction m_Player_RotateDown;
+    private readonly InputAction m_Player_RotateRight;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -1234,8 +1278,10 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @Previous => m_Wrapper.m_Player_Previous;
         public InputAction @Next => m_Wrapper.m_Player_Next;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
-        public InputAction @RotateRight => m_Wrapper.m_Player_RotateRight;
+        public InputAction @RotateUp => m_Wrapper.m_Player_RotateUp;
         public InputAction @RotateLeft => m_Wrapper.m_Player_RotateLeft;
+        public InputAction @RotateDown => m_Wrapper.m_Player_RotateDown;
+        public InputAction @RotateRight => m_Wrapper.m_Player_RotateRight;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1272,12 +1318,18 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
-            @RotateRight.started += instance.OnRotateRight;
-            @RotateRight.performed += instance.OnRotateRight;
-            @RotateRight.canceled += instance.OnRotateRight;
+            @RotateUp.started += instance.OnRotateUp;
+            @RotateUp.performed += instance.OnRotateUp;
+            @RotateUp.canceled += instance.OnRotateUp;
             @RotateLeft.started += instance.OnRotateLeft;
             @RotateLeft.performed += instance.OnRotateLeft;
             @RotateLeft.canceled += instance.OnRotateLeft;
+            @RotateDown.started += instance.OnRotateDown;
+            @RotateDown.performed += instance.OnRotateDown;
+            @RotateDown.canceled += instance.OnRotateDown;
+            @RotateRight.started += instance.OnRotateRight;
+            @RotateRight.performed += instance.OnRotateRight;
+            @RotateRight.canceled += instance.OnRotateRight;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1309,12 +1361,18 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
-            @RotateRight.started -= instance.OnRotateRight;
-            @RotateRight.performed -= instance.OnRotateRight;
-            @RotateRight.canceled -= instance.OnRotateRight;
+            @RotateUp.started -= instance.OnRotateUp;
+            @RotateUp.performed -= instance.OnRotateUp;
+            @RotateUp.canceled -= instance.OnRotateUp;
             @RotateLeft.started -= instance.OnRotateLeft;
             @RotateLeft.performed -= instance.OnRotateLeft;
             @RotateLeft.canceled -= instance.OnRotateLeft;
+            @RotateDown.started -= instance.OnRotateDown;
+            @RotateDown.performed -= instance.OnRotateDown;
+            @RotateDown.canceled -= instance.OnRotateDown;
+            @RotateRight.started -= instance.OnRotateRight;
+            @RotateRight.performed -= instance.OnRotateRight;
+            @RotateRight.canceled -= instance.OnRotateRight;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1506,8 +1564,10 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnPrevious(InputAction.CallbackContext context);
         void OnNext(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
-        void OnRotateRight(InputAction.CallbackContext context);
+        void OnRotateUp(InputAction.CallbackContext context);
         void OnRotateLeft(InputAction.CallbackContext context);
+        void OnRotateDown(InputAction.CallbackContext context);
+        void OnRotateRight(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

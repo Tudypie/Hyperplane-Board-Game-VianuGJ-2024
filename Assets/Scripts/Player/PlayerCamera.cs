@@ -6,17 +6,21 @@ public class PlayerCamera : MonoBehaviour
 
     [Header("Look Parameters")]
     [SerializeField] private float mouseSensitivity = 20f;
-    [SerializeField] private Vector3 initialRotation;
     private Vector2 mouseLook;
     private float rotationX = 0;
     private float rotationY = 0;
 
     [Header("Move Parameters")]
     [SerializeField] private float moveSmooth = 0.1f;
-    [SerializeField] private Vector3 forwardMovePoint;
+    [SerializeField] private Vector3 firstPersonPoint;
+    [SerializeField] private Vector3 firstPersonRotation;
     private Vector3 initialPosition;
+    private Vector3 initialRotation;
     private Vector3 movePointPosition;
-    private bool isMoving = false;
+    private Vector3 movePointRotation;
+    public bool isMoving = false;
+    public bool isRotating = false;
+    public bool isTopDown = false;
 
     [Header("Interact Parameters")]
     [SerializeField] private Vector3 interactionRayPoint;
@@ -28,11 +32,15 @@ public class PlayerCamera : MonoBehaviour
     private InputMaster controls;
     private GameManager gameManager;
 
+    public static PlayerCamera instance { get; private set; }
+
     private void Awake()
     {
+        instance = this;
         playerBody = transform.parent;
         playerCamera = GetComponent<Camera>();
-        initialPosition = transform.position;
+        initialPosition = playerBody.position;
+        initialRotation = transform.eulerAngles;
     }
 
     private void Start()
@@ -40,31 +48,38 @@ public class PlayerCamera : MonoBehaviour
         gameManager = GameManager.instance;
         controls = transform.parent.GetComponent<InputManager>().INPUT;
         controls.Enable();
-        Cursor.lockState = CursorLockMode.Locked;
-        transform.eulerAngles = initialRotation;
-    }
-
-    private void OnDisable()
-    {
-        controls.Disable();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void Update()
     {
-        HandleMouseLook();
-        HandleBodyMove();
-
-        HandleInteractionCheck();
-        HandleInteractionInput();
+        if (!isTopDown)
+        {
+            HandleMouseLook();
+            //HandleBodyMove();
+            HandleInteractionCheck();
+            HandleInteractionInput();
+        }
 
         if(isMoving)
         {
             playerBody.position = Vector3.Lerp(playerBody.position, movePointPosition, moveSmooth);
+
             if(Vector3.Distance(playerBody.position, movePointPosition) < 0.1f)
             {
                 playerBody.position = movePointPosition;
                 isMoving = false;
             }
+        }
+
+        if(isRotating)
+        {
+            //transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, movePointRotation, moveSmooth);
+            //if(Vector3.Distance(transform.eulerAngles, movePointRotation) < 0.1f)
+
+                transform.eulerAngles = movePointRotation;
+                isRotating = false;
         }
     }
 
@@ -84,21 +99,6 @@ public class PlayerCamera : MonoBehaviour
         rotationY = Mathf.Clamp(rotationY, -90f, 90f);
 
         playerBody.rotation = Quaternion.Euler(0, rotationY, 0);
-    }
-
-    private void HandleBodyMove()
-    {
-        if(controls.Player.Jump.WasPerformedThisFrame())
-        {
-            movePointPosition = forwardMovePoint;
-            isMoving = true;
-        }
-
-        if (controls.Player.Jump.WasPerformedThisFrame() && Vector3.Distance(playerBody.position, movePointPosition) < 0.1f)
-        {
-            movePointPosition = initialPosition;
-            isMoving = true;
-        }
     }
 
     private void HandleInteractionCheck()
@@ -153,5 +153,18 @@ public class PlayerCamera : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawRay(playerCamera.ViewportPointToRay(interactionRayPoint).origin, playerCamera.ViewportPointToRay(interactionRayPoint).direction * interactionDistance);
+    }
+
+    public void ChangeCameraPerspective(bool topDown)
+    {
+        isTopDown = topDown;
+        movePointPosition = topDown ? initialPosition : firstPersonPoint;
+        movePointRotation = topDown ? initialRotation : firstPersonRotation;
+        isMoving = true;
+        isRotating = true;
+
+        UIManager.instance.ActivateCursor(!topDown);
+        Cursor.visible = topDown;
+        Cursor.lockState = topDown ? CursorLockMode.None : CursorLockMode.Locked;
     }
 }

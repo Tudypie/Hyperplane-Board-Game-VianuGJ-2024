@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class Interactable : MonoBehaviour
 {
@@ -23,4 +24,20 @@ public class Interactable : MonoBehaviour
     public virtual void OnLoseFocus() { }
 
     public void SetCanInteract(bool value) => canInteract = value;
+
+    public void OnMouseOver()
+    {
+        if(GameManager.instance.isPlayerTurn)
+        {
+            OnFocus();
+            if(InputManager.instance.INPUT.UI.Click.WasPerformedThisFrame() && !PlayerCamera.instance.isMoving)
+                OnInteract();
+        }
+    }
+
+    public void OnMouseExit()
+    {
+        if (GameManager.instance.isPlayerTurn)
+            OnLoseFocus();
+    }
 }

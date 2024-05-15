@@ -44,12 +44,16 @@ public class Piece : Interactable
         gameManager = GameManager.instance;
         opponentAI = OpponentAI.instance;
 
+        if (isEnemyPiece) return;
+
         boardManager.OnStartAction += DisableCollider;
         boardManager.OnStopAction += EnableCollider;
     }
 
     private void OnDisable()
     {
+        if (isEnemyPiece) return;
+
         boardManager.OnStartAction -= DisableCollider;
         boardManager.OnStopAction -= EnableCollider;
     }
@@ -71,12 +75,7 @@ public class Piece : Interactable
     {
         base.OnFocus();
 
-        if (placedOnBoard)
-            piecePart[height - 1].transform.GetChild(0).gameObject.SetActive(true);
-
-        if (isEnemyPiece) return;
-
-        if (!placedOnBoard && !boardManager.isPlacing)
+        if (!placedOnBoard && !boardManager.isPlacing && !isEnemyPiece)
             ChangeMaterial(onFocusMaterial);
     }
 
@@ -84,23 +83,25 @@ public class Piece : Interactable
     {
         base.OnLoseFocus();
 
-        //if (placedOnBoard)
-            //piecePart[height - 1].transform.GetChild(0).gameObject.SetActive(false);
-
-        if (isEnemyPiece) return;
-
-        if (!placedOnBoard && !boardManager.isPlacing)
+        if (!placedOnBoard && !boardManager.isPlacing && !isEnemyPiece)
             ChangeMaterial(normalMaterial);
     }
 
     private void EnableCollider()
     {
+        Invoke(nameof(EnableColliderDelay), 0.2f);
+    }
+
+    private void EnableColliderDelay()
+    {
+        if (isEnemyPiece || !gameManager.isPlayerTurn) return;
         canInteract = true;
         GetComponent<BoxCollider>().enabled = true;
     }
 
     private void DisableCollider()
     {
+        if (isEnemyPiece || !gameManager.isPlayerTurn) return;
         canInteract = false;
         GetComponent<BoxCollider>().enabled = false;
     }
@@ -124,7 +125,7 @@ public class Piece : Interactable
         maxHealth = pieceSO.pieceStats[statsIndex].volume * height;
         healthBar[height - 1].fillAmount = health / maxHealth;
         healthFill.localScale = new Vector3(1f, health / maxHealth, 1f);
-        pieceFill.localScale = new Vector3(60, 60, 40f * height);
+        pieceFill.localScale = new Vector3(1f, height, 1f);
 
         boardManager.CalculateAllPrismTilesInRange();
     }
@@ -133,7 +134,7 @@ public class Piece : Interactable
     {
         health = Mathf.Max(health - amount, 0);
         healthBar[height - 1].fillAmount = health / maxHealth;
-        healthFill.localScale = new Vector3(0f, health / maxHealth, 0f);
+        healthFill.localScale = new Vector3(1f, health / maxHealth, 1f);
 
         if (health <= 0)
         {
@@ -162,5 +163,7 @@ public class Piece : Interactable
     {
         health = Mathf.Min(health + maxHealth * percent, maxHealth);
         healthBar[height - 1].fillAmount = health / maxHealth;
+        healthFill.localScale = new Vector3(1f, health / maxHealth, 1f);
+        pieceFill.localScale = new Vector3(1f, height, 1f);
     }
 }

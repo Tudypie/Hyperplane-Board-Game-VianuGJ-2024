@@ -87,9 +87,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RotateRight",
+                    "name": "RotateUp",
                     "type": "Button",
-                    "id": "b22b8ac4-da95-4e8c-9393-4eeee09ba30f",
+                    "id": "d9ae46ab-d165-42d8-b497-c1373ab97c1d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -99,6 +99,24 @@
                     "name": "RotateLeft",
                     "type": "Button",
                     "id": "e8f11aa5-7899-4c05-9fa0-22f4003bfb7a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateDown",
+                    "type": "Button",
+                    "id": "6568a244-b496-43ac-8612-ab1ad1aaeb9e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateRight",
+                    "type": "Button",
+                    "id": "b22b8ac4-da95-4e8c-9393-4eeee09ba30f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -510,6 +528,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "RotateLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "08293d99-e531-45f3-91eb-87ce207ebd28",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "48968edf-c8e4-4e0e-8c34-08dc556a3a4d",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

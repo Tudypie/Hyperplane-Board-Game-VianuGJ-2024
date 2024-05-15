@@ -233,7 +233,10 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        if (selectedTiles == 0) StopSelectingTiles();
+        if (selectedTiles == 0)
+        {
+            StopSelectingTiles();
+        }
 
     }
 
@@ -426,6 +429,8 @@ public class BoardManager : MonoBehaviour
 
     public void RemoveAllCuboidsOnBoard()
     {
+        if (cuboidsOnBoard.Count == 0) return;
+
         foreach(Cuboid cuboid in cuboidsOnBoard)
         {
             boardTiles[cuboid.row][cuboid.col].pieceOnTile = null;
@@ -438,6 +443,8 @@ public class BoardManager : MonoBehaviour
 
     public void RemoveAllPrismsOnBoard()
     {
+        if (prismsOnBoard.Count == 0) return;
+
         foreach (Prism prism in prismsOnBoard)
         {
             boardTiles[prism.row][prism.col].pieceOnTile = null;
