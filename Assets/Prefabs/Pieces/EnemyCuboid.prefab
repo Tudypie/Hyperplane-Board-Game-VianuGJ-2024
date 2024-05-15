@@ -140,6 +140,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.42199993
       objectReference: {fileID: 0}
+    - target: {fileID: 7632681132464752562, guid: 603698b7509a6364a814eacfe94abff6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9032255451433559348, guid: 603698b7509a6364a814eacfe94abff6, type: 3}
       propertyPath: m_Name
       value: EnemyCuboid

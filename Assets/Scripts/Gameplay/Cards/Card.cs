@@ -39,6 +39,8 @@ public class Card : Interactable
             gameManager.StartUsingCard(this, methodToCall, methodParameter);
         else
             topDownCamera.PickupCard(this, transform);
+
+        AudioManager.instance.PlaySound(AudioManager.instance.cardSelect);
     }
 
     public override void OnFocus()

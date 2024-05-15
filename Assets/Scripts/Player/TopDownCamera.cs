@@ -74,7 +74,7 @@ public class TopDownCamera : MonoBehaviour
     {
         if (lerpCard)
         {
-            if(cardTransform == null)
+            if (cardTransform == null)
             {
                 isCardInHand = !isCardInHand;
                 lerpCard = false;
@@ -101,8 +101,10 @@ public class TopDownCamera : MonoBehaviour
         }
 
         if (isCardInHand)
+        {
             if (controls.UI.RightClick.WasPerformedThisFrame())
                 DropCard();
+        }
     }
 
     public void DropCard()

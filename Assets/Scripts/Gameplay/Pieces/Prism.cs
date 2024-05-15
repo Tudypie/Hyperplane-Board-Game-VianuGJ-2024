@@ -92,6 +92,8 @@ public class Prism : Piece
         maxHealth = pieceSO.pieceStats[statsIndex].volume * height;
 
         transform.localScale = new Vector3(1 + 0.25f * (statsIndex - 2), transform.localScale.y, transform.localScale.z);
+
+        AudioManager.instance.PlaySound(amount > 0 ? AudioManager.instance.abilityIncreaseAngle : AudioManager.instance.abilityDecreaseAngle);
     }
 
     public void Attack(Piece piece)
@@ -104,6 +106,7 @@ public class Prism : Piece
         lasers[height - 1].SetPosition(0, lasers[height - 1].gameObject.transform.parent.position);
         lasers[height - 1].SetPosition(1, piece.piecePart[piece.height - 1].transform.position + new Vector3(0f, 0.4f * piece.height, 0f));
         lasers[height - 1].enabled = true;
+        AudioManager.instance.PlaySound(AudioManager.instance.pieceAttack);
         yield return new WaitForSeconds(0.3f);
         lasers[height - 1].enabled = false;
         piece.TakeDamage(damage);
@@ -162,5 +165,6 @@ public class Prism : Piece
             isLerpingRotation = true;
         }
         boardManager.ShowPrismTilesInRotationDirection(this, height, rotationDirectionIndex, isEnemyPiece ? normalMaterial : onFocusMaterial);
+        AudioManager.instance.PlaySound(AudioManager.instance.pieceRotate);
     }
 }

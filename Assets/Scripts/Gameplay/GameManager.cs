@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour
             }
             opponentPiecesInHand = maxPiecesInHand;
         }
-
+        AudioManager.instance.PlaySound(AudioManager.instance.pieceDraw);
     }
 
     public void DrawCard()
@@ -212,6 +212,7 @@ public class GameManager : MonoBehaviour
             }
         }
         PerformMove();
+        AudioManager.instance.PlaySound(AudioManager.instance.cardDraw);
     }
 
     public void IncreaseKnowledge()

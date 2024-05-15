@@ -66,6 +66,7 @@ public class Piece : Interactable
 
         if (!placedOnBoard)
         {
+            AudioManager.instance.PlaySound(AudioManager.instance.pieceSelect);
             boardManager.StartPlacingPiece(this);
             ChangeMaterial(normalMaterial);
         }
@@ -94,14 +95,12 @@ public class Piece : Interactable
 
     private void EnableColliderDelay()
     {
-        if (isEnemyPiece || !gameManager.isPlayerTurn) return;
         canInteract = true;
         GetComponent<BoxCollider>().enabled = true;
     }
 
     private void DisableCollider()
     {
-        if (isEnemyPiece || !gameManager.isPlayerTurn) return;
         canInteract = false;
         GetComponent<BoxCollider>().enabled = false;
     }
@@ -128,6 +127,7 @@ public class Piece : Interactable
         pieceFill.localScale = new Vector3(1f, height, 1f);
 
         boardManager.CalculateAllPrismTilesInRange();
+        AudioManager.instance.PlaySound(AudioManager.instance.pieceStack);
     }
 
     public void TakeDamage(float amount)
@@ -155,6 +155,7 @@ public class Piece : Interactable
             boardManager.boardTiles[row][col].isOccupied = false;
             boardManager.CalculateAllPrismTilesInRange();
             gameManager.OnDestroyPiece(this);
+            AudioManager.instance.PlaySound(AudioManager.instance.pieceDestroy);
             Destroy(gameObject);
         }
     }
@@ -165,5 +166,6 @@ public class Piece : Interactable
         healthBar[height - 1].fillAmount = health / maxHealth;
         healthFill.localScale = new Vector3(1f, health / maxHealth, 1f);
         pieceFill.localScale = new Vector3(1f, height, 1f);
+        AudioManager.instance.PlaySound(AudioManager.instance.abilityHeal);
     }
 }

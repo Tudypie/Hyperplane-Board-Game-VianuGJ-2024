@@ -145,7 +145,9 @@ public class BoardManager : MonoBehaviour
             }
         }
 
+        AudioManager.instance.PlaySound(AudioManager.instance.piecePlace);
         gameManager.OnPlacePiece();
+        CalculateAllPrismTilesInRange();
         StopPlacingPiece();
     }
 
@@ -158,6 +160,7 @@ public class BoardManager : MonoBehaviour
         pieceSelection = null;
         pieceSelectionTransform = null;
         uiManager.ClearActionText();
+
     }
 
     public void StartAttackingPiece(Prism prismAttacker)
@@ -271,6 +274,7 @@ public class BoardManager : MonoBehaviour
     public void EndTurn()
     {
         if (isAttacking) StopAttackingPiece();
+        OnStopAction?.Invoke();
     }
 
     public void ShowPrismTilesInRotationDirection(Prism prism, int height, int rotation, Material material = null)
@@ -289,6 +293,7 @@ public class BoardManager : MonoBehaviour
                     && boardTiles[prism.row + value][prism.col - i].pieceOnTile.height >= height)
                 {
                     boardTiles[prism.row + value][prism.col - i].ChangeMeshRenderer(true, material);
+                    break;
                 }
                 else
                 {
@@ -308,6 +313,7 @@ public class BoardManager : MonoBehaviour
                     && boardTiles[prism.row + value][prism.col].pieceOnTile.height >= height)
                 {
                     boardTiles[prism.row + value][prism.col].ChangeMeshRenderer(true, material);
+                    break;
                 }
                 else
                 {
@@ -327,6 +333,7 @@ public class BoardManager : MonoBehaviour
                     && boardTiles[prism.row + value][prism.col + i].pieceOnTile.height >= height)
                 {
                     boardTiles[prism.row + value][prism.col + i].ChangeMeshRenderer(true, material);
+                    break;
                 }
                 else
                 {
@@ -439,6 +446,7 @@ public class BoardManager : MonoBehaviour
             Destroy(cuboid.gameObject);
         }
         cuboidsOnBoard.Clear();
+        AudioManager.instance.PlaySound(AudioManager.instance.abilityRemoveAll);
     }
 
     public void RemoveAllPrismsOnBoard()
@@ -453,5 +461,6 @@ public class BoardManager : MonoBehaviour
             Destroy(prism.gameObject);
         }
         prismsOnBoard.Clear();
+        AudioManager.instance.PlaySound(AudioManager.instance.abilityRemoveAll);
     }
 }

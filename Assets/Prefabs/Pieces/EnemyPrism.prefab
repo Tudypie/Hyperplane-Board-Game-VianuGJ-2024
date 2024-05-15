@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: isEnemyPiece
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3587342436080294915, guid: 0425ce42be7665a4c91106b88545295b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8494996672078625709, guid: 0425ce42be7665a4c91106b88545295b, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7071068
