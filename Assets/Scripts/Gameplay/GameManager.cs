@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     public CardSpawnpoint[] cardSpawnpoint;
     public Transform playerCylinderFill;
     public Transform opponentCylinderFill;
+    public TopDownCamera playerCamera;
+    public OpponentAI opponentAI;
 
     [Header("Card Deck")]
     public List<CardInDeck> cardList = new List<CardInDeck>();
@@ -56,6 +58,7 @@ public class GameManager : MonoBehaviour
     public float playerAccumulatedVolume = 0;
     public float opponentAccumulatedVolume = 0;
     public bool isPlayerTurn;
+    public bool gameStarted;
 
     private BoardManager boardManager;
     private UIManager uiManager;
@@ -76,7 +79,7 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < card.count; i++)
                 cardDeck.Add(card.prefab.GetComponent<Card>());
 
-        OnStartGame();
+        //OnStartGame();
     }
 
     private void ShuffleCardDeck()
@@ -93,6 +96,8 @@ public class GameManager : MonoBehaviour
 
     public void OnStartGame()
     {
+        playerCamera.enabled = true;
+        opponentAI.enabled = true;
         remainingPlayerMoves = maxPlayerMoves;
         remainingOpponentMoves = maxOpponentMoves;
         ShuffleCardDeck();
@@ -102,6 +107,7 @@ public class GameManager : MonoBehaviour
         uiManager.SetTurnText(isPlayerTurn);
         uiManager.SetMovesLeftText(remainingPlayerMoves);
         uiManager.ActivateGamePanel(true);
+        gameStarted = true;
     }
 
     public void PerformMove()
@@ -197,6 +203,12 @@ public class GameManager : MonoBehaviour
     public void DrawCard()
     {
         if (cardsInHand >= maxCardsInHand) return;
+
+        if(cardsDrawedCount >= cardDeck.Count)
+        {
+            ShuffleCardDeck();
+            cardsDrawedCount = 0;
+        }
 
         GameObject drawedCard;
         for(int i = 0; i < cardSpawnpoint.Length; i++)

@@ -12,11 +12,23 @@ public class TutorialManager : MonoBehaviour
         if (currentPage >= tutorialPages.Length) 
         {
             tutorialPages[0].transform.parent.gameObject.SetActive(false);
-            GameManager.instance.OnStartGame();
+            if (!GameManager.instance.gameStarted)
+                GameManager.instance.OnStartGame();
+            else
+                UIManager.instance.ActivateGamePanel(true);
+
             return;
         }
         Invoke(nameof(PageSetActive), 0.01f);
     }
 
     private void PageSetActive() => tutorialPages[currentPage].SetActive(true);
+
+    public void OpenTutorialPanel()
+    {
+        currentPage = 0;
+        tutorialPages[currentPage].transform.parent.gameObject.SetActive(true);
+        tutorialPages[currentPage].SetActive(true);
+        UIManager.instance.ActivateGamePanel(false);    
+    }
 }

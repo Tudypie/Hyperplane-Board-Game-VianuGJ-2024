@@ -121,6 +121,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "RotatePieceR",
+                    "type": "Button",
+                    "id": "56f3254c-cd08-4c10-b458-b40bc9e98650",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotatePieceL",
+                    "type": "Button",
+                    "id": "ffa09b82-675e-41a1-8337-be507f51e877",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -550,6 +568,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "RotateDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4beeb3b8-e8fa-4a8a-af42-23d660d6858e",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotatePieceR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11ed7faf-01af-41f7-a3ce-656f82fb7077",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotatePieceL",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

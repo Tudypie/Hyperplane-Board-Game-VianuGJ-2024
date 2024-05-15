@@ -70,6 +70,8 @@ MonoBehaviour:
   - spawnpoint: {fileID: 0}
     card: {fileID: 0}
     isOccupied: 0
+  playerCylinderFill: {fileID: 0}
+  opponentCylinderFill: {fileID: 0}
   cardList:
   - prefab: {fileID: 8399559780992857756, guid: 28a6eb0f6ceee2249afdf5ce9b5f2d82, type: 3}
     count: 6
@@ -84,10 +86,10 @@ MonoBehaviour:
     count: 3
     canBeReshuffled: 0
   - prefab: {fileID: 4945621005757475379, guid: 36a643343eb3877468bf6a3b8bcb8bbe, type: 3}
-    count: 6
+    count: 4
     canBeReshuffled: 0
   - prefab: {fileID: 5965604888331493644, guid: 982b9b0432f39724b8844a014bfc183c, type: 3}
-    count: 3
+    count: 4
     canBeReshuffled: 0
   - prefab: {fileID: 4204285190667328650, guid: c54d0678589f9b24d9dcecff21e227eb, type: 3}
     count: 2
@@ -96,14 +98,38 @@ MonoBehaviour:
     count: 2
     canBeReshuffled: 0
   - prefab: {fileID: 9074525863610013697, guid: 411276a2021bbc24f8a0bc01a900a14f, type: 3}
-    count: 15
+    count: 1
+    canBeReshuffled: 0
+  - prefab: {fileID: 756123415738800566, guid: 41796fdb58adb6d4ea93b437a12c57cf, type: 3}
+    count: 1
+    canBeReshuffled: 0
+  - prefab: {fileID: 5679855937736122366, guid: adba46e520cd6b943b64f21aa38b6c09, type: 3}
+    count: 1
+    canBeReshuffled: 0
+  - prefab: {fileID: 749819861438456549, guid: bc64a51ffd1e6f646b36aea2395e3a55, type: 3}
+    count: 1
+    canBeReshuffled: 0
+  - prefab: {fileID: 7080533132276416787, guid: 93ffc284dae77084b9c2ea59a487ba22, type: 3}
+    count: 1
+    canBeReshuffled: 0
+  - prefab: {fileID: 992319957357351195, guid: 7ae30525076c86d4ca4647b2a77eeb46, type: 3}
+    count: 1
+    canBeReshuffled: 0
+  - prefab: {fileID: 8270303874385337060, guid: 1c8ee41ee1db55a4f9ba3716407c1a82, type: 3}
+    count: 1
+    canBeReshuffled: 0
+  - prefab: {fileID: 4404649485224446164, guid: 29bcbcf28763941459d886a7d6ff9393, type: 3}
+    count: 1
+    canBeReshuffled: 0
+  - prefab: {fileID: 600440847332175296, guid: f88e5ad5a65c291498c2dd2a2f304135, type: 3}
+    count: 1
     canBeReshuffled: 0
   cardDeck: []
   maxPiecesInHand: 4
   maxCardsInHand: 3
   maxPlayerMoves: 3
   maxOpponentMoves: 3
-  extraMoveRequiredKnowledge: 5
+  extraMoveRequiredKnowledge: 3
   maxKnowledge: 5
   requiredVolumeToWin: 1000
   playerPiecesInHand: 0

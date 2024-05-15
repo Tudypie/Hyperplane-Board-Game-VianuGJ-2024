@@ -130,6 +130,7 @@ public class Prism : Piece
             boardManager.StopAttackingPiece();
             gameManager.PerformMove();
         }
+        AudioManager.instance.PlaySound(AudioManager.instance.pieceRotate);
     }
 
     public void RotateLeft()
@@ -142,6 +143,7 @@ public class Prism : Piece
             boardManager.StopAttackingPiece();
             gameManager.PerformMove();
         }
+        AudioManager.instance.PlaySound(AudioManager.instance.pieceRotate);
     }
 
     public void RotateInAttackDirection()
@@ -165,6 +167,7 @@ public class Prism : Piece
             isLerpingRotation = true;
         }
         boardManager.ShowPrismTilesInRotationDirection(this, height, rotationDirectionIndex, isEnemyPiece ? normalMaterial : onFocusMaterial);
-        AudioManager.instance.PlaySound(AudioManager.instance.pieceRotate);
+        if(!gameManager.isPlayerTurn)
+            AudioManager.instance.PlaySound(AudioManager.instance.pieceRotate);
     }
 }

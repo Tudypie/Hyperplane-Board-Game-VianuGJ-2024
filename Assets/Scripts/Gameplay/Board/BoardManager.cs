@@ -98,9 +98,9 @@ public class BoardManager : MonoBehaviour
 
         if ((isPlacing || isAttacking) && pieceSelection.TryGetComponent(out Prism prism) && !onOccupiedTile)
         {
-            if (controls.Player.RotateRight.WasPressedThisFrame())
+            if (controls.Player.RotatePieceR.WasPressedThisFrame())
                 prism.RotateRight();
-            else if (controls.Player.RotateLeft.WasPressedThisFrame())
+            else if (controls.Player.RotatePieceL.WasPressedThisFrame())
                 prism.RotateLeft();
         }
     }
@@ -436,6 +436,7 @@ public class BoardManager : MonoBehaviour
 
     public void RemoveAllCuboidsOnBoard()
     {
+        AudioManager.instance.PlaySound(AudioManager.instance.abilityRemoveAll);
         if (cuboidsOnBoard.Count == 0) return;
 
         foreach(Cuboid cuboid in cuboidsOnBoard)
@@ -446,11 +447,11 @@ public class BoardManager : MonoBehaviour
             Destroy(cuboid.gameObject);
         }
         cuboidsOnBoard.Clear();
-        AudioManager.instance.PlaySound(AudioManager.instance.abilityRemoveAll);
     }
 
     public void RemoveAllPrismsOnBoard()
     {
+        AudioManager.instance.PlaySound(AudioManager.instance.abilityRemoveAll);
         if (prismsOnBoard.Count == 0) return;
 
         foreach (Prism prism in prismsOnBoard)
@@ -461,6 +462,5 @@ public class BoardManager : MonoBehaviour
             Destroy(prism.gameObject);
         }
         prismsOnBoard.Clear();
-        AudioManager.instance.PlaySound(AudioManager.instance.abilityRemoveAll);
     }
 }

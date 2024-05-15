@@ -44,7 +44,7 @@ public class Piece : Interactable
         gameManager = GameManager.instance;
         opponentAI = OpponentAI.instance;
 
-        if (isEnemyPiece) return;
+        //if (isEnemyPiece) return;
 
         boardManager.OnStartAction += DisableCollider;
         boardManager.OnStopAction += EnableCollider;
@@ -52,7 +52,7 @@ public class Piece : Interactable
 
     private void OnDisable()
     {
-        if (isEnemyPiece) return;
+        //if (isEnemyPiece) return;
 
         boardManager.OnStartAction -= DisableCollider;
         boardManager.OnStopAction -= EnableCollider;
