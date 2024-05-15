@@ -8,6 +8,8 @@ public class Piece : Interactable
     public PieceSO pieceSO;
     public GameObject[] piecePart;
     public Image[] healthBar;
+    public Transform healthFill;
+    public Transform pieceFill;
     public Material normalMaterial;
     public Material onFocusMaterial;
 
@@ -121,6 +123,8 @@ public class Piece : Interactable
         health += pieceSO.pieceStats[statsIndex].volume * value;
         maxHealth = pieceSO.pieceStats[statsIndex].volume * height;
         healthBar[height - 1].fillAmount = health / maxHealth;
+        healthFill.localScale = new Vector3(1f, health / maxHealth, 1f);
+        pieceFill.localScale = new Vector3(60, 60, 40f * height);
 
         boardManager.CalculateAllPrismTilesInRange();
     }
@@ -129,6 +133,8 @@ public class Piece : Interactable
     {
         health = Mathf.Max(health - amount, 0);
         healthBar[height - 1].fillAmount = health / maxHealth;
+        healthFill.localScale = new Vector3(0f, health / maxHealth, 0f);
+
         if (health <= 0)
         {
             if(TryGetComponent(out Prism prism))
