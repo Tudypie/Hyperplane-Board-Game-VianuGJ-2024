@@ -6807,18 +6807,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pieceSelect: {fileID: 8300000, guid: 9421adf5b0f7ebe47ad2246514406336, type: 3}
-  piecePlace: {fileID: 8300000, guid: 820939d45bb43a94ea3d6ece0b8df95f, type: 3}
-  pieceStack: {fileID: 8300000, guid: e19f38f86dcce4f4a890d1ee307c38e0, type: 3}
-  pieceAttack: {fileID: 8300000, guid: 83208545f7005af419e39b184c8ff43b, type: 3}
+  piecePlace: {fileID: 8300000, guid: 4dd65243c5991e64ba3ddbeb2115e205, type: 3}
+  pieceStack: {fileID: 8300000, guid: 1b7068ba300b19744990b53ec9b96b5a, type: 3}
+  pieceAttack: {fileID: 8300000, guid: fd1d148f68440bf4bb6978492bba671f, type: 3}
   pieceDestroy: {fileID: 8300000, guid: 58ff5016c8bd96a4eb8eee5ec39d1a10, type: 3}
   pieceRotate: {fileID: 8300000, guid: c7ac77a6a9d189c4099c0900ecde09b3, type: 3}
-  pieceDraw: {fileID: 0}
-  cardDraw: {fileID: 8300000, guid: 79368332db5ec8d42a1ca173933befe6, type: 3}
-  cardSelect: {fileID: 8300000, guid: 585adcee638325a4d8f4e31e10697310, type: 3}
-  abilityHeal: {fileID: 8300000, guid: 34717e92403cd89489854112cd03b8e8, type: 3}
-  abilityIncreaseAngle: {fileID: 8300000, guid: f019cedf0a1c41841b32553d728040b4, type: 3}
-  abilityDecreaseAngle: {fileID: 8300000, guid: 742a86d8050a4234c8a482ba3d67e315, type: 3}
-  abilityRemoveAll: {fileID: 8300000, guid: fefb8b01c720c1a49b1b7d6f42e0eecb, type: 3}
+  pieceDraw: {fileID: 8300000, guid: 95eda49f29866e144ad8f3a06c7569a9, type: 3}
+  cardDraw: {fileID: 8300000, guid: f8e25567fd918c9488860b39239fb629, type: 3}
+  cardSelect: {fileID: 8300000, guid: 58abf1fc00c34064092dcb7513916cbb, type: 3}
+  abilityHeal: {fileID: 8300000, guid: 1989a76023269c54cadfb5e64188c820, type: 3}
+  abilityIncreaseAngle: {fileID: 8300000, guid: 61b72029a08c1f9489e1bdb250036d5d, type: 3}
+  abilityDecreaseAngle: {fileID: 8300000, guid: ffb5601fd4fc40844894507825d41ff1, type: 3}
+  abilityRemoveAll: {fileID: 8300000, guid: 4c282db018aceb24c98a509bbbd49994, type: 3}
 --- !u!82 &1924573005
 AudioSource:
   m_ObjectHideFlags: 0
