@@ -7,6 +7,7 @@ public class Card : Interactable
     public bool callOnPiece;
     public bool callOnBoard;
     public bool callOnGameManager;
+    public bool isKnowledgeCard;
     [SerializeField, Space] private MeshRenderer meshRenderer;
     [SerializeField] private Material onFocusMaterial;
     [SerializeField] private Material normalMaterial;
@@ -35,12 +36,23 @@ public class Card : Interactable
     {
         base.OnInteract();
 
-        if (topDownCamera.isCardInHand && topDownCamera.cardInHand == this)
-            gameManager.StartUsingCard(this, methodToCall, methodParameter);
+        if(isKnowledgeCard)
+        {
+            if (topDownCamera.isCardInHand && topDownCamera.cardInHand == this)
+                gameManager.StartUsingCard(this, methodToCall, methodParameter);
+            else
+            {
+                topDownCamera.PickupCard(this, transform);
+                AudioManager.instance.PlaySound(AudioManager.instance.cardSelect);
+            }
+        }
         else
-            topDownCamera.PickupCard(this, transform);
+        {
+            gameManager.StartUsingCard(this, methodToCall, methodParameter);
+            AudioManager.instance.PlaySound(AudioManager.instance.cardSelect);
+        }
 
-        AudioManager.instance.PlaySound(AudioManager.instance.cardSelect);
+
     }
 
     public override void OnFocus()

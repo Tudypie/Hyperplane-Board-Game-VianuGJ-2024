@@ -110,6 +110,7 @@ public class BoardManager : MonoBehaviour
         isPlacing = true;
         OnStartAction?.Invoke();
         uiManager.SetPlaceText(piece.TryGetComponent(out Prism p));
+        uiManager.ActivateControlsPanel(true);
 
         pieceSelection = piece;
         pieceSelectionTransform = piece.gameObject.transform;
@@ -160,6 +161,7 @@ public class BoardManager : MonoBehaviour
         pieceSelection = null;
         pieceSelectionTransform = null;
         uiManager.ClearActionText();
+        uiManager.ActivateControlsPanel(false);
 
     }
 
@@ -173,6 +175,7 @@ public class BoardManager : MonoBehaviour
         pieceSelectionTransform = prismAttacker.gameObject.transform;
         pieceSelection.TryGetComponent(out Prism prism);
         ShowPrismTilesInRotationDirection(prism, prism.height, prism.rotationDirectionIndex, prism.attackMaterial);
+        uiManager.ActivateControlsPanel(true);
     }
 
     public void AttackPiece(Piece pieceToAttack)
@@ -194,6 +197,7 @@ public class BoardManager : MonoBehaviour
         pieceSelectionTransform = null;
         ClearBoardMaterials();
         uiManager.ClearActionText();
+        uiManager.ActivateControlsPanel(false);
     }
 
     public void StartSelectingTiles(Card card, string methodToCall, float methodParameter)
@@ -205,6 +209,8 @@ public class BoardManager : MonoBehaviour
         methodParameterOnSelected = methodParameter;
         OnStartAction?.Invoke();
         uiManager.SetCardText();
+        uiManager.ActivateControlsPanel(true);
+        uiManager.ActivateControlsRotate(false);
 
         for (int i = 0; i < rows; i++)
         {
@@ -255,6 +261,8 @@ public class BoardManager : MonoBehaviour
         isSelectingTile = false;
         OnStopAction?.Invoke();
         uiManager.ClearActionText();
+        uiManager.ActivateControlsPanel(false);
+        uiManager.ActivateControlsRotate(true);
         cardSelection = null;
         methodToCallOnSelected = "";
         methodParameterOnSelected = 0;

@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
     public Text movesLeftText;
     public Image playerVolumeFill;
     public Image opponentVolumeFill;
+    public GameObject controlsPanel;
+    public GameObject controlsRotate;
     public Animator fadeInImage;
 
     public static UIManager instance {  get; private set; }
@@ -37,6 +39,10 @@ public class UIManager : MonoBehaviour
 
     public void ActivateCursor(bool value) => cursor.gameObject.SetActive(value);
 
+    public void ActivateControlsPanel(bool value) => controlsPanel.SetActive(value);
+
+    public void ActivateControlsRotate(bool value) => controlsRotate.SetActive(value);
+
     public void SetTurnText(bool isPlayerTurn) => turnText.text = isPlayerTurn ? "RANDUL TAU" : "RANDUL INAMICULUI";
 
     public void SetMovesLeftText(int amount)
@@ -46,14 +52,14 @@ public class UIManager : MonoBehaviour
 
     public void SetPlaceText(bool isPrismSelected)
     {
-        currentActionText.text = actionsMap["place"] + (isPrismSelected ? "\n" + actionsMap["rotate"] : "");
+        currentActionText.text = actionsMap["place"];
         turnText.gameObject.SetActive(false);
         movesLeftText.gameObject.SetActive(false);
     }
 
     public void SetAttackText()
     {
-        currentActionText.text = actionsMap["attack"] + "\n" + actionsMap["rotate"];
+        currentActionText.text = actionsMap["attack"];
         turnText.gameObject.SetActive(false);
         movesLeftText.gameObject.SetActive(false);
     }

@@ -137,8 +137,15 @@ public class GameManager : MonoBehaviour
                 uiManager.SetMovesLeftText(remainingPlayerMoves);
                 uiManager.SetTurnText(isPlayerTurn);
                 boardManager.EndTurn();
+                if (!TutorialManager.instance.hasFinished)
+                    Invoke(nameof(OpenTutorialWithDelay), 1f);
             }
         }
+    }
+
+    private void OpenTutorialWithDelay()
+    {
+        TutorialManager.instance.OpenTutorialPanel(false);
     }
 
     public void OnHitPiece(Piece piece, float damage)
@@ -265,7 +272,7 @@ public class GameManager : MonoBehaviour
             SendMessage(methodToCall, methodParameter);
             UseCard(card);
         }
-        TopDownCamera.instance.DropCard();
+        //TopDownCamera.instance.DropCard();
     }
 
     public void UseCard(Card card)

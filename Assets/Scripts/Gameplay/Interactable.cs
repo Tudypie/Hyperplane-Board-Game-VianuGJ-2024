@@ -27,7 +27,7 @@ public class Interactable : MonoBehaviour
 
     public void OnMouseOver()
     {
-        if(GameManager.instance.isPlayerTurn)
+        if(GameManager.instance.isPlayerTurn && !TutorialManager.instance.tutorialIsOpen)
         {
             OnFocus();
             if(InputManager.instance.INPUT.UI.Click.WasPerformedThisFrame() && !PlayerCamera.instance.isMoving)
