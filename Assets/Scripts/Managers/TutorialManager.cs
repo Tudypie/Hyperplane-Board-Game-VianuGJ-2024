@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
@@ -11,11 +10,14 @@ public class TutorialManager : MonoBehaviour
     public bool tutorialIsOpen = false;
     public bool hasFinished = false;
 
+    private Animator anim;
+
     public static TutorialManager instance { get; private set; }
 
     private void Awake()
     {
         instance = this;
+        anim = GetComponent<Animator>();
     }
 
     public void ChangePage(int value)
@@ -30,6 +32,7 @@ public class TutorialManager : MonoBehaviour
             return;
         }
         Invoke(nameof(PageSetActive), 0.01f);
+        AudioManager.instance.PlaySound(AudioManager.instance.pieceMove);
     }
 
     private void PageSetActive() => tutorialPages[currentPage].SetActive(true);
@@ -59,13 +62,15 @@ public class TutorialManager : MonoBehaviour
         tutorialIsOpen = true;
         tutorialPages[currentPage].transform.parent.gameObject.SetActive(true);
         tutorialPages[currentPage].SetActive(true);
-        UIManager.instance.ActivateGamePanel(false);    
+        UIManager.instance.ActivateGamePanel(false);
+        anim.Play("TutorialShow");
     }
 
     public void CloseTutorialPanel()
     {
         tutorialIsOpen = false;
-        tutorialPages[0].transform.parent.gameObject.SetActive(false);
+        //tutorialPages[0].transform.parent.gameObject.SetActive(false);
+        anim.Play("TutorialHide");
         if (!GameManager.instance.gameStarted)
             GameManager.instance.OnStartGame();
         else
@@ -75,9 +80,6 @@ public class TutorialManager : MonoBehaviour
         {
             cardDeck.SetActive(true);
             hasFinished = true;
-            CloseTutorialPanel();
-            return;
         }
-
     }
 }

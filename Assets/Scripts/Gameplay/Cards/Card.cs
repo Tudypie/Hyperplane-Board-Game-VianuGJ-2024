@@ -39,17 +39,18 @@ public class Card : Interactable
         if(isKnowledgeCard)
         {
             if (topDownCamera.isCardInHand && topDownCamera.cardInHand == this)
+            {
                 gameManager.StartUsingCard(this, methodToCall, methodParameter);
+                AudioManager.instance.PlaySound(AudioManager.instance.cardKnowledge);
+            }
             else
             {
                 topDownCamera.PickupCard(this, transform);
-                AudioManager.instance.PlaySound(AudioManager.instance.cardSelect);
             }
         }
         else
         {
             gameManager.StartUsingCard(this, methodToCall, methodParameter);
-            AudioManager.instance.PlaySound(AudioManager.instance.cardSelect);
         }
 
 

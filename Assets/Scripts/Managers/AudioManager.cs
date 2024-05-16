@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip pieceMove;
     public AudioClip cardDraw;
     public AudioClip cardSelect;
+    public AudioClip cardKnowledge;
     public AudioClip abilityHeal;
     public AudioClip abilityIncreaseAngle;
     public AudioClip abilityDecreaseAngle;

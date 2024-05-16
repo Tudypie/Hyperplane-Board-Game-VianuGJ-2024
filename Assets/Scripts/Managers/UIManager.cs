@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour
     public GameObject controlsPanel;
     public GameObject controlsRotate;
     public Animator fadeInImage;
+    public Animator changeTurn;
 
     public static UIManager instance {  get; private set; }
 
@@ -86,5 +87,5 @@ public class UIManager : MonoBehaviour
 
     public void PlayFadeIn() => fadeInImage.Play("FadeIn");
 
-
+    public void PlayChangeTurn() => changeTurn.Play("ChangeTurn");
 }

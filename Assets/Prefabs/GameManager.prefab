@@ -72,12 +72,14 @@ MonoBehaviour:
     isOccupied: 0
   playerCylinderFill: {fileID: 0}
   opponentCylinderFill: {fileID: 0}
+  playerCamera: {fileID: 0}
+  opponentAI: {fileID: 0}
   cardList:
   - prefab: {fileID: 8399559780992857756, guid: 28a6eb0f6ceee2249afdf5ce9b5f2d82, type: 3}
-    count: 6
+    count: 3
     canBeReshuffled: 0
   - prefab: {fileID: 7193615698019746471, guid: 79fd7e5fd8917c24bb342d7abfd56a23, type: 3}
-    count: 6
+    count: 5
     canBeReshuffled: 0
   - prefab: {fileID: 3805534024524224461, guid: 5daae0f3217c9934186d039bb86a0d89, type: 3}
     count: 3
@@ -86,7 +88,7 @@ MonoBehaviour:
     count: 3
     canBeReshuffled: 0
   - prefab: {fileID: 4945621005757475379, guid: 36a643343eb3877468bf6a3b8bcb8bbe, type: 3}
-    count: 4
+    count: 2
     canBeReshuffled: 0
   - prefab: {fileID: 5965604888331493644, guid: 982b9b0432f39724b8844a014bfc183c, type: 3}
     count: 4
@@ -131,7 +133,7 @@ MonoBehaviour:
   maxOpponentMoves: 3
   extraMoveRequiredKnowledge: 3
   maxKnowledge: 5
-  requiredVolumeToWin: 1000
+  requiredVolumeToWin: 2000
   playerPiecesInHand: 0
   opponentPiecesInHand: 0
   cardsInHand: 0
@@ -143,3 +145,4 @@ MonoBehaviour:
   playerAccumulatedVolume: 0
   opponentAccumulatedVolume: 0
   isPlayerTurn: 0
+  gameStarted: 0
