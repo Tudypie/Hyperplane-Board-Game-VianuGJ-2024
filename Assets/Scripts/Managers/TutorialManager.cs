@@ -29,7 +29,6 @@ public class TutorialManager : MonoBehaviour
             CloseTutorialPanel();
             return;
         }
-        if (currentPage >= 6) cardDeck.SetActive(true);
         Invoke(nameof(PageSetActive), 0.01f);
     }
 
@@ -55,7 +54,7 @@ public class TutorialManager : MonoBehaviour
                 nextArrow[i].SetActive(true);
         }
 
-        if (currentPage >= 6) cardDeck.SetActive(true);
+        //if (currentPage >= 6) cardDeck.SetActive(true);
 
         tutorialIsOpen = true;
         tutorialPages[currentPage].transform.parent.gameObject.SetActive(true);
@@ -71,6 +70,14 @@ public class TutorialManager : MonoBehaviour
             GameManager.instance.OnStartGame();
         else
             UIManager.instance.ActivateGamePanel(true);
+
+        if (currentPage >= tutorialPages.Length-1)
+        {
+            cardDeck.SetActive(true);
+            hasFinished = true;
+            CloseTutorialPanel();
+            return;
+        }
 
     }
 }
