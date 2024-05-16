@@ -26,6 +26,8 @@ public class AudioManager : MonoBehaviour
     {
         instance = this;
         audioSource = GetComponent<AudioSource>();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void PlaySound(AudioClip clip)

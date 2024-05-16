@@ -27,6 +27,7 @@ public class TutorialManager : MonoBehaviour
         if (currentPage >= tutorialPages.Length) 
         {
             cardDeck.SetActive(true);
+            UIManager.instance.ActivateKnowledgeText(true);
             hasFinished = true;
             CloseTutorialPanel();
             return;
@@ -79,6 +80,7 @@ public class TutorialManager : MonoBehaviour
         if (currentPage >= tutorialPages.Length-1)
         {
             cardDeck.SetActive(true);
+            UIManager.instance.ActivateKnowledgeText(true);
             hasFinished = true;
         }
     }

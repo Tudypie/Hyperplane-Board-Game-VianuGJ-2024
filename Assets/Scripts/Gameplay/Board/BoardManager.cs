@@ -218,11 +218,11 @@ public class BoardManager : MonoBehaviour
             {
                 if (boardTiles[i][j].isOccupied && !boardTiles[i][j].isEnemyTile)
                 {
-                    if(methodToCall.Contains("Heal"))
+                    /*if(methodToCall.Contains("Heal"))
                     {
                         if (boardTiles[i][j].pieceOnTile.health == boardTiles[i][j].pieceOnTile.maxHealth) 
                             continue;
-                    }
+                    }*/
 
                     if (methodToCall == "ChangeAngle")
                     {

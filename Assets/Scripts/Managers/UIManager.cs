@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     public Text currentActionText;
     public Text turnText;
     public Text movesLeftText;
+    public Text knowledgeText;
     public Image playerVolumeFill;
     public Image opponentVolumeFill;
     public GameObject controlsPanel;
@@ -78,6 +79,10 @@ public class UIManager : MonoBehaviour
         turnText.gameObject.SetActive(true);
         movesLeftText.gameObject.SetActive(true);
     }
+
+    public void SetKnowledgeText(int value) => knowledgeText.text = value.ToString();
+
+    public void ActivateKnowledgeText(bool value) => knowledgeText.gameObject.SetActive(value);
 
     public void UpdatePlayerVolumeFill(float amount, float max) => playerVolumeFill.fillAmount = amount / max;
 

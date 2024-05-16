@@ -261,6 +261,8 @@ public class GameManager : MonoBehaviour
         knowledge++;
         if (knowledge % extraMoveRequiredKnowledge == 0)
             maxPlayerMoves++;
+
+        uiManager.SetKnowledgeText(knowledge);
     }
 
     public void StartUsingCard(Card card, string methodToCall, float methodParameter)
