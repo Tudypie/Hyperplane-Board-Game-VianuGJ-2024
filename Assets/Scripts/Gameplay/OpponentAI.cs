@@ -112,7 +112,7 @@ public class OpponentAI : MonoBehaviour
             bool placedPiece = false;
             foreach (BoardTile tile in occupiedTiles)
             {
-                if (tile.pieceOnTile.pieceSO.pieceType == pieceSelection.pieceSO.pieceType)
+                if (tile.isEnemyTile && tile.pieceOnTile.pieceSO.pieceType == pieceSelection.pieceSO.pieceType)
                 {
                     if (tile.pieceOnTile.height >= tile.pieceOnTile.maxHeight) continue;
 

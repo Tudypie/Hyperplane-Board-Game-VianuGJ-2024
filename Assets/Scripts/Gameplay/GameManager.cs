@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -140,19 +141,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnDestroyPiece(Piece piece)
+    public void OnHitPiece(Piece piece, float damage)
     {
         if(piece.isEnemyPiece)
         {
-            playerAccumulatedVolume += piece.maxHealth;
+            playerAccumulatedVolume += damage;
             playerCylinderFill.transform.localScale = new Vector3(1, 1, playerAccumulatedVolume / requiredVolumeToWin);
-            //uiManager.UpdatePlayerVolumeFill(playerAccumulatedVolume, requiredVolumeToWin);
+            Debug.Log(damage);
+
+
+            if (playerAccumulatedVolume >= requiredVolumeToWin)
+            {
+                uiManager.PlayFadeIn();
+                SceneLoader.instance.Invoke("LoadLoseScene", 2.5f);
+            }
         }
         else
         {
-            opponentAccumulatedVolume += piece.maxHealth;
+            opponentAccumulatedVolume += damage;
             opponentCylinderFill.transform.localScale = new Vector3(1, 1, opponentAccumulatedVolume / requiredVolumeToWin);
-            //uiManager.UpdateOpponentVolumeFill(opponentAccumulatedVolume, requiredVolumeToWin);
+            Debug.Log(damage);
+
+            if (opponentAccumulatedVolume >= requiredVolumeToWin)
+            {
+                uiManager.PlayFadeIn();
+                SceneLoader.instance.Invoke("LoadWinScene", 2.5f);
+            }
         }
     }
 

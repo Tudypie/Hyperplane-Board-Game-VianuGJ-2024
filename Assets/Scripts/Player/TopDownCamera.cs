@@ -41,8 +41,7 @@ public class TopDownCamera : MonoBehaviour
 
     private void Update()
     {
-        if (!boardManager.isPlacing && !boardManager.isAttacking)
-            HandleCameraRotation();
+        HandleCameraRotation();
 
         //HandleCameraZoom();
         HandleCameraPickup();
@@ -59,6 +58,7 @@ public class TopDownCamera : MonoBehaviour
         rotation.y += horizontalRotation;
         rotation.x -= verticalRotation;
         rotation.x = Mathf.Clamp(rotation.x, -40f, 30f);
+        rotation.y = Mathf.Clamp(rotation.y, -90f, 90f);
 
         rotation.z = 0f;
         cameraMiddlePoint.localEulerAngles = rotation;

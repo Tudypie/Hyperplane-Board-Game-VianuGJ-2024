@@ -8,6 +8,7 @@ public class BoardTile : Interactable
     public bool isEnemyTile = false;
     public bool isOccupied = false;
     public bool canBeSelected = false;
+    public bool soundPlayed = false;
 
     private MeshRenderer meshRenderer;
     private BoardManager boardManager;
@@ -72,6 +73,12 @@ public class BoardTile : Interactable
                     }
                 }
                 //ChangeMeshRenderer(true, boardManager.pieceSelection.onFocusMaterial);
+
+                if(!soundPlayed)
+                {
+                    AudioManager.instance.PlaySound(AudioManager.instance.pieceMove);
+                    soundPlayed = true;
+                }
             }
         }
     }
@@ -94,6 +101,8 @@ public class BoardTile : Interactable
             if (boardManager.isPlacing)
                 boardManager.pieceSelectionTransform.localScale = new Vector3(1, 1, 1);
         }
+
+        soundPlayed = false;
     }
 
     public override void OnInteract()

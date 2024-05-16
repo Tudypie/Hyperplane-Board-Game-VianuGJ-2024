@@ -135,6 +135,7 @@ public class Piece : Interactable
         health = Mathf.Max(health - amount, 0);
         healthBar[height - 1].fillAmount = health / maxHealth;
         healthFill.localScale = new Vector3(1f, health / maxHealth, 1f);
+        gameManager.OnHitPiece(this, amount);
 
         if (health <= 0)
         {
@@ -154,7 +155,6 @@ public class Piece : Interactable
             boardManager.boardTiles[row][col].pieceOnTile = null;
             boardManager.boardTiles[row][col].isOccupied = false;
             boardManager.CalculateAllPrismTilesInRange();
-            gameManager.OnDestroyPiece(this);
             AudioManager.instance.PlaySound(AudioManager.instance.pieceDestroy);
             Destroy(gameObject);
         }
